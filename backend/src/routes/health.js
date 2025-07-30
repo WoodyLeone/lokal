@@ -246,4 +246,20 @@ router.get('/connection', (req, res) => {
   res.json(status);
 });
 
+/**
+ * @route GET /api/health/memory
+ * @desc Check memory usage and monitoring status
+ * @access Public
+ */
+router.get('/memory', (req, res) => {
+  const memoryMonitor = require('../utils/memoryMonitor');
+  const status = {
+    memory: memoryMonitor.getMemoryStatus(),
+    monitoring: memoryMonitor.monitoring,
+    timestamp: new Date().toISOString()
+  };
+  
+  res.json(status);
+});
+
 module.exports = router; 

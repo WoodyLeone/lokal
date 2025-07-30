@@ -18,6 +18,9 @@ dotenv.config();
 // Initialize database manager
 const databaseManager = require('./config/database');
 
+// Initialize memory monitor
+const memoryMonitor = require('./utils/memoryMonitor');
+
 // Configure logging
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -256,6 +259,10 @@ app.use('*', (req, res) => {
 const gracefulShutdown = async (signal) => {
   logger.info(`Received ${signal}. Starting graceful shutdown...`);
   
+  // Stop memory monitoring
+  memoryMonitor.stop();
+  logger.info('Memory monitoring stopped');
+  
   // Close server
   server.close(() => {
     logger.info('HTTP server closed');
@@ -301,6 +308,10 @@ async function startServer() {
     // Initialize database connections
     await databaseManager.initialize();
     logger.info('Database connections initialized');
+    
+    // Start memory monitoring
+    memoryMonitor.start();
+    logger.info('Memory monitoring started');
     
     // Configure server for connection stability
     server.keepAliveTimeout = KEEP_ALIVE_TIMEOUT;

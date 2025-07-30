@@ -74,7 +74,7 @@ class DatabaseManager {
   }
 
   /**
-   * Initialize Supabase connection
+   * Initialize Supabase connection with enhanced error handling
    */
   async initializeSupabase() {
     try {
@@ -82,7 +82,8 @@ class DatabaseManager {
       const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
       if (!supabaseUrl || !supabaseKey) {
-        throw new Error('Supabase URL and key are required');
+        logger.warn('Supabase configuration not found, skipping Supabase initialization');
+        return false;
       }
 
       this.supabase = createClient(supabaseUrl, supabaseKey, {
@@ -101,11 +102,17 @@ class DatabaseManager {
         }
       });
 
-      // Test connection
-      const { data, error } = await this.supabase
+      // Test connection with timeout
+      const testPromise = this.supabase
         .from('videos')
         .select('count')
         .limit(1);
+      
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Supabase connection timeout')), 15000)
+      );
+      
+      const { data, error } = await Promise.race([testPromise, timeoutPromise]);
 
       if (error) {
         throw new Error(`Supabase connection test failed: ${error.message}`);
@@ -115,7 +122,9 @@ class DatabaseManager {
       return true;
     } catch (error) {
       logger.error('Failed to initialize Supabase:', error);
-      throw error;
+      // Don't throw error, allow app to continue without Supabase
+      this.supabase = null;
+      return false;
     }
   }
 
