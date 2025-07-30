@@ -103,6 +103,25 @@ demo_*.js
 demo_*.py
 *_demo.*
 
+# Media files (large files)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.flv
+*.wmv
+*.webm
+*.mp3
+*.wav
+*.flac
+*.aac
+*.ogg
+
+# YOLO model files (large files)
+*.pt
+*.weights
+*.cfg
+
 # Documentation backups
 *_SUMMARY.md
 *_REPORT.md
