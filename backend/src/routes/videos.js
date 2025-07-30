@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const videoController = require('../controllers/videoController');
-const upload = require('../middleware/upload');
+const { uploadVideo, handleUploadError } = require('../middleware/upload');
 
 // Video upload and processing
-router.post('/upload', upload.single('video'), videoController.uploadVideo);
+router.post('/upload', uploadVideo, handleUploadError, videoController.uploadVideo);
 
 // Video status and detection
 router.get('/status/:videoId', videoController.getVideoStatus);
