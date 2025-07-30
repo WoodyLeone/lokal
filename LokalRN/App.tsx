@@ -179,19 +179,19 @@ export default function App() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#6366f1',
-          tabBarInactiveTintColor: '#94a3b8',
+          tabBarActiveTintColor: '#007AFF',
+          tabBarInactiveTintColor: '#8E8E93',
           tabBarStyle: {
-            backgroundColor: '#1e293b',
-            borderTopColor: '#374151',
+            backgroundColor: '#ffffff',
+            borderTopColor: '#C6C6C8',
             paddingBottom: 8,
             paddingTop: 8,
             height: 60,
           },
           headerStyle: {
-            backgroundColor: '#1e293b',
+            backgroundColor: '#ffffff',
           },
-          headerTintColor: '#f8fafc',
+          headerTintColor: '#000000',
           headerTitleStyle: {
             fontWeight: 'bold',
           },

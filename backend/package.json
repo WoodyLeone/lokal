@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "jest"
+    "test": "jest",
+    "test:db": "node src/tests/test-database.js",
+    "test:connection": "node src/tests/test-connection.js"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -17,18 +19,38 @@
     "uuid": "^9.0.1",
     "fluent-ffmpeg": "^2.1.2",
     "python-shell": "^5.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "@supabase/supabase-js": "^2.38.4",
+    "redis": "^4.6.10",
+    "node-cache": "^5.1.2",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "winston": "^3.11.0",
+    "express-validator": "^7.0.1",
+    "node-cron": "^3.0.3",
+    "socket.io": "^4.7.4",
+    "ioredis": "^5.3.2",
+    "pg": "^8.11.3",
+    "sequelize": "^6.35.1",
+    "connect-redis": "^7.1.0",
+    "express-session": "^1.17.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "jest": "^29.7.0"
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
   },
   "keywords": [
     "nodejs",
     "express",
     "video-processing",
     "object-detection",
-    "yolo"
+    "yolo",
+    "supabase",
+    "redis",
+    "caching"
   ],
   "author": "Lokal Team",
   "license": "MIT"

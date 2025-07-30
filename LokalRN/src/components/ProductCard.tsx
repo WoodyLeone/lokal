@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as WebBrowser from 'expo-web-browser';
-import { Product } from '../types';
+import { ProductFrontend } from '../types';
 import { formatPrice, truncateText } from '../utils/helpers';
 
 interface ProductCardProps {
-  product: Product;
+  product: ProductFrontend;
   onPress?: () => void;
 }
 

@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Alert, ActivityIndicator, ScrollView } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { VideoPlayer } from '../components/VideoPlayer';
 import { ProductCard } from '../components/ProductCard';
-import { Video, Product, ProductFrontend } from '../types';
-import { SupabaseService } from '../services/supabase';
-import { ApiService } from '../services/api';
+import { ProductInput } from '../components/ProductInput';
+import { ProductMatchSelector } from '../components/ProductMatchSelector';
+import { DebugDataDisplay } from '../components/DebugDataDisplay';
+import { VideoFrontend, ProductFrontend } from '../types';
+import { ApiService, checkNetworkStatus } from '../services/api';
 import { DemoDataService } from '../services/demoData';
-import { generateThumbnail, validateVideo, isDemoMode } from '../utils/helpers';
+import { productMatchingService } from '../services/productMatchingService';
+import { formatDate, validateVideo } from '../utils/helpers';
 import { ENV } from '../config/env';
+import { LearningService } from '../services/learningService';
+import { FeedbackModal } from '../components/FeedbackModal';
 
 export const UploadScreen: React.FC = () => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
@@ -19,8 +24,23 @@ export const UploadScreen: React.FC = () => {
   const [processing, setProcessing] = useState(false);
   const [detectedObjects, setDetectedObjects] = useState<string[]>([]);
   const [matchedProducts, setMatchedProducts] = useState<ProductFrontend[]>([]);
-  const [currentStep, setCurrentStep] = useState<'select' | 'upload' | 'preview' | 'process' | 'verify' | 'complete'>('select');
+  const [currentStep, setCurrentStep] = useState<'select' | 'preview' | 'upload' | 'process' | 'verify' | 'match' | 'complete'>('select');
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [finalSelection, setFinalSelection] = useState<string>('');
+  const [videoId, setVideoId] = useState<string>('');
   const [useDemoMode, setUseDemoMode] = useState(false);
+  const [processingProgress, setProcessingProgress] = useState(0);
+  const [processingStatus, setProcessingStatus] = useState('');
+  
+  // Product matching state
+  const [manualProductName, setManualProductName] = useState('');
+  const [affiliateLink, setAffiliateLink] = useState('');
+  const [isProductInputExpanded, setIsProductInputExpanded] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const [finalProductMatch, setFinalProductMatch] = useState<{
+    productName: string;
+    matchType: 'manual' | 'ai_suggestion' | 'yolo_direct';
+  } | null>(null);
 
   const pickVideo = async () => {
     try {
@@ -101,27 +121,62 @@ export const UploadScreen: React.FC = () => {
     }
   };
 
-  // Simulate object detection for demo mode
+  // Simulate object detection for demo mode with context awareness
   const simulateObjectDetection = (): Promise<string[]> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const possibleObjects = [
-          'person', 'chair', 'table', 'laptop', 'cell phone', 'book', 'cup', 'bottle',
-          'sneakers', 'hat', 'shirt', 'pants', 'handbag', 'watch', 'glasses', 'couch',
-          'tv', 'lamp', 'plant', 'car', 'bicycle', 'dog', 'cat', 'keyboard', 'mouse'
-        ];
+        // Analyze video title and description for context
+        const videoText = `${title} ${description}`.toLowerCase();
         
-        // Return 3-6 random objects
-        const numObjects = Math.floor(Math.random() * 4) + 3;
-        const selectedObjects: string[] = [];
+        // Define context-based object sets
+        const contextObjects: { [key: string]: string[] } = {
+          person: ['person', 'shirt', 'pants', 'sneakers', 'hat', 'watch', 'glasses'],
+          outdoor: ['person', 'car', 'bicycle', 'tree', 'building', 'sky', 'road'],
+          indoor: ['person', 'chair', 'table', 'laptop', 'tv', 'lamp', 'couch'],
+          tech: ['laptop', 'cell phone', 'keyboard', 'mouse', 'monitor', 'headphones'],
+          fashion: ['person', 'shirt', 'pants', 'sneakers', 'hat', 'handbag', 'watch'],
+          kitchen: ['person', 'cup', 'bottle', 'table', 'chair', 'lamp'],
+          sports: ['person', 'sneakers', 'shirt', 'pants', 'bicycle', 'ball'],
+          pets: ['person', 'dog', 'cat', 'chair', 'couch', 'floor']
+        };
         
-        for (let i = 0; i < numObjects; i++) {
-          const randomObject = possibleObjects[Math.floor(Math.random() * possibleObjects.length)];
-          if (!selectedObjects.includes(randomObject)) {
-            selectedObjects.push(randomObject);
+        // Determine context based on video content
+        let context = 'person'; // default
+        if (videoText.includes('walk') || videoText.includes('outdoor') || videoText.includes('street')) {
+          context = 'outdoor';
+        } else if (videoText.includes('tech') || videoText.includes('computer') || videoText.includes('laptop')) {
+          context = 'tech';
+        } else if (videoText.includes('fashion') || videoText.includes('clothes') || videoText.includes('style')) {
+          context = 'fashion';
+        } else if (videoText.includes('kitchen') || videoText.includes('cooking') || videoText.includes('food')) {
+          context = 'kitchen';
+        } else if (videoText.includes('sport') || videoText.includes('exercise') || videoText.includes('gym')) {
+          context = 'sports';
+        } else if (videoText.includes('pet') || videoText.includes('dog') || videoText.includes('cat')) {
+          context = 'pets';
+        } else if (videoText.includes('indoor') || videoText.includes('home') || videoText.includes('room')) {
+          context = 'indoor';
+        }
+        
+        // Get context-appropriate objects
+        const contextObjectSet = contextObjects[context] || contextObjects.person;
+        
+        // Always include 'person' for videos with people
+        const selectedObjects: string[] = ['person'];
+        
+        // Add 2-4 additional context-appropriate objects
+        const numAdditionalObjects = Math.floor(Math.random() * 3) + 2;
+        const availableObjects = contextObjectSet.filter(obj => obj !== 'person');
+        
+        for (let i = 0; i < numAdditionalObjects && availableObjects.length > 0; i++) {
+          const randomIndex = Math.floor(Math.random() * availableObjects.length);
+          const selectedObject = availableObjects.splice(randomIndex, 1)[0];
+          if (!selectedObjects.includes(selectedObject)) {
+            selectedObjects.push(selectedObject);
           }
         }
         
+        console.log(`🎭 Demo detection context: ${context}, objects: ${selectedObjects.join(', ')}`);
         resolve(selectedObjects);
       }, 2000); // Simulate 2-second processing time
     });
@@ -137,77 +192,185 @@ export const UploadScreen: React.FC = () => {
       setUploading(true);
       setCurrentStep('process');
 
+      // Test network connectivity first
+      console.log('🌐 Testing network connectivity before upload...');
+      const networkStatus = await checkNetworkStatus();
+      console.log('🌐 Network status:', networkStatus);
+      
+      if (!networkStatus.connected) {
+        console.log('❌ No backend connectivity, using demo mode');
+        setUseDemoMode(true);
+        await simulateObjectDetection().then(async (objects) => {
+          setDetectedObjects(objects);
+          console.log('🎭 Demo mode - detected objects:', objects);
+          
+          const products = DemoDataService.matchProductsByObjects(objects);
+          setMatchedProducts(products);
+          console.log('🎭 Demo mode - matched products:', products);
+          
+          // Process hybrid product matching in demo mode
+          console.log('🔄 Demo mode - processing hybrid product matching...');
+          const matchingResult = await productMatchingService.processHybridMatching(
+            'demo-video-id',
+            objects,
+            manualProductName,
+            affiliateLink
+          );
+          
+          if (matchingResult.success) {
+            setAiSuggestions(matchingResult.aiSuggestions);
+            console.log('✅ Demo mode - hybrid matching completed. AI suggestions:', matchingResult.aiSuggestions);
+            setCurrentStep('match');
+          } else {
+            console.log('⚠️ Demo mode - hybrid matching failed, proceeding to verify step');
+            setCurrentStep('verify');
+          }
+        });
+        return;
+      }
+
+      console.log(`✅ Backend connectivity confirmed: ${networkStatus.url} (${networkStatus.latency}ms)`);
+
       // Always try to use real backend first for YOLO detection
       try {
-        console.log('Attempting to use real backend for YOLO detection...');
+        console.log('🚀 Starting video upload process...');
+        console.log('📱 Selected video:', selectedVideo);
+        console.log('📝 Title:', title);
+        console.log('📝 Description:', description);
         
         // Upload video metadata to backend for processing
         let uploadResponse;
         try {
+          console.log('📤 Attempting file upload...');
           // Try file upload first (better for larger files)
-          uploadResponse = await ApiService.uploadVideoFile(selectedVideo, title, description);
+          uploadResponse = await ApiService.uploadVideoFile(selectedVideo, title, description, manualProductName, affiliateLink);
+          console.log('📤 File upload response:', uploadResponse);
         } catch (error) {
-          console.log('File upload failed, falling back to URL upload:', error);
+          console.log('❌ File upload failed, falling back to URL upload:', error);
           // Fallback to URL upload
-          uploadResponse = await ApiService.uploadVideo('', title, description);
+          uploadResponse = await ApiService.uploadVideo('', title, description, manualProductName, affiliateLink);
+          console.log('📤 URL upload response:', uploadResponse);
         }
         
-        if (!uploadResponse.success || !uploadResponse.videoId) {
-          throw new Error(uploadResponse.error || 'Failed to upload video');
+        // Validate upload response
+        if (!uploadResponse) {
+          throw new Error('No upload response received');
+        }
+        
+        if (!uploadResponse.success) {
+          throw new Error(uploadResponse.error || 'Upload failed');
+        }
+        
+        if (!uploadResponse.videoId) {
+          throw new Error('Upload succeeded but no video ID returned');
         }
 
-        console.log('Video uploaded successfully, starting object detection...');
-        console.log('Upload response:', uploadResponse);
-        console.log('Video ID for detection:', uploadResponse.videoId);
+        // Store video ID for product matching
+        setVideoId(uploadResponse.videoId);
 
-        // Start object detection
-        const detectionResponse = await ApiService.detectObjects(uploadResponse.videoId);
-        console.log('Detection response:', detectionResponse);
+        console.log('✅ Video uploaded successfully, starting object detection...');
+        console.log('🎯 Video ID for detection:', uploadResponse.videoId);
+
+        // Wait for video processing to complete
+        console.log('⏳ Waiting for video processing to complete...');
+        setProcessingStatus('Processing video...');
+        setProcessingProgress(0);
         
-        if (detectionResponse.success && detectionResponse.objects) {
-          setDetectedObjects(detectionResponse.objects);
-          console.log('Real YOLO detection results:', detectionResponse.objects);
-
-          // Match products
-          const productResponse = await ApiService.matchProducts(detectionResponse.objects);
-          console.log('Product response:', productResponse);
-          if (productResponse.success && productResponse.products) {
-            setMatchedProducts(productResponse.products);
-            console.log('Setting step to verify with objects:', detectionResponse.objects, 'and products:', productResponse.products);
-            setCurrentStep('verify');
-            setUseDemoMode(false);
-          } else {
-            console.log('No products matched, but objects detected. Setting step to verify with objects:', detectionResponse.objects);
-            setCurrentStep('verify');
-            setUseDemoMode(false);
+        const processingResult = await ApiService.waitForVideoProcessing(
+          uploadResponse.videoId, 
+          300000, // 5 minutes max wait
+          (progress, status) => {
+            setProcessingProgress(progress);
+            setProcessingStatus(`Processing: ${status} (${progress}%)`);
           }
+        );
+        
+        if (!processingResult.success) {
+          throw new Error(processingResult.error || 'Video processing failed');
+        }
+        
+        setProcessingProgress(100);
+        setProcessingStatus('Processing completed!');
+        
+        console.log('✅ Video processing completed successfully');
+        console.log('🎯 Detected objects:', processingResult.objects);
+        console.log('🛍️ Matched products:', processingResult.products);
+        
+        // Ensure we have the correct data structure
+        const detectedObjectsArray = Array.isArray(processingResult.objects) ? processingResult.objects : [];
+        const matchedProductsArray = Array.isArray(processingResult.products) ? processingResult.products : [];
+        
+        console.log('🔧 Processed detected objects array:', detectedObjectsArray);
+        console.log('🔧 Processed matched products array:', matchedProductsArray);
+        
+        if (detectedObjectsArray.length > 0) {
+          setDetectedObjects(detectedObjectsArray);
+          console.log('✅ Real YOLO detection results set:', detectedObjectsArray);
+
+          if (matchedProductsArray.length > 0) {
+            setMatchedProducts(matchedProductsArray);
+            console.log('✅ Setting matched products:', matchedProductsArray);
+          } else {
+            setMatchedProducts([]);
+            console.log('✅ No products matched');
+          }
+          
+          // Process hybrid product matching
+          console.log('🔄 Processing hybrid product matching...');
+          const matchingResult = await productMatchingService.processHybridMatching(
+            uploadResponse.videoId,
+            detectedObjectsArray,
+            manualProductName,
+            affiliateLink
+          );
+          
+          if (matchingResult.success) {
+            const aiSuggestionsArray = Array.isArray(matchingResult.aiSuggestions) ? matchingResult.aiSuggestions : [];
+            setAiSuggestions(aiSuggestionsArray);
+            console.log('✅ Hybrid matching completed. AI suggestions:', aiSuggestionsArray);
+            
+            // Ensure we have data before moving to match step
+            if (aiSuggestionsArray.length > 0 || matchedProductsArray.length > 0) {
+              setCurrentStep('match');
+              console.log('✅ Moving to match step with data');
+            } else {
+              setCurrentStep('verify');
+              console.log('✅ Moving to verify step (no suggestions/products)');
+            }
+          } else {
+            console.log('⚠️ Hybrid matching failed, proceeding to verify step');
+            setCurrentStep('verify');
+          }
+          setUseDemoMode(false);
         } else {
-          console.log('No objects detected. Setting step to verify with empty results.');
+          console.log('⚠️ No objects detected. Setting step to verify with empty results.');
+          setDetectedObjects([]);
+          setMatchedProducts([]);
           setCurrentStep('verify');
           setUseDemoMode(false);
         }
         
       } catch (backendError) {
-        console.error('Backend processing failed, falling back to demo mode:', backendError);
+        console.error('❌ Backend processing failed, falling back to demo mode:', backendError);
         
         // Fallback to demo mode
         setUseDemoMode(true);
         await simulateObjectDetection().then(async (objects) => {
           setDetectedObjects(objects);
-          console.log('Demo mode - detected objects:', objects);
+          console.log('🎭 Demo mode - detected objects:', objects);
           
           // Match products using demo service
           const products = DemoDataService.matchProductsByObjects(objects);
           setMatchedProducts(products);
-          console.log('Demo mode - matched products:', products);
+          console.log('🎭 Demo mode - matched products:', products);
           
-          console.log('Demo mode - setting step to verify');
+          console.log('🎭 Demo mode - setting step to verify');
           setCurrentStep('verify');
         });
       }
 
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error('❌ Upload error:', error);
       setUploading(false);
       setCurrentStep('upload');
       Alert.alert('Error', 'Failed to upload video. Please try again.');
@@ -223,57 +386,103 @@ export const UploadScreen: React.FC = () => {
     setCurrentStep('select');
     setUseDemoMode(false);
     setUploading(false);
+    
+    // Reset product matching state
+    setManualProductName('');
+    setAffiliateLink('');
+    setIsProductInputExpanded(false);
+    setAiSuggestions([]);
+    setVideoId('');
+    setFinalProductMatch(null);
+  };
+
+  const handleConfirmProductMatch = async (productName: string, matchType: 'manual' | 'ai_suggestion' | 'yolo_direct') => {
+    try {
+      console.log('✅ Product match confirmed:', { productName, matchType });
+      
+      setFinalProductMatch({
+        productName,
+        matchType
+      });
+
+      // Record final selection for learning
+      setFinalSelection(productName);
+      await LearningService.updateFinalSelection(videoId, productName);
+
+      // Show feedback modal
+      setShowFeedbackModal(true);
+      
+    } catch (error) {
+      console.error('❌ Error confirming product match:', error);
+      Alert.alert('Error', 'Failed to confirm product match. Please try again.');
+    }
+  };
+
+  const handleFeedbackSubmitted = () => {
+    setShowFeedbackModal(false);
+    setCurrentStep('complete');
+  };
+
+  const handleSkipFeedback = () => {
+    setShowFeedbackModal(false);
+    setCurrentStep('complete');
+  };
+
+  const handleSkipProductMatch = () => {
+    console.log('⏭️ Skipping product match');
+    setCurrentStep('complete');
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#0f172a' }}>
-      <View style={{ padding: 16 }}>
+    <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
+      <View style={{ padding: 20 }}>
         {/* Header */}
-        <Text style={{ color: '#f8fafc', fontSize: 24, fontWeight: 'bold', marginBottom: 24 }}>
+        <Text style={{ color: '#000000', fontSize: 34, fontWeight: '700', marginBottom: 24, textAlign: 'center' }}>
           Upload Video
         </Text>
 
         {/* Demo Mode Notice */}
         {useDemoMode && (
           <View style={{ 
-            backgroundColor: '#1e293b', 
-            padding: 12, 
+            backgroundColor: '#f0f9ff', 
+            padding: 16, 
             marginBottom: 24, 
-            borderRadius: 8,
-            borderLeftWidth: 4,
-            borderLeftColor: '#6366f1'
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: '#0ea5e9'
           }}>
-            <Text style={{ color: '#f8fafc', fontSize: 14, fontWeight: '600', marginBottom: 4 }}>
+            <Text style={{ color: '#0c4a6e', fontSize: 16, fontWeight: '600', marginBottom: 4 }}>
               Demo Mode
             </Text>
-            <Text style={{ color: '#94a3b8', fontSize: 12 }}>
+            <Text style={{ color: '#0369a1', fontSize: 14 }}>
               Using simulated object detection and demo products.
             </Text>
           </View>
         )}
 
         {/* Step Indicator */}
-        <View style={{ flexDirection: 'row', marginBottom: 24 }}>
-          {['select', 'upload', 'preview', 'process', 'verify', 'complete'].map((step, index) => (
+        <View style={{ flexDirection: 'row', marginBottom: 32, justifyContent: 'center' }}>
+          {['select', 'preview', 'upload', 'process', 'verify', 'match', 'complete'].map((step, index) => (
             <View key={step} style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{
-                width: 32,
-                height: 32,
-                borderRadius: 16,
-                backgroundColor: currentStep === step ? '#6366f1' : '#374151',
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                backgroundColor: currentStep === step ? '#007AFF' : '#E5E5EA',
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginHorizontal: 4,
               }}>
-                <Text style={{ color: '#fff', fontSize: 12, fontWeight: 'bold' }}>
+                <Text style={{ color: currentStep === step ? '#ffffff' : '#8E8E93', fontSize: 12, fontWeight: '600' }}>
                   {index + 1}
                 </Text>
               </View>
-              {index < 3 && (
+              {index < 6 && (
                 <View style={{
-                  width: 40,
+                  width: 20,
                   height: 2,
-                  backgroundColor: currentStep === step ? '#6366f1' : '#374151',
-                  marginHorizontal: 8,
+                  backgroundColor: currentStep === step ? '#007AFF' : '#E5E5EA',
+                  marginHorizontal: 2,
                 }} />
               )}
             </View>
@@ -282,26 +491,51 @@ export const UploadScreen: React.FC = () => {
 
         {/* Step 1: Select Video */}
         {currentStep === 'select' && (
-          <TouchableOpacity
-            onPress={pickVideo}
-            style={{
-              borderWidth: 2,
-              borderColor: '#6366f1',
-              borderStyle: 'dashed',
-              borderRadius: 12,
-              padding: 40,
-              alignItems: 'center',
-              backgroundColor: '#1e293b',
-            }}
-          >
-            <Ionicons name="videocam-outline" size={48} color="#6366f1" />
-            <Text style={{ color: '#f8fafc', fontSize: 16, marginTop: 12 }}>
-              Select Video
+          <View style={{ alignItems: 'center', paddingVertical: 40 }}>
+            <TouchableOpacity
+              onPress={pickVideo}
+              style={{
+                width: 120,
+                height: 120,
+                borderRadius: 60,
+                backgroundColor: '#007AFF',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: 24,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 8,
+                elevation: 4,
+              }}
+            >
+              <Ionicons name="videocam" size={48} color="#ffffff" />
+            </TouchableOpacity>
+            
+            <Text style={{ color: '#000000', fontSize: 24, fontWeight: '600', marginBottom: 8, textAlign: 'center' }}>
+              Select a Video
             </Text>
-            <Text style={{ color: '#94a3b8', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
-                                  Choose a video (15s - 3min) from your camera roll
+            <Text style={{ color: '#8E8E93', fontSize: 16, textAlign: 'center', lineHeight: 22, paddingHorizontal: 20 }}>
+              Choose a video from your camera roll to upload and analyze
             </Text>
-          </TouchableOpacity>
+            
+            <View style={{ 
+              backgroundColor: '#F2F2F7', 
+              padding: 16, 
+              borderRadius: 12, 
+              marginTop: 24,
+              width: '100%'
+            }}>
+              <Text style={{ color: '#000000', fontSize: 14, fontWeight: '600', marginBottom: 8 }}>
+                Requirements:
+              </Text>
+              <Text style={{ color: '#8E8E93', fontSize: 14, lineHeight: 20 }}>
+                • Duration: 15 seconds to 3 minutes{'\n'}
+                • Format: MP4, MOV, or AVI{'\n'}
+                • Size: Up to 100MB
+              </Text>
+            </View>
+          </View>
         )}
 
         {/* Step 2: Preview Video */}
@@ -348,8 +582,18 @@ export const UploadScreen: React.FC = () => {
                   padding: 12,
                   color: '#f8fafc',
                   fontSize: 16,
-                  marginBottom: 24,
+                  marginBottom: 16,
                 }}
+              />
+
+              {/* Product Input Component */}
+              <ProductInput
+                manualProductName={manualProductName}
+                setManualProductName={setManualProductName}
+                affiliateLink={affiliateLink}
+                setAffiliateLink={setAffiliateLink}
+                onToggle={() => setIsProductInputExpanded(!isProductInputExpanded)}
+                isExpanded={isProductInputExpanded}
               />
 
               <View style={{ flexDirection: 'row', gap: 12 }}>
@@ -459,7 +703,7 @@ export const UploadScreen: React.FC = () => {
           <View style={{ alignItems: 'center', padding: 40 }}>
             <ActivityIndicator size="large" color="#6366f1" />
             <Text style={{ color: '#f8fafc', fontSize: 18, marginTop: 16 }}>
-              {uploading ? 'Uploading Video...' : 'Processing Video...'}
+              {uploading ? 'Uploading Video...' : processingStatus || 'Processing Video...'}
             </Text>
             <Text style={{ color: '#94a3b8', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
               {useDemoMode 
@@ -469,6 +713,30 @@ export const UploadScreen: React.FC = () => {
                   : 'Detecting objects and matching products'
               }
             </Text>
+            
+            {/* Progress Bar */}
+            {!uploading && !useDemoMode && (
+              <View style={{ width: '100%', marginTop: 20 }}>
+                <View style={{ 
+                  width: '100%', 
+                  height: 8, 
+                  backgroundColor: '#374151', 
+                  borderRadius: 4,
+                  overflow: 'hidden'
+                }}>
+                  <View style={{ 
+                    width: `${processingProgress}%`, 
+                    height: '100%', 
+                    backgroundColor: '#6366f1',
+                    borderRadius: 4
+                  }} />
+                </View>
+                <Text style={{ color: '#94a3b8', fontSize: 12, textAlign: 'center', marginTop: 8 }}>
+                  {processingProgress}% Complete
+                </Text>
+              </View>
+            )}
+            
             {!useDemoMode && uploading && (
               <Text style={{ color: '#64748b', fontSize: 12, textAlign: 'center', marginTop: 8 }}>
                 Please don't close the app during upload
@@ -574,7 +842,7 @@ export const UploadScreen: React.FC = () => {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => setCurrentStep('complete')}
+                onPress={() => setCurrentStep('match')}
                 style={{
                   flex: 1,
                   backgroundColor: '#10b981',
@@ -584,14 +852,37 @@ export const UploadScreen: React.FC = () => {
                 }}
               >
                 <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
-                  Looks Good!
+                  Continue to Product Match
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
         )}
 
-        {/* Step 6: Final Results */}
+        {/* Step 6: Product Match Selection */}
+        {currentStep === 'match' && (
+          <View>
+            {/* Debug Data Display */}
+            <DebugDataDisplay
+              detectedObjects={detectedObjects}
+              matchedProducts={matchedProducts}
+              aiSuggestions={aiSuggestions}
+              manualProductName={manualProductName}
+              currentStep={currentStep}
+            />
+            
+            <ProductMatchSelector
+              detectedObjects={detectedObjects}
+              matchedProducts={matchedProducts}
+              manualProductName={manualProductName}
+              aiSuggestions={aiSuggestions}
+              onConfirmMatch={handleConfirmProductMatch}
+              onSkip={handleSkipProductMatch}
+            />
+          </View>
+        )}
+
+        {/* Step 7: Final Results */}
         {currentStep === 'complete' && (
           <View>
             <View style={{ alignItems: 'center', marginBottom: 24 }}>
@@ -614,9 +905,24 @@ export const UploadScreen: React.FC = () => {
               <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
                 Objects Detected: {detectedObjects.join(', ')}
               </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14 }}>
+              <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
                 Products Matched: {matchedProducts.length} items
               </Text>
+              {finalProductMatch && (
+                <>
+                  <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
+                    Final Product: {finalProductMatch.productName}
+                  </Text>
+                  <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
+                    Match Type: {finalProductMatch.matchType.replace('_', ' ')}
+                  </Text>
+                </>
+              )}
+              {affiliateLink && (
+                <Text style={{ color: '#94a3b8', fontSize: 14 }}>
+                  Affiliate Link: {affiliateLink}
+                </Text>
+              )}
             </View>
 
             <TouchableOpacity
@@ -635,6 +941,17 @@ export const UploadScreen: React.FC = () => {
           </View>
         )}
       </View>
+
+      {/* Feedback Modal */}
+      {showFeedbackModal && (
+        <FeedbackModal
+          videoId={videoId}
+          detectedObjects={detectedObjects}
+          finalSelection={finalSelection}
+          onClose={handleSkipFeedback}
+          onFeedbackSubmitted={handleFeedbackSubmitted}
+        />
+      )}
     </ScrollView>
   );
 }; 

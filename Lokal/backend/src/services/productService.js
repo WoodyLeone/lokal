@@ -111,6 +111,34 @@ const dummyProducts = [
     rating: 4.4,
     reviewCount: 456,
     keywords: ['pants', 'jeans', 'levis', 'clothing', 'denim']
+  },
+  {
+    id: '9',
+    title: 'Apple Watch Series 9',
+    description: 'Advanced health and fitness companion',
+    imageUrl: 'https://via.placeholder.com/300x200/6366f1/ffffff?text=Apple+Watch',
+    price: 399.99,
+    currency: 'USD',
+    buyUrl: 'https://www.apple.com/apple-watch-series-9/',
+    category: 'electronics',
+    brand: 'Apple',
+    rating: 4.8,
+    reviewCount: 892,
+    keywords: ['watch', 'apple watch', 'smartwatch', 'apple', 'electronics', 'fitness', 'health']
+  },
+  {
+    id: '10',
+    title: 'Herman Miller Aeron Chair',
+    description: 'Ergonomic office chair for ultimate comfort',
+    imageUrl: 'https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair',
+    price: 1495.00,
+    currency: 'USD',
+    buyUrl: 'https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/',
+    category: 'furniture',
+    brand: 'Herman Miller',
+    rating: 4.9,
+    reviewCount: 567,
+    keywords: ['chair', 'office chair', 'ergonomic', 'herman miller', 'furniture', 'aeron']
   }
 ];
 
@@ -122,36 +150,109 @@ class ProductService {
 
     console.log('Matching products for objects:', objects);
 
+    // Create a scoring system for better matching
+    const productScores = [];
+
     for (const product of dummyProducts) {
       const productKeywords = product.keywords.map(keyword => keyword.toLowerCase());
-      
-      // Check if any detected object matches product keywords
-      const hasMatch = objectKeywords.some(object => 
-        productKeywords.some(keyword => 
-          keyword.includes(object) || object.includes(keyword)
-        )
-      );
+      let score = 0;
+      let matchedObjects = [];
 
-      if (hasMatch) {
-        matchedProducts.push(product);
-        console.log(`Matched product: ${product.title} for objects: ${objects.join(', ')}`);
+      // Check for exact matches first (highest score)
+      for (const object of objectKeywords) {
+        for (const keyword of productKeywords) {
+          if (keyword === object) {
+            score += 10;
+            matchedObjects.push(object);
+            break;
+          }
+        }
+      }
+
+      // Check for partial matches (lower score)
+      for (const object of objectKeywords) {
+        for (const keyword of productKeywords) {
+          if (keyword.includes(object) || object.includes(keyword)) {
+            if (!matchedObjects.includes(object)) {
+              score += 5;
+              matchedObjects.push(object);
+            }
+          }
+        }
+      }
+
+      // Check for brand matches
+      const brandLower = product.brand.toLowerCase();
+      for (const object of objectKeywords) {
+        if (brandLower.includes(object) || object.includes(brandLower)) {
+          score += 3;
+        }
+      }
+
+      if (score > 0) {
+        productScores.push({
+          product,
+          score,
+          matchedObjects
+        });
+        console.log(`Matched product: ${product.title} (score: ${score}) for objects: ${objects.join(', ')}`);
       }
     }
 
-    // If no matches found, return some random products
-    if (matchedProducts.length === 0) {
-      console.log('No direct matches found, returning random products');
+    // Sort by score and return top matches
+    const sortedMatches = productScores
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6)
+      .map(item => item.product);
+
+    // If no matches found, return some relevant products based on category
+    if (sortedMatches.length === 0) {
+      console.log('No direct matches found, returning category-relevant products');
+      
+      // Try to find products in similar categories
+      const categoryMap = {
+        'person': ['clothing', 'accessories'],
+        'chair': ['furniture'],
+        'table': ['furniture'],
+        'laptop': ['electronics'],
+        'cell phone': ['electronics'],
+        'watch': ['electronics', 'accessories'],
+        'cup': ['kitchen'],
+        'bottle': ['kitchen'],
+        'sneakers': ['footwear'],
+        'shirt': ['clothing'],
+        'pants': ['clothing'],
+        'tv': ['electronics'],
+        'headphones': ['electronics'],
+        'keyboard': ['electronics'],
+        'mouse': ['electronics']
+      };
+
+      const relevantCategories = [];
+      for (const object of objectKeywords) {
+        if (categoryMap[object]) {
+          relevantCategories.push(...categoryMap[object]);
+        }
+      }
+
+      const uniqueCategories = [...new Set(relevantCategories)];
+      const categoryProducts = dummyProducts.filter(product => 
+        uniqueCategories.includes(product.category)
+      );
+
+      if (categoryProducts.length > 0) {
+        return categoryProducts
+          .sort((a, b) => b.rating - a.rating)
+          .slice(0, 3);
+      }
+
+      // Last resort: return random products
       const shuffled = dummyProducts.sort(() => 0.5 - Math.random());
       return shuffled.slice(0, 3);
     }
 
-    // Return up to 6 matched products, sorted by rating
-    const result = matchedProducts
-      .sort((a, b) => b.rating - a.rating)
-      .slice(0, 6);
-    
-    console.log(`Returning ${result.length} matched products`);
-    return result;
+    console.log(`Returning ${sortedMatches.length} matched products`);
+    return sortedMatches;
   }
 
   // Get all products

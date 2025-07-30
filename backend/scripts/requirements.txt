@@ -1,6 +1,19 @@
-ultralytics>=8.0.0
+# Enhanced Object Detection Requirements
+# Core dependencies for video processing and object detection
+
+# OpenCV for video processing and frame extraction
 opencv-python>=4.8.0
+
+# Ultralytics YOLO for object detection
+ultralytics>=8.0.0
+
+# NumPy for numerical operations
 numpy>=1.24.0
+
+# Additional utilities
+Pillow>=10.0.0
 torch>=2.0.0
 torchvision>=0.15.0
-Pillow>=10.0.0 
+
+# Optional: For better performance
+# opencv-python-headless>=4.8.0  # Use this instead of opencv-python for server environments 

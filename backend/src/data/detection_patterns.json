@@ -1,0 +1,17 @@
+{
+  "objectFrequency": {
+    "person": 1
+  },
+  "contextMappings": {
+    "person": {
+      "sneakers": 1,
+      "athletic shoes": 1,
+      "running shoes": 1
+    }
+  },
+  "successfulMatches": {
+    "sneakers": 1
+  },
+  "failedMatches": {},
+  "videoCategories": {}
+}

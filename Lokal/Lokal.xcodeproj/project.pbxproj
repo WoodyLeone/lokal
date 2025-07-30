@@ -30,11 +30,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		615751702E36FC8000B66B81 /* LokalRN */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LokalRN;
-			sourceTree = "<group>";
-		};
 		6175FE642E34805300EB7441 /* Lokal */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Lokal;
@@ -80,7 +75,6 @@
 		6175FE592E34805300EB7441 = {
 			isa = PBXGroup;
 			children = (
-				615751702E36FC8000B66B81 /* LokalRN */,
 				6175FE642E34805300EB7441 /* Lokal */,
 				6175FE722E34805500EB7441 /* LokalTests */,
 				6175FE7C2E34805500EB7441 /* LokalUITests */,
@@ -114,7 +108,6 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				615751702E36FC8000B66B81 /* LokalRN */,
 				6175FE642E34805300EB7441 /* Lokal */,
 			);
 			name = Lokal;

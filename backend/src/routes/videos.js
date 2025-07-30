@@ -1,27 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const videoController = require('../controllers/videoController');
-const { uploadVideo, handleUploadError } = require('../middleware/upload');
+const upload = require('../middleware/upload');
 
-// Video upload endpoint with file upload middleware
-router.post('/upload', uploadVideo, handleUploadError, videoController.uploadVideo);
+// Video upload and processing
+router.post('/upload', upload.single('video'), videoController.uploadVideo);
 
-// Direct file upload endpoint (alternative to base64)
-router.post('/upload-file', uploadVideo, handleUploadError, videoController.uploadVideo);
+// Video status and detection
+router.get('/status/:videoId', videoController.getVideoStatus);
+router.get('/detect/:videoId', videoController.detectObjects);
 
-// Object detection endpoint (legacy - now uses hybrid detection)
-router.post('/:videoId/detect-objects', videoController.detectObjects);
-
-// Hybrid detection endpoint (YOLO + OpenAI)
-router.post('/:videoId/hybrid-detect', videoController.detectObjects);
-
-// Video status endpoint
-router.get('/:videoId/status', videoController.getVideoStatus);
-
-// Get all videos
+// Video management
 router.get('/', videoController.getAllVideos);
+router.get('/:id', videoController.getVideoById);
 
-// Get video by ID
-router.get('/:videoId', videoController.getVideoById);
+// Learning and feedback endpoints
+router.get('/learning/stats', videoController.getLearningStats);
+router.post('/feedback', videoController.recordFeedback);
+router.post('/final-selection', videoController.updateFinalSelection);
 
 module.exports = router; 

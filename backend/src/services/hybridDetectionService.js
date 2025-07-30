@@ -17,6 +17,12 @@ class HybridDetectionService {
       const yoloObjects = await this.runYOLODetection(videoPath);
       console.log('🎯 YOLO detected:', yoloObjects);
       
+      // If no objects detected, return empty array
+      if (!yoloObjects || yoloObjects.length === 0) {
+        console.log('⚠️ No objects detected by YOLO');
+        return [];
+      }
+      
       // Step 2: OpenAI Analysis (if API key available)
       if (this.openaiApiKey && yoloObjects.length > 0) {
         const enhancedObjects = await this.enhanceWithOpenAI(videoPath, yoloObjects);
@@ -28,8 +34,8 @@ class HybridDetectionService {
       
     } catch (error) {
       console.error('Hybrid detection error:', error);
-      // Fallback to YOLO only
-      return await this.runYOLODetection(videoPath);
+      // Return empty array instead of fake objects
+      return [];
     }
   }
 
@@ -63,12 +69,14 @@ class HybridDetectionService {
       pyshell.end(function (err) {
         if (err) {
           console.error('YOLO detection error:', err);
-          resolve([]);
+          resolve([]); // Return empty array instead of fake objects
         } else {
           if (!hasValidResult || results.length === 0) {
-            results = this.getDummyObjects();
+            console.log('⚠️ No objects detected by YOLO');
+            resolve([]); // Return empty array instead of fake objects
+          } else {
+            resolve(results);
           }
-          resolve(results);
         }
       }.bind(this));
     });
@@ -246,18 +254,6 @@ Be as specific as possible, but if you cannot identify specific details, use the
     });
     
     return enhanced;
-  }
-
-  getDummyObjects() {
-    const possibleObjects = [
-      'person', 'chair', 'table', 'laptop', 'cell phone', 'book', 'cup', 'bottle',
-      'sneakers', 'hat', 'shirt', 'pants', 'handbag', 'watch', 'glasses', 'couch',
-      'tv', 'lamp', 'plant', 'car', 'bicycle', 'dog', 'cat', 'keyboard', 'mouse'
-    ];
-    
-    const numObjects = Math.floor(Math.random() * 4) + 3;
-    const shuffled = [...possibleObjects].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, numObjects);
   }
 }
 

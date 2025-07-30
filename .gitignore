@@ -1,12 +1,8 @@
 # Dependencies
 node_modules/
-*/node_modules/
-**/node_modules/
-
-# Package lock files
-package-lock.json
-*/package-lock.json
-**/package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Environment variables
 .env
@@ -14,84 +10,16 @@ package-lock.json
 .env.development.local
 .env.test.local
 .env.production.local
-*/env.example
-**/env.example
+config.env
+*.env
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
-# Dependency directories
-jspm_packages/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional stylelint cache
-.stylelintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
+# Build outputs
+build/
+dist/
 *.tgz
+*.tar.gz
 
-# Yarn Integrity file
-.yarn-integrity
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-out
-
-# Nuxt.js build / generate output
-.nuxt
-dist
-
-# Gatsby files
-.cache/
-public
-
-# Storybook build outputs
-.out
-.storybook-out
-storybook-static
-
-# Temporary folders
-tmp/
-temp/
-*/temp/
-**/temp/
-
-# Editor directories and files
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
@@ -107,44 +35,24 @@ temp/
 ehthumbs.db
 Thumbs.db
 
-# Expo
-.expo/
-dist/
-web-build/
+# Logs
+logs/
+*.log
 
-# React Native
-*.jks
-*.p8
-*.p12
-*.key
-*.mobileprovision
-*.orig.*
-web-build/
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
 
-# Metro
-.metro-health-check*
+# Coverage directory used by tools like istanbul
+coverage/
 
-# Flipper
-ios/Pods/
-
-# iOS
-ios/build/
-ios/Pods/
-ios/*.xcworkspace/xcuserdata/
-ios/*.xcodeproj/xcuserdata/
-ios/*.xcodeproj/project.xcworkspace/xcuserdata/
-
-# Android
-android/app/build/
-android/build/
-android/gradle/
-android/local.properties
-android/.gradle
-android/captures/
-android/gradlew
-android/gradlew.bat
-android/release/
-android/debug/
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
 
 # Python
 __pycache__/
@@ -152,40 +60,130 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
-# YOLO model files (large files)
-*.pt
-*.weights
-*.cfg
+# iOS
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
 
-# Video files
-*.mp4
-*.avi
-*.mov
-*.mkv
-*.flv
-*.wmv
-*.webm
+# React Native
+.expo/
+.expo-shared/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
 
-# Audio files
-*.mp3
-*.wav
-*.flac
-*.aac
-*.ogg 
+# Supabase
+.supabase/
+
+# Railway
+railway.env
+
+# Backup files
+*.backup
+*.backup.*
+
+# Test files
+test_*.js
+test_*.py
+*_test.js
+*_test.py
+
+# Demo and test data
+demo_*.js
+demo_*.py
+*_demo.*
+
+# Documentation backups
+*_SUMMARY.md
+*_REPORT.md
+*_GUIDE.md
+*_UPDATE.md
+*_STATUS.md
+*_FIX_SUMMARY.md
+*_INTEGRATION_SUMMARY.md
+*_TROUBLESHOOTING.md
+*_DEBUG_GUIDE.md
+*_PREVENTION_STRATEGY.md
+*_READY.md
+*_TESTING_GUIDE.md
+*_ANALYSIS_REPORT.md
+*_CONFIGURATION_GUIDE.md
+*_MATCHING_GUIDE.md
+*_COMMUNICATION_TEST.md
+*_NETWORK_FIX_SUMMARY.md
+*_PROJECT_UPDATE.md
+*_PROJECT_STATUS.md
+*_FINAL_PROJECT_UPDATE.md
+*_FINAL_STATUS_REPORT.md
+*_RESET_GUIDE.md
+*_SETUP_GUIDE.md
+*_STORAGE_SETUP_GUIDE.md
+*_INTEGRATION_SUMMARY.md
+*_CREDENTIALS_UPDATE_SUMMARY.md
+*_PROGRESS_SUMMARY.md
+*_COMPREHENSIVE_DEBUGGING_REPORT.md
+*_COMPREHENSIVE_PRODUCT_DATABASE_UPDATE.md
+*_DEPLOYMENT_GUIDE.md
+*_FINAL_PROJECT_STATUS.md
+*_LEARNING_SYSTEM_IMPLEMENTATION.md
+*_PRODUCTION_CHECKLIST.md
+*_PRODUCT_MATCHING_FIX_SUMMARY.md
+*_PROJECT_UPDATE_2025-07-29.md
+*_RAILWAY_DEPLOYMENT_GUIDE.md
+*_REDIS_INTEGRATION_GUIDE.md
+*_TODAYS_PROGRESS_SUMMARY.md
+*_COMPREHENSIVE_NETWORK_FIX_SUMMARY.md
+*_DEMO_VIDEOS_INTEGRATION_SUMMARY.md
+*_DEMO_VIDEOS_READY.md
+*_DEMO_VIDEOS_TESTING_GUIDE.md
+*_ERROR_ANALYSIS_REPORT.md
+*_FRONTEND_CONFIGURATION_GUIDE.md
+*_HYBRID_PRODUCT_MATCHING_GUIDE.md
+*_NETWORK_TROUBLESHOOTING_GUIDE.md
+*_PROJECT_STATUS_UPDATE.md
+*_VIDEO_UPLOAD_DEBUG_GUIDE.md
+*_VIDEO_UPLOAD_FIX_SUMMARY.md
+*_VIDEO_UPLOAD_PREVENTION_STRATEGY.md
+*_YOLO_DETECTION_FIX_SUMMARY.md
+*_BACKEND_FRONTEND_COMMUNICATION_TEST.md
+*_STORAGE_SETUP_GUIDE.md
+*_SUPABASE_INTEGRATION_SUMMARY.md
+*_CURRENT_PROJECT_STATUS.md
+*_CURRENT_STATUS.md
+*_DATABASE_UPDATE_SUMMARY.md
+*_FINAL_PROJECT_UPDATE.md
+*_FINAL_STATUS_REPORT.md
+*_RESET_GUIDE.md
+*_SETUP_GUIDE.md
+*_STORAGE_SETUP_GUIDE.md
+*_SUPABASE_INTEGRATION_SUMMARY.md
+*_APP_TESTING_GUIDE.md
+*_BUILD_CONFIGURATION.md
+*_APP_ICON_GENERATOR.md
+*_APP_STORE_METADATA.md
+*_APP_STORE_SUBMISSION_CHECKLIST.md
+*_PRIVACY_POLICY.md
+*_TERMS_OF_SERVICE.md
+*_ENGINE_SUMMARY.md
+*_API_DOCUMENTATION.md
+*_FINAL_INTEGRATION_SUMMARY.md
+*_HYBRID_DETECTION_RESULTS.md
+*_HYBRID_DETECTION_SETUP.md
+*_IMPROVED_FLOW_SUMMARY.md
+*_YOLO_FIXES_SUMMARY.md
+
+# Keep important documentation
+!README.md
+!LICENSE
+!CHANGELOG.md
+!CONTRIBUTING.md 
