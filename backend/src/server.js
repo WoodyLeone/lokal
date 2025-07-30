@@ -49,6 +49,11 @@ const io = new Server(server, {
 
 const PORT = process.env.PORT || 3001;
 
+// Connection stability settings
+const KEEP_ALIVE_TIMEOUT = 65000; // 65 seconds
+const HEADERS_TIMEOUT = 66000; // 66 seconds
+const MAX_CONNECTIONS = 1000;
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -297,14 +302,23 @@ async function startServer() {
     await databaseManager.initialize();
     logger.info('Database connections initialized');
     
-    // Start server
-    server.listen(PORT, '0.0.0.0', () => {
-      logger.info(`🚀 Lokal Backend Server running on port ${PORT}`);
-      logger.info(`📱 API available at http://localhost:${PORT}/api`);
-      logger.info(`🌐 Network API available at http://192.168.1.207:${PORT}/api`);
-      logger.info(`🏥 Health check at http://localhost:${PORT}/api/health`);
-      logger.info(`🔌 Socket.IO available at http://localhost:${PORT}`);
-    });
+    // Configure server for connection stability
+    server.keepAliveTimeout = KEEP_ALIVE_TIMEOUT;
+    server.headersTimeout = HEADERS_TIMEOUT;
+    server.maxConnections = MAX_CONNECTIONS;
+    
+    // Make server instance available to routes
+app.set('server', server);
+
+// Start server
+server.listen(PORT, '0.0.0.0', () => {
+  logger.info(`🚀 Lokal Backend Server running on port ${PORT}`);
+  logger.info(`📱 API available at http://localhost:${PORT}/api`);
+  logger.info(`🌐 Network API available at http://192.168.1.207:${PORT}/api`);
+  logger.info(`🏥 Health check at http://localhost:${PORT}/api/health`);
+  logger.info(`🔌 Socket.IO available at http://localhost:${PORT}`);
+  logger.info(`🔗 Connection settings: keepAlive=${KEEP_ALIVE_TIMEOUT}ms, headers=${HEADERS_TIMEOUT}ms, maxConnections=${MAX_CONNECTIONS}`);
+});
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);

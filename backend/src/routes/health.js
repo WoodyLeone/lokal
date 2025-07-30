@@ -226,4 +226,24 @@ router.get('/live', (req, res) => {
   });
 });
 
+/**
+ * @route GET /api/health/connection
+ * @desc Check connection stability and server status
+ * @access Public
+ */
+router.get('/connection', (req, res) => {
+  const server = req.app.get('server');
+  const status = {
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    connections: server ? server.connections : 'unknown',
+    keepAliveTimeout: server ? server.keepAliveTimeout : 'unknown',
+    headersTimeout: server ? server.headersTimeout : 'unknown',
+    maxConnections: server ? server.maxConnections : 'unknown',
+    timestamp: new Date().toISOString()
+  };
+  
+  res.json(status);
+});
+
 module.exports = router; 
