@@ -9,8 +9,8 @@ const NodeCache = require('node-cache');
 const winston = require('winston');
 const dotenv = require('dotenv');
 
-// Load environment variables from config.env
-dotenv.config({ path: './config.env' });
+// Load environment variables from .env
+dotenv.config();
 
 // Configure logging
 const logger = winston.createLogger({
