@@ -10,7 +10,9 @@
     "test:db": "node src/tests/test-database.js",
     "test:connection": "node src/tests/test-database.js",
     "build": "echo 'No build step required'",
-    "postinstall": "echo 'Post-install complete'"
+    "postinstall": "node scripts/download-models.js",
+    "download-models": "node scripts/download-models.js",
+    "check-deployment": "node scripts/check-deployment-readiness.js"
   },
   "dependencies": {
     "express": "^4.18.2",

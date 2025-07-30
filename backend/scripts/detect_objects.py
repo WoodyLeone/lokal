@@ -45,8 +45,13 @@ def detect_objects_yolo(frames):
         return get_dummy_objects()
     
     try:
-        # Load YOLOv8 model
-        model = YOLO('yolov8n.pt')  # Use nano model for speed
+        # Load YOLOv8 model from models directory
+        model_path = Path(__file__).parent.parent / 'models' / 'yolov8n.pt'
+        if not model_path.exists():
+            print(f"Model not found at {model_path}", file=sys.stderr)
+            return get_dummy_objects()
+        
+        model = YOLO(str(model_path))  # Use nano model for speed
         
         detected_objects = set()
         
