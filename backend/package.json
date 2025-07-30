@@ -8,7 +8,9 @@
     "dev": "nodemon src/server.js",
     "test": "jest",
     "test:db": "node src/tests/test-database.js",
-    "test:connection": "node src/tests/test-connection.js"
+    "test:connection": "node src/tests/test-connection.js",
+    "build": "echo 'No build step required'",
+    "postinstall": "echo 'Post-install complete'"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -53,5 +55,9 @@
     "caching"
   ],
   "author": "Lokal Team",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
 } 
