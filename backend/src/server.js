@@ -21,6 +21,12 @@ const databaseManager = require('./config/database');
 // Initialize memory monitor
 const memoryMonitor = require('./utils/memoryMonitor');
 
+// Initialize crash prevention system
+const crashPrevention = require('../crash-prevention');
+
+// Initialize Railway configuration
+const railwayConfig = require('../railway-config');
+
 // Configure logging
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -281,6 +287,16 @@ const gracefulShutdown = async (signal) => {
     logger.info('Socket.IO server closed');
   });
 
+  // Clean up crash prevention
+  try {
+    if (crashPrevention.cleanupTempFiles) {
+      crashPrevention.cleanupTempFiles();
+    }
+    logger.info('Crash prevention cleanup completed');
+  } catch (error) {
+    logger.error('Error during crash prevention cleanup:', error);
+  }
+
   process.exit(0);
 };
 
@@ -305,13 +321,37 @@ async function startServer() {
   try {
     logger.info('Starting Lokal Backend Server...');
     
-    // Initialize database connections
-    await databaseManager.initialize();
-    logger.info('Database connections initialized');
+    // Initialize Railway configuration
+    try {
+      railwayConfig.initialize();
+      logger.info('Railway configuration initialized');
+    } catch (railwayError) {
+      logger.warn('Railway configuration failed, continuing with defaults:', railwayError.message);
+    }
+    
+    // Initialize crash prevention system
+    try {
+      crashPrevention.initialize();
+      logger.info('Crash prevention system initialized');
+    } catch (crashError) {
+      logger.warn('Crash prevention initialization failed, continuing without crash protection:', crashError.message);
+    }
+    
+    // Initialize database connections (don't fail if this fails)
+    try {
+      await databaseManager.initialize();
+      logger.info('Database connections initialized');
+    } catch (dbError) {
+      logger.warn('Database initialization failed, continuing without database:', dbError.message);
+    }
     
     // Start memory monitoring
-    memoryMonitor.start();
-    logger.info('Memory monitoring started');
+    try {
+      memoryMonitor.start();
+      logger.info('Memory monitoring started');
+    } catch (monitorError) {
+      logger.warn('Memory monitoring failed, continuing without monitoring:', monitorError.message);
+    }
     
     // Configure server for connection stability
     server.keepAliveTimeout = KEEP_ALIVE_TIMEOUT;
@@ -319,17 +359,23 @@ async function startServer() {
     server.maxConnections = MAX_CONNECTIONS;
     
     // Make server instance available to routes
-app.set('server', server);
+    app.set('server', server);
 
-// Start server
-server.listen(PORT, '0.0.0.0', () => {
-  logger.info(`🚀 Lokal Backend Server running on port ${PORT}`);
-  logger.info(`📱 API available at http://localhost:${PORT}/api`);
-  logger.info(`🌐 Network API available at http://192.168.1.207:${PORT}/api`);
-  logger.info(`🏥 Health check at http://localhost:${PORT}/api/health`);
-  logger.info(`🔌 Socket.IO available at http://localhost:${PORT}`);
-  logger.info(`🔗 Connection settings: keepAlive=${KEEP_ALIVE_TIMEOUT}ms, headers=${HEADERS_TIMEOUT}ms, maxConnections=${MAX_CONNECTIONS}`);
-});
+    // Get server configuration
+    const serverConfig = railwayConfig.getServerConfig();
+    
+    // Start server
+    server.listen(serverConfig.port, serverConfig.host, () => {
+      logger.info(`🚀 Lokal Backend Server running on port ${serverConfig.port}`);
+      logger.info(`📱 API available at http://${serverConfig.host}:${serverConfig.port}/api`);
+      logger.info(`🏥 Health check at http://${serverConfig.host}:${serverConfig.port}/api/health`);
+      logger.info(`🔌 Socket.IO available at http://${serverConfig.host}:${serverConfig.port}`);
+      logger.info(`🔗 Connection settings: keepAlive=${serverConfig.keepAliveTimeout}ms, headers=${serverConfig.headersTimeout}ms, maxConnections=${serverConfig.maxConnections}`);
+      
+      if (railwayConfig.isRailwayEnvironment()) {
+        logger.info('🚂 Running on Railway platform');
+      }
+    });
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);

@@ -18,7 +18,17 @@ async function downloadFile(url, destination) {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(destination);
     
-    https.get(url, (response) => {
+    const request = https.get(url, (response) => {
+      // Handle redirects
+      if (response.statusCode === 301 || response.statusCode === 302) {
+        const newUrl = response.headers.location;
+        console.log(`Redirecting to: ${newUrl}`);
+        file.close();
+        fs.unlink(destination, () => {}); // Delete the file async
+        downloadFile(newUrl, destination).then(resolve).catch(reject);
+        return;
+      }
+      
       if (response.statusCode !== 200) {
         reject(new Error(`Failed to download: ${response.statusCode}`));
         return;
@@ -35,7 +45,9 @@ async function downloadFile(url, destination) {
         fs.unlink(destination, () => {}); // Delete the file async
         reject(err);
       });
-    }).on('error', reject);
+    });
+    
+    request.on('error', reject);
   });
 }
 
