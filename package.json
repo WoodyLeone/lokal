@@ -54,6 +54,7 @@
   "dependencies": {
     "@babel/runtime": "^7.28.2",
     "ansi-regex": "^6.1.0",
+    "axios": "^1.11.0",
     "color-convert": "^3.1.0",
     "color-name": "^2.0.0",
     "postgres": "^3.4.7",
