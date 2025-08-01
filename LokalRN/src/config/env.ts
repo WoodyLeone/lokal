@@ -4,8 +4,8 @@ export const ENV = {
   SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL || 'YOUR_SUPABASE_URL',
   SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY',
   
-  // Backend API Configuration - Use your computer's IP address for React Native
-  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://192.168.1.207:3001/api',
+  // Backend API Configuration - Production Railway deployment
+  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'https://lokal-production.up.railway.app/api',
   
   // App Configuration
   APP_NAME: process.env.EXPO_PUBLIC_APP_NAME || 'Lokal',
