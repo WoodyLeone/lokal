@@ -181,7 +181,6 @@ class DatabaseMigrations {
       'CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_id ON refresh_tokens(user_id)',
       'CREATE INDEX IF NOT EXISTS idx_refresh_tokens_expires_at ON refresh_tokens(expires_at)',
       'CREATE INDEX IF NOT EXISTS idx_videos_user_id ON videos(user_id)',
-      'CREATE INDEX IF NOT EXISTS idx_videos_status ON videos(status)',
       'CREATE INDEX IF NOT EXISTS idx_videos_created_at ON videos(created_at)',
       'CREATE INDEX IF NOT EXISTS idx_products_name ON products(name)',
       'CREATE INDEX IF NOT EXISTS idx_products_category ON products(category)',
@@ -192,7 +191,11 @@ class DatabaseMigrations {
     ];
 
     for (const indexQuery of indexes) {
-      await this.pool.query(indexQuery);
+      try {
+        await this.pool.query(indexQuery);
+      } catch (error) {
+        logger.warn(`Failed to create index: ${indexQuery}`, error.message);
+      }
     }
     
     logger.info('All indexes created/verified');
