@@ -1,0 +1,84 @@
+{
+  "detection": [
+    {
+      "image": "test_product_1.jpg",
+      "expected": [
+        "laptop",
+        "computer",
+        "electronics"
+      ],
+      "detected": [
+        "laptop",
+        "computer"
+      ],
+      "accuracy": 0.6666666666666666,
+      "passed": false
+    },
+    {
+      "image": "test_product_2.jpg",
+      "expected": [
+        "phone",
+        "smartphone",
+        "mobile"
+      ],
+      "detected": [
+        "phone",
+        "smartphone"
+      ],
+      "accuracy": 0.6666666666666666,
+      "passed": false
+    }
+  ],
+  "matching": [
+    {
+      "productName": "iPhone 15 Pro Max",
+      "error": "Request failed with status code 502",
+      "passed": false
+    },
+    {
+      "productName": "MacBook Pro 16-inch",
+      "error": "Request failed with status code 502",
+      "passed": false
+    },
+    {
+      "productName": "Samsung Galaxy S24",
+      "error": "Request failed with status code 502",
+      "passed": false
+    },
+    {
+      "productName": "Dell XPS 13",
+      "error": "Request failed with status code 400",
+      "passed": false
+    },
+    {
+      "productName": "Apple Watch Series 9",
+      "error": "Request failed with status code 400",
+      "passed": false
+    }
+  ],
+  "prioritization": [
+    {
+      "productName": "iPhone 15 Pro Max",
+      "priority": "high",
+      "error": "Request failed with status code 404",
+      "passed": false
+    },
+    {
+      "productName": "MacBook Pro 16-inch",
+      "priority": "medium",
+      "error": "Request failed with status code 404",
+      "passed": false
+    },
+    {
+      "productName": "Generic Product",
+      "priority": "low",
+      "error": "Request failed with status code 404",
+      "passed": false
+    }
+  ],
+  "overall": {
+    "passed": 0,
+    "failed": 0,
+    "total": 0
+  }
+}

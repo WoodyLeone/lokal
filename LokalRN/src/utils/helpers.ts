@@ -99,13 +99,14 @@ export const generateUniqueFilename = (prefix: string = 'video', extension: stri
 
 // Check if running in demo mode
 export const isDemoMode = (): boolean => {
-  const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+  const databaseUrl = process.env.EXPO_PUBLIC_DATABASE_URL;
+  const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
   
-  return supabaseUrl === 'YOUR_SUPABASE_URL' || 
-         supabaseKey === 'YOUR_SUPABASE_ANON_KEY' ||
-         !supabaseUrl || 
-         !supabaseKey;
+  return databaseUrl === 'YOUR_DATABASE_URL' || 
+         !databaseUrl ||
+         !apiBaseUrl ||
+         apiBaseUrl.includes('localhost') ||
+         apiBaseUrl.includes('192.168.1.207');
 };
 
 // Debounce function

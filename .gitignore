@@ -10,8 +10,14 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env.backup*
+.env.real
+.env.railway
 config.env
 *.env
+
+# Credential backups
+credential-backup-*/
 
 # Build outputs
 build/

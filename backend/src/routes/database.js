@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { Pool } = require('pg');
+const crypto = require('crypto');
+const authService = require('../services/authService');
 
 // Database connection
 const pool = new Pool({
@@ -65,39 +67,14 @@ router.post('/auth/signup', async (req, res) => {
   try {
     const { email, password, username } = req.body;
     
-    // Check if user exists
-    const existingUser = await pool.query(
-      'SELECT id FROM users WHERE email = $1',
-      [email]
-    );
-    
-    if (existingUser.rows.length > 0) {
-      return res.status(400).json({
-        success: false,
-        error: 'User already exists'
-      });
-    }
-    
-    // Hash password using SHA-256 to match existing database
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    
-    // Create user
-    const userResult = await pool.query(
-      `INSERT INTO users (email, password_hash, username) 
-       VALUES ($1, $2, $3) 
-       RETURNING id, email, username, created_at`,
-      [email, hashedPassword, username]
-    );
+    // Create user using auth service
+    const user = await authService.createUser(email, password, username);
     
     // Create profile
     await pool.query(
       `INSERT INTO profiles (id, username) 
        VALUES ($1, $2)`,
-      [userResult.rows[0].id, username]
+      [user.id, username]
     );
     
     // Generate simple token (use proper JWT in production)
@@ -128,41 +105,24 @@ router.post('/auth/signin', async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    // Get user
-    const userResult = await pool.query(
-      'SELECT id, email, username, password_hash, created_at FROM users WHERE email = $1',
-      [email]
-    );
+    // Verify credentials using auth service
+    const user = await authService.verifyCredentials(email, password);
     
-    if (userResult.rows.length === 0) {
+    if (!user) {
       return res.status(401).json({
         success: false,
         error: 'Invalid credentials'
       });
     }
     
-    const user = userResult.rows[0];
+    // Generate tokens
+    const accessToken = authService.generateAccessToken(user);
+    const { refreshToken, tokenHash } = authService.generateRefreshToken(user);
     
-    // Verify password using SHA-256
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    if (hashedPassword !== user.password_hash) {
-      return res.status(401).json({
-        success: false,
-        error: 'Invalid credentials'
-      });
-    }
-    
-    // Generate token
-    const token = Buffer.from(JSON.stringify({
-      userId: user.id,
-      email: user.email,
-      username: user.username,
-      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60)
-    })).toString('base64');
+    // Store refresh token
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days
+    await authService.storeRefreshToken(user.id, tokenHash, expiresAt);
     
     res.json({
       success: true,
@@ -173,7 +133,10 @@ router.post('/auth/signin', async (req, res) => {
           username: user.username,
           created_at: user.created_at
         },
-        session: { access_token: token }
+        session: { 
+          access_token: accessToken,
+          refresh_token: refreshToken
+        }
       }
     });
   } catch (error) {
@@ -186,8 +149,18 @@ router.post('/auth/signin', async (req, res) => {
 });
 
 router.post('/auth/signout', async (req, res) => {
-  // For JWT, just return success (client should remove token)
-  res.json({ success: true });
+  try {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+    if (token) {
+      // Revoke refresh token if provided
+      const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+      await authService.revokeRefreshToken(tokenHash);
+    }
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Signout error:', error);
+    res.json({ success: true }); // Always return success
+  }
 });
 
 router.get('/auth/me', async (req, res) => {
@@ -200,22 +173,13 @@ router.get('/auth/me', async (req, res) => {
       });
     }
     
-    // Decode token (use proper JWT verification in production)
-    const payload = JSON.parse(Buffer.from(token, 'base64').toString());
+    // Verify access token
+    const payload = authService.verifyAccessToken(token);
     
-    if (payload.exp < Math.floor(Date.now() / 1000)) {
-      return res.status(401).json({
-        success: false,
-        error: 'Token expired'
-      });
-    }
+    // Get user from database
+    const user = await authService.getUserById(payload.userId);
     
-    const userResult = await pool.query(
-      'SELECT id, email, username, created_at FROM users WHERE id = $1',
-      [payload.userId]
-    );
-    
-    if (userResult.rows.length === 0) {
+    if (!user) {
       return res.status(401).json({
         success: false,
         error: 'User not found'
@@ -224,13 +188,68 @@ router.get('/auth/me', async (req, res) => {
     
     res.json({
       success: true,
-      data: userResult.rows[0]
+      data: user
     });
   } catch (error) {
     console.error('Auth me error:', error);
     res.status(500).json({
       success: false,
       error: error.message
+    });
+  }
+});
+
+// Refresh token endpoint
+router.post('/auth/refresh', async (req, res) => {
+  try {
+    const { refresh_token } = req.body;
+    
+    if (!refresh_token) {
+      return res.status(400).json({
+        success: false,
+        error: 'Refresh token required'
+      });
+    }
+    
+    // Verify refresh token
+    const payload = await authService.verifyRefreshToken(refresh_token);
+    
+    // Get user
+    const user = await authService.getUserById(payload.userId);
+    
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: 'User not found'
+      });
+    }
+    
+    // Generate new tokens
+    const accessToken = authService.generateAccessToken(user);
+    const { refreshToken: newRefreshToken, tokenHash } = authService.generateRefreshToken(user);
+    
+    // Store new refresh token and revoke old one
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days
+    
+    await authService.storeRefreshToken(user.id, tokenHash, expiresAt);
+    
+    // Revoke old refresh token
+    const oldTokenHash = crypto.createHash('sha256').update(refresh_token).digest('hex');
+    await authService.revokeRefreshToken(oldTokenHash);
+    
+    res.json({
+      success: true,
+      data: {
+        access_token: accessToken,
+        refresh_token: newRefreshToken
+      }
+    });
+  } catch (error) {
+    console.error('Refresh token error:', error);
+    res.status(401).json({
+      success: false,
+      error: 'Invalid refresh token'
     });
   }
 });

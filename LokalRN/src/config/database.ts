@@ -12,7 +12,8 @@ export const isDatabaseConfigured = (): boolean => {
 export const executeQuery = async <T = any>(
   endpoint: string, 
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-  body?: any
+  body?: any,
+  authHeader?: string
 ): Promise<{ data: T | null; error: any }> => {
   try {
     const baseUrl = ENV.API_BASE_URL.replace('/api', '');
@@ -24,6 +25,14 @@ export const executeQuery = async <T = any>(
         'Content-Type': 'application/json',
       },
     };
+
+    // Add authorization header if provided
+    if (authHeader) {
+      options.headers = {
+        ...options.headers,
+        'Authorization': authHeader,
+      };
+    }
 
     if (body) {
       options.body = JSON.stringify(body);

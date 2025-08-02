@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
   executeQuery, 
   executeTransaction, 
@@ -13,7 +14,7 @@ import {
   UserSession 
 } from '../types';
 import { DemoAuthService } from './demoAuth';
-import { isDemoMode } from '../config/env';
+import { isDemoMode, ENV } from '../config/env';
 
 // Helper function to convert database format to frontend format
 const convertVideoToFrontend = (video: Video): VideoFrontend => ({
@@ -46,6 +47,98 @@ const convertProductToFrontend = (product: Product): ProductFrontend => ({
 });
 
 export class DatabaseService {
+  private static accessToken: string | null = null;
+  private static refreshToken: string | null = null;
+
+  // Get stored tokens
+  private static async getStoredTokens() {
+    try {
+      const tokens = await AsyncStorage.getItem('auth_tokens');
+      return tokens ? JSON.parse(tokens) : { accessToken: null, refreshToken: null };
+    } catch (error) {
+      console.error('Error getting stored tokens:', error);
+      return { accessToken: null, refreshToken: null };
+    }
+  }
+
+  // Store tokens
+  private static async storeTokens(accessToken: string, refreshToken: string) {
+    try {
+      await AsyncStorage.setItem('auth_tokens', JSON.stringify({ accessToken, refreshToken }));
+      this.accessToken = accessToken;
+      this.refreshToken = refreshToken;
+    } catch (error) {
+      console.error('Error storing tokens:', error);
+    }
+  }
+
+  // Clear tokens
+  private static async clearTokens() {
+    try {
+      await AsyncStorage.removeItem('auth_tokens');
+      this.accessToken = null;
+      this.refreshToken = null;
+    } catch (error) {
+      console.error('Error clearing tokens:', error);
+    }
+  }
+
+  // Refresh access token using refresh token
+  private static async refreshAccessToken(): Promise<boolean> {
+    try {
+      if (!this.refreshToken) {
+        console.log('🔧 No refresh token available');
+        return false;
+      }
+
+      const response = await fetch(`${ENV.API_BASE_URL}/database/auth/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          refresh_token: this.refreshToken
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success && result.data) {
+          await this.storeTokens(result.data.access_token, result.data.refresh_token);
+          console.log('🔧 Access token refreshed successfully');
+          return true;
+        }
+      }
+      
+      console.log('🔧 Failed to refresh access token');
+      return false;
+    } catch (error) {
+      console.error('🔧 Error refreshing access token:', error);
+      return false;
+    }
+  }
+
+  // Get authorization header with automatic token refresh
+  private static async getAuthHeader(): Promise<string | null> {
+    try {
+      // Load tokens if not in memory
+      if (!this.accessToken || !this.refreshToken) {
+        const stored = await this.getStoredTokens();
+        this.accessToken = stored.accessToken;
+        this.refreshToken = stored.refreshToken;
+      }
+
+      if (this.accessToken) {
+        return `Bearer ${this.accessToken}`;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('🔧 Error getting auth header:', error);
+      return null;
+    }
+  }
+
   // Authentication (using JWT tokens instead of Supabase auth)
   static async signUp(email: string, password: string, username: string): Promise<AuthResponse> {
     // Use demo auth if in demo mode
@@ -94,6 +187,15 @@ export class DatabaseService {
         return { data: null, error: result.error };
       }
       
+      // Store JWT tokens if sign in was successful
+      if (result.data && result.data.session) {
+        const { access_token, refresh_token } = result.data.session;
+        if (access_token && refresh_token) {
+          await this.storeTokens(access_token, refresh_token);
+          console.log('🔧 JWT tokens stored successfully');
+        }
+      }
+      
       return { data: result.data, error: null };
     } catch (error) {
       return { data: null, error: { message: 'Sign in failed' } };
@@ -101,9 +203,24 @@ export class DatabaseService {
   }
 
   static async signOut(): Promise<{ error: any }> {
+    // Use demo auth if in demo mode
+    if (isDemoMode()) {
+      return DemoAuthService.signOut();
+    }
+    
+    if (!isDatabaseConfigured()) {
+      return { error: { message: 'Database not configured' } };
+    }
+    
     try {
-      await executeQuery('/auth/signout', 'POST');
-      return { error: null };
+      // Get auth header before clearing tokens
+      const authHeader = await this.getAuthHeader();
+      
+      // Clear stored tokens
+      await this.clearTokens();
+      
+      const result = await executeQuery('/auth/signout', 'POST', undefined, authHeader);
+      return { error: result.error };
     } catch (error) {
       return { error: { message: 'Sign out failed' } };
     }
@@ -111,10 +228,18 @@ export class DatabaseService {
 
   static async getCurrentUser(): Promise<UserSession> {
     try {
-      const result = await executeQuery('/auth/me');
-      return result.data || null;
+      // Get auth header
+      const authHeader = await this.getAuthHeader();
+      
+      const result = await executeQuery('/auth/me', 'GET', undefined, authHeader);
+      if (result.error) {
+        console.log('🔧 Auth check failed:', result.error);
+        return { user: null, session: null };
+      }
+      return result.data || { user: null, session: null };
     } catch (error) {
-      return null;
+      console.log('🔧 Auth check error:', error);
+      return { user: null, session: null };
     }
   }
 
@@ -129,7 +254,8 @@ export class DatabaseService {
     }
     
     try {
-      const result = await executeQuery('/videos', 'POST', video);
+      const authHeader = await this.getAuthHeader();
+      const result = await executeQuery('/videos', 'POST', video, authHeader);
       
       if (result.error) {
         return { data: null, error: result.error };
@@ -151,8 +277,9 @@ export class DatabaseService {
     }
     
     try {
+      const authHeader = await this.getAuthHeader();
       const endpoint = userId ? `/videos?userId=${userId}` : '/videos';
-      const result = await executeQuery(endpoint);
+      const result = await executeQuery(endpoint, 'GET', undefined, authHeader);
       
       if (result.error) {
         return { data: null, error: result.error };

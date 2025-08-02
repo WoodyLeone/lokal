@@ -15,8 +15,11 @@ const winston = require('winston');
 // Load environment variables
 dotenv.config();
 
-// Initialize database manager
-const databaseManager = require('./config/database');
+// Initialize simplified database manager (Redis + Cache only)
+const databaseManager = require('./config/database-simple');
+
+// Initialize auth service
+const authService = require('./services/authService');
 
 // Initialize memory monitor
 const memoryMonitor = require('./utils/memoryMonitor');
@@ -203,7 +206,11 @@ app.get('/api/health', async (req, res) => {
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       memory: process.memoryUsage(),
-      database: dbStatus,
+      database: {
+        railway: 'Available (via API routes)',
+        redis: dbStatus.redis === 'ready' ? 'Available' : 'Unavailable',
+        cache: dbStatus.cache ? 'Available' : 'Unavailable'
+      },
       features: {
         yolo: 'Available',
         openai: openaiStatus,
@@ -213,10 +220,17 @@ app.get('/api/health', async (req, res) => {
       }
     };
 
-    // Check if database is healthy
-    if (!dbStatus.isConnected) {
+    // Check if Railway PostgreSQL is accessible
+    try {
+      const response = await fetch(`${req.protocol}://${req.get('host')}/api/database/test`);
+      const result = await response.json();
+      if (!result.success) {
+        healthStatus.status = 'DEGRADED';
+        healthStatus.message = 'Railway PostgreSQL connection issues detected';
+      }
+    } catch (error) {
       healthStatus.status = 'DEGRADED';
-      healthStatus.message = 'Database connection issues detected';
+      healthStatus.message = 'Railway PostgreSQL connection issues detected';
     }
 
     res.json(healthStatus);
@@ -345,6 +359,14 @@ async function startServer() {
       logger.info('Database connections initialized');
     } catch (dbError) {
       logger.warn('Database initialization failed, continuing without database:', dbError.message);
+    }
+    
+    // Initialize auth service tables
+    try {
+      await authService.initializeTables();
+      logger.info('Auth service initialized');
+    } catch (authError) {
+      logger.warn('Auth service initialization failed, continuing without auth tables:', authError.message);
     }
     
     // Start memory monitoring

@@ -1,16 +1,11 @@
 import { ObjectDetectionResponse, ProductMatchResponse, VideoUploadResponse } from '../types';
-import { getApiEndpoint, ENV } from '../config/env';
+import { getApiEndpoint, ENV, getBackendUrls, getPrimaryBackendUrl } from '../config/env';
 import { errorRecovery, NetworkError, ErrorRecoveryOptions } from './errorRecovery';
 import { DatabaseService } from './databaseService';
 
 // Network connectivity testing
 const testBackendConnectivity = async (): Promise<{ url: string; latency: number } | null> => {
-  const possibleUrls = [
-    'http://192.168.1.207:3001',
-    'http://localhost:3001',
-    'http://10.0.2.2:3001', // Android emulator
-    'http://127.0.0.1:3001',
-  ];
+  const possibleUrls = getBackendUrls();
 
   console.log('🌐 Testing backend connectivity...');
 
@@ -71,7 +66,7 @@ const getBackendUrl = async (): Promise<string> => {
   }
 
   // Fallback to configured URL
-  const fallbackUrl = ENV.API_BASE_URL.replace('/api', '');
+  const fallbackUrl = getPrimaryBackendUrl();
   console.log(`⚠️ Using fallback URL: ${fallbackUrl}`);
   
   // Test the fallback URL before returning it

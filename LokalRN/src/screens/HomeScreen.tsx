@@ -67,11 +67,11 @@ export const HomeScreen: React.FC = () => {
         setVideos(demoVideos);
         console.log('✅ Loaded demo videos:', demoVideos.length);
       } else {
-        console.log('🔗 Using Supabase mode');
-        // Try to load from Supabase
+        console.log('🔗 Using Railway PostgreSQL mode');
+        // Try to load from Railway PostgreSQL
         const { data, error } = await DatabaseService.getVideos();
         if (error) {
-          console.error('❌ Error loading videos from Supabase:', error);
+          console.error('❌ Error loading videos from Railway PostgreSQL:', error);
           // Fallback to demo data
           setUseDemoData(true);
           const demoVideos = DemoDataService.getVideos();
@@ -80,7 +80,7 @@ export const HomeScreen: React.FC = () => {
         } else {
           setUseDemoData(false);
           setVideos(data || []);
-          console.log('✅ Loaded Supabase videos:', (data || []).length);
+          console.log('✅ Loaded Railway PostgreSQL videos:', (data || []).length);
         }
       }
     } catch (error) {

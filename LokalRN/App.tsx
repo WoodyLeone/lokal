@@ -49,7 +49,7 @@ export default function App() {
         console.log('🔧 Running in demo mode - skipping authentication');
         setIsAuthenticated(true); // Auto-authenticate in demo mode
       } else {
-        // Real authentication with Supabase
+        // Real authentication with Railway PostgreSQL
         const session = await DatabaseService.getCurrentUser();
         
         if (session.user) {
@@ -58,10 +58,8 @@ export default function App() {
           setIsAuthenticated(false);
         }
 
-        // Set up auth state listener
-        DatabaseService.onAuthStateChange((user) => {
-          setIsAuthenticated(!!user);
-        });
+        // Note: No real-time auth state changes with Railway PostgreSQL
+        // User will need to manually sign in/out
       }
     } catch (error) {
       console.error('Auth check error:', error);
@@ -80,7 +78,7 @@ export default function App() {
         console.log('🔧 Demo mode - signing out');
         setIsAuthenticated(false);
       } else {
-        // Real sign out with Supabase
+        // Real sign out with Railway PostgreSQL
         const { error } = await DatabaseService.signOut();
         if (error) {
           Alert.alert('Error', 'Failed to sign out');
@@ -146,7 +144,7 @@ export default function App() {
           </View>
 
           <Text style={{ color: '#64748b', fontSize: 14, textAlign: 'center', lineHeight: 20 }}>
-            Create a .env file in the LokalRN directory with your Supabase credentials.{'\n'}
+            Create a .env file in the LokalRN directory with your Railway PostgreSQL credentials.{'\n'}
             See README.md for detailed setup instructions.
           </Text>
         </View>
@@ -216,7 +214,7 @@ export default function App() {
               <Ionicons 
                 name="log-out-outline" 
                 size={24} 
-                color="#f8fafc" 
+                color="#007AFF" 
                 style={{ marginRight: 16 }}
                 onPress={handleSignOut}
               />

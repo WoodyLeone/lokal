@@ -1,0 +1,454 @@
+{
+  "detection": [
+    {
+      "image": "test_product_1.jpg",
+      "expected": [
+        "laptop",
+        "computer",
+        "electronics"
+      ],
+      "detected": [
+        "laptop",
+        "computer"
+      ],
+      "accuracy": 0.6666666666666666,
+      "passed": false
+    },
+    {
+      "image": "test_product_2.jpg",
+      "expected": [
+        "phone",
+        "smartphone",
+        "mobile"
+      ],
+      "detected": [
+        "phone",
+        "smartphone"
+      ],
+      "accuracy": 0.6666666666666666,
+      "passed": false
+    }
+  ],
+  "matching": [
+    {
+      "objects": [
+        "laptop",
+        "computer"
+      ],
+      "products": [
+        {
+          "id": "macbook-pro-14",
+          "title": "MacBook Pro 14\"",
+          "description": "Powerful laptop with M3 Pro chip for professionals",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+          "price": 1999,
+          "currency": "USD",
+          "buyUrl": "https://www.apple.com/macbook-pro-14/",
+          "category": "electronics",
+          "brand": "Apple",
+          "rating": 4.9,
+          "reviewCount": 892,
+          "keywords": [
+            "laptop",
+            "macbook",
+            "computer",
+            "apple",
+            "electronics",
+            "pro",
+            "m3"
+          ]
+        },
+        {
+          "id": "herman-miller-aeron",
+          "title": "Herman Miller Aeron Chair",
+          "description": "Ergonomic office chair for ultimate comfort",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+          "price": 1495,
+          "currency": "USD",
+          "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+          "category": "furniture",
+          "brand": "Herman Miller",
+          "rating": 4.9,
+          "reviewCount": 2341,
+          "keywords": [
+            "chair",
+            "office chair",
+            "ergonomic",
+            "herman miller",
+            "furniture",
+            "aeron"
+          ]
+        }
+      ],
+      "hasMatches": true,
+      "passed": true
+    },
+    {
+      "objects": [
+        "phone",
+        "smartphone"
+      ],
+      "products": [
+        {
+          "id": "iphone-15-pro",
+          "title": "iPhone 15 Pro",
+          "description": "Latest iPhone with A17 Pro chip and titanium design",
+          "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=iPhone+15+Pro",
+          "price": 999,
+          "currency": "USD",
+          "buyUrl": "https://www.apple.com/iphone-15-pro/",
+          "category": "electronics",
+          "brand": "Apple",
+          "rating": 4.7,
+          "reviewCount": 2156,
+          "keywords": [
+            "phone",
+            "iphone",
+            "smartphone",
+            "apple",
+            "electronics",
+            "mobile",
+            "15 pro"
+          ]
+        },
+        {
+          "id": "samsung-s24",
+          "title": "Samsung Galaxy S24 Ultra",
+          "description": "Premium smartphone with S Pen and AI features",
+          "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Galaxy+S24+Ultra",
+          "price": 1299.99,
+          "currency": "USD",
+          "buyUrl": "https://www.samsung.com/galaxy-s24-ultra/",
+          "category": "electronics",
+          "brand": "Samsung",
+          "rating": 4.8,
+          "reviewCount": 1892,
+          "keywords": [
+            "phone",
+            "galaxy",
+            "smartphone",
+            "samsung",
+            "electronics",
+            "s24",
+            "ultra",
+            "s pen"
+          ]
+        },
+        {
+          "id": "sony-wh1000xm5",
+          "title": "Sony WH-1000XM5 Headphones",
+          "description": "Industry-leading noise cancellation with 30-hour battery",
+          "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Sony+WH-1000XM5",
+          "price": 399.99,
+          "currency": "USD",
+          "buyUrl": "https://electronics.sony.com/audio/headphones/wh-1000xm5",
+          "category": "electronics",
+          "brand": "Sony",
+          "rating": 4.8,
+          "reviewCount": 2341,
+          "keywords": [
+            "headphones",
+            "wireless",
+            "sony",
+            "electronics",
+            "noise cancellation",
+            "wh-1000xm5"
+          ]
+        },
+        {
+          "id": "bose-quietcomfort",
+          "title": "Bose QuietComfort 45",
+          "description": "Premium noise-cancelling headphones with acoustic noise cancelling",
+          "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Bose+QuietComfort",
+          "price": 329,
+          "currency": "USD",
+          "buyUrl": "https://www.bose.com/en_us/products/headphones/quietcomfort-headphones-45.html",
+          "category": "electronics",
+          "brand": "Bose",
+          "rating": 4.7,
+          "reviewCount": 1892,
+          "keywords": [
+            "headphones",
+            "wireless",
+            "bose",
+            "electronics",
+            "noise cancellation",
+            "quietcomfort"
+          ]
+        }
+      ],
+      "hasMatches": true,
+      "passed": true
+    },
+    {
+      "objects": [
+        "chair",
+        "furniture"
+      ],
+      "products": [
+        {
+          "id": "herman-miller-aeron",
+          "title": "Herman Miller Aeron Chair",
+          "description": "Ergonomic office chair for ultimate comfort",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+          "price": 1495,
+          "currency": "USD",
+          "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+          "category": "furniture",
+          "brand": "Herman Miller",
+          "rating": 4.9,
+          "reviewCount": 2341,
+          "keywords": [
+            "chair",
+            "office chair",
+            "ergonomic",
+            "herman miller",
+            "furniture",
+            "aeron"
+          ]
+        },
+        {
+          "id": "steelcase-leap",
+          "title": "Steelcase Leap Chair",
+          "description": "Adaptive office chair with LiveBack technology",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+          "price": 1299,
+          "currency": "USD",
+          "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+          "category": "furniture",
+          "brand": "Steelcase",
+          "rating": 4.8,
+          "reviewCount": 1567,
+          "keywords": [
+            "chair",
+            "office chair",
+            "ergonomic",
+            "steelcase",
+            "furniture",
+            "leap"
+          ]
+        },
+        {
+          "id": "secretlab-titan",
+          "title": "Secretlab Titan Gaming Chair",
+          "description": "Premium gaming chair with memory foam and lumbar support",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+          "price": 429,
+          "currency": "USD",
+          "buyUrl": "https://secretlab.co/collections/titan-series",
+          "category": "furniture",
+          "brand": "Secretlab",
+          "rating": 4.7,
+          "reviewCount": 892,
+          "keywords": [
+            "chair",
+            "gaming chair",
+            "secretlab",
+            "furniture",
+            "titan",
+            "gaming"
+          ]
+        },
+        {
+          "id": "macbook-pro-14",
+          "title": "MacBook Pro 14\"",
+          "description": "Powerful laptop with M3 Pro chip for professionals",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+          "price": 1999,
+          "currency": "USD",
+          "buyUrl": "https://www.apple.com/macbook-pro-14/",
+          "category": "electronics",
+          "brand": "Apple",
+          "rating": 4.9,
+          "reviewCount": 892,
+          "keywords": [
+            "laptop",
+            "macbook",
+            "computer",
+            "apple",
+            "electronics",
+            "pro",
+            "m3"
+          ]
+        }
+      ],
+      "hasMatches": true,
+      "passed": true
+    },
+    {
+      "objects": [
+        "watch",
+        "smartwatch"
+      ],
+      "products": [
+        {
+          "id": "apple-watch-9",
+          "title": "Apple Watch Series 9",
+          "description": "Advanced health and fitness companion with S9 chip",
+          "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Apple+Watch+Series+9",
+          "price": 399,
+          "currency": "USD",
+          "buyUrl": "https://www.apple.com/apple-watch-series-9/",
+          "category": "electronics",
+          "brand": "Apple",
+          "rating": 4.8,
+          "reviewCount": 3421,
+          "keywords": [
+            "watch",
+            "apple watch",
+            "smartwatch",
+            "apple",
+            "electronics",
+            "fitness",
+            "health",
+            "wearable",
+            "series 9"
+          ]
+        },
+        {
+          "id": "samsung-watch",
+          "title": "Samsung Galaxy Watch 7",
+          "description": "Advanced health monitoring with rotating bezel",
+          "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Galaxy+Watch+7",
+          "price": 349.99,
+          "currency": "USD",
+          "buyUrl": "https://www.samsung.com/galaxy-watch-7/",
+          "category": "electronics",
+          "brand": "Samsung",
+          "rating": 4.5,
+          "reviewCount": 892,
+          "keywords": [
+            "watch",
+            "galaxy watch",
+            "smartwatch",
+            "samsung",
+            "electronics",
+            "health"
+          ]
+        },
+        {
+          "id": "garmin-fenix",
+          "title": "Garmin Fenix 7",
+          "description": "Premium multisport GPS watch for outdoor adventures",
+          "imageUrl": "https://via.placeholder.com/300x200/ef4444/ffffff?text=Garmin+Fenix",
+          "price": 699.99,
+          "currency": "USD",
+          "buyUrl": "https://www.garmin.com/en-US/p/722092",
+          "category": "electronics",
+          "brand": "Garmin",
+          "rating": 4.8,
+          "reviewCount": 567,
+          "keywords": [
+            "watch",
+            "smartwatch",
+            "garmin",
+            "electronics",
+            "gps",
+            "outdoor",
+            "fenix"
+          ]
+        },
+        {
+          "id": "herman-miller-aeron",
+          "title": "Herman Miller Aeron Chair",
+          "description": "Ergonomic office chair for ultimate comfort",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+          "price": 1495,
+          "currency": "USD",
+          "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+          "category": "furniture",
+          "brand": "Herman Miller",
+          "rating": 4.9,
+          "reviewCount": 2341,
+          "keywords": [
+            "chair",
+            "office chair",
+            "ergonomic",
+            "herman miller",
+            "furniture",
+            "aeron"
+          ]
+        }
+      ],
+      "hasMatches": true,
+      "passed": true
+    },
+    {
+      "objects": [
+        "light",
+        "bulb"
+      ],
+      "products": [
+        {
+          "id": "philips-hue",
+          "title": "Philips Hue Smart Bulb Starter Kit",
+          "description": "Smart LED bulbs with voice control and app control",
+          "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Philips+Hue",
+          "price": 199.99,
+          "currency": "USD",
+          "buyUrl": "https://www.philips-hue.com/en-us/p/hue-white-and-color-ambiance-starter-kit/046677458478",
+          "category": "home",
+          "brand": "Philips Hue",
+          "rating": 4.6,
+          "reviewCount": 1892,
+          "keywords": [
+            "light bulb",
+            "smart bulb",
+            "philips hue",
+            "home",
+            "smart home",
+            "led"
+          ]
+        },
+        {
+          "id": "herman-miller-aeron",
+          "title": "Herman Miller Aeron Chair",
+          "description": "Ergonomic office chair for ultimate comfort",
+          "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+          "price": 1495,
+          "currency": "USD",
+          "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+          "category": "furniture",
+          "brand": "Herman Miller",
+          "rating": 4.9,
+          "reviewCount": 2341,
+          "keywords": [
+            "chair",
+            "office chair",
+            "ergonomic",
+            "herman miller",
+            "furniture",
+            "aeron"
+          ]
+        }
+      ],
+      "hasMatches": true,
+      "passed": true
+    }
+  ],
+  "prioritization": [
+    {
+      "productName": "iPhone 15 Pro Max",
+      "priority": "high",
+      "error": "Request failed with status code 502",
+      "passed": false
+    },
+    {
+      "productName": "MacBook Pro 16-inch",
+      "priority": "medium",
+      "error": "Request failed with status code 502",
+      "passed": false
+    },
+    {
+      "productName": "Generic Product",
+      "priority": "low",
+      "error": "Request failed with status code 502",
+      "passed": false
+    }
+  ],
+  "overall": {
+    "passed": 0,
+    "failed": 0,
+    "total": 0
+  }
+}

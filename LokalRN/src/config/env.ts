@@ -4,8 +4,8 @@ export const ENV = {
   DATABASE_URL: process.env.EXPO_PUBLIC_DATABASE_URL || 'YOUR_DATABASE_URL',
   NODE_ENV: process.env.NODE_ENV || 'development',
   
-  // Backend API Configuration - Local development
-  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://192.168.1.207:3001/api',
+  // Backend API Configuration - Railway Production
+  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'https://lokal-backend-production.up.railway.app/api',
   
   // App Configuration
   APP_NAME: process.env.EXPO_PUBLIC_APP_NAME || 'Lokal',
@@ -39,23 +39,33 @@ export const ENV = {
   DEV_MODE: process.env.EXPO_PUBLIC_DEV_MODE === 'true' || true, // Force dev mode for troubleshooting
 };
 
+// Railway production URLs
+const RAILWAY_URLS = [
+  'https://lokal-backend-production.up.railway.app',
+  'https://lokal-backend.up.railway.app',
+  'https://lokal-production.up.railway.app',
+];
+
+// Local development URLs
+const LOCAL_URLS = [
+  'http://192.168.1.207:3001',
+  'http://localhost:3001',
+  'http://10.0.2.2:3001', // Android emulator
+  'http://127.0.0.1:3001',
+];
+
 // Validation function to check if required environment variables are set
 export const validateEnvironment = (): { isValid: boolean; errors: string[] } => {
   const errors: string[] = [];
   
-  // Only validate Supabase if we're not in demo mode
-  // For demo mode, we allow the app to run without Supabase configuration
-  const isDemoMode = ENV.SUPABASE_URL === 'YOUR_SUPABASE_URL' || 
-                    ENV.SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY';
+  // Check for Railway PostgreSQL configuration
+  if (ENV.DATABASE_URL === 'YOUR_DATABASE_URL') {
+    errors.push('DATABASE_URL is not configured');
+  }
   
-  if (!isDemoMode) {
-    if (ENV.SUPABASE_URL === 'YOUR_SUPABASE_URL') {
-      errors.push('SUPABASE_URL is not configured');
-    }
-    
-    if (ENV.SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY') {
-      errors.push('SUPABASE_ANON_KEY is not configured');
-    }
+  // Check for API configuration
+  if (!ENV.API_BASE_URL || ENV.API_BASE_URL.includes('localhost') || ENV.API_BASE_URL.includes('192.168.1.207')) {
+    console.log('🔧 Using local development API URL');
   }
   
   return {
@@ -71,6 +81,41 @@ export const getApiEndpoint = (endpoint: string): string => {
 
 // Helper function to check if we're in demo mode
 export const isDemoMode = (): boolean => {
-  return ENV.SUPABASE_URL === 'YOUR_SUPABASE_URL' || 
-         ENV.SUPABASE_ANON_KEY === 'YOUR_SUPABASE_ANON_KEY';
+  return ENV.DATABASE_URL === 'YOUR_DATABASE_URL' || 
+         !ENV.API_BASE_URL || 
+         ENV.API_BASE_URL.includes('localhost') || 
+         ENV.API_BASE_URL.includes('192.168.1.207');
+};
+
+// Helper function to check if we're using Railway
+export const isRailwayMode = (): boolean => {
+  return ENV.API_BASE_URL.includes('railway.app') || 
+         ENV.API_BASE_URL.includes('up.railway.app');
+};
+
+// Helper function to get all possible backend URLs for testing
+export const getBackendUrls = (): string[] => {
+  if (isRailwayMode()) {
+    return RAILWAY_URLS;
+  } else {
+    return LOCAL_URLS;
+  }
+};
+
+// Helper function to get the primary backend URL
+export const getPrimaryBackendUrl = (): string => {
+  if (isRailwayMode()) {
+    return RAILWAY_URLS[0];
+  } else {
+    return LOCAL_URLS[0];
+  }
+};
+
+// Helper function to get fallback backend URLs
+export const getFallbackBackendUrls = (): string[] => {
+  if (isRailwayMode()) {
+    return RAILWAY_URLS.slice(1);
+  } else {
+    return LOCAL_URLS.slice(1);
+  }
 }; 

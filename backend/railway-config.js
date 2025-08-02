@@ -27,9 +27,20 @@ const logger = winston.createLogger({
 
 class RailwayConfig {
   constructor() {
-    this.isRailway = process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID;
+    this.isRailway = this.detectRailwayEnvironment();
     this.port = process.env.PORT || 3001;
     this.host = '0.0.0.0'; // Railway requires binding to 0.0.0.0
+    this.environment = process.env.NODE_ENV || 'development';
+  }
+
+  /**
+   * Detect if running on Railway
+   */
+  detectRailwayEnvironment() {
+    return !!(process.env.RAILWAY_ENVIRONMENT || 
+              process.env.RAILWAY_PROJECT_ID || 
+              process.env.RAILWAY_STATIC_URL ||
+              process.env.RAILWAY_PUBLIC_DOMAIN);
   }
 
   /**
@@ -43,6 +54,7 @@ class RailwayConfig {
       this.setupRailwayEnvironment();
     } else {
       logger.info('ℹ️ Running in local environment');
+      this.setupLocalEnvironment();
     }
     
     this.validateEnvironment();
@@ -83,28 +95,63 @@ class RailwayConfig {
     // Railway-specific logging
     process.env.LOG_LEVEL = 'info';
     
+    // Railway-specific security
+    process.env.NODE_ENV = 'production';
+    
     logger.info('Railway environment configured');
+  }
+
+  /**
+   * Set up local development environment
+   */
+  setupLocalEnvironment() {
+    // Local development settings
+    process.env.NODE_ENV = 'development';
+    process.env.LOG_LEVEL = 'debug';
+    process.env.KEEP_ALIVE_TIMEOUT = '30000';
+    process.env.HEADERS_TIMEOUT = '31000';
+    process.env.MAX_CONNECTIONS = '100';
+    
+    logger.info('Local development environment configured');
   }
 
   /**
    * Validate environment variables
    */
   validateEnvironment() {
-    const requiredVars = [
+    const requiredVars = [];
+    const optionalVars = [
+      'DATABASE_URL',
+      'POSTGRES_URL',
+      'REDIS_URL',
+      'REDIS_HOST',
+      'REDIS_PASSWORD',
+      'JWT_SECRET',
+      'REFRESH_SECRET',
+      'SESSION_SECRET',
       'SUPABASE_URL',
       'SUPABASE_ANON_KEY',
-      'REDIS_HOST',
-      'REDIS_PASSWORD'
+      'OPENAI_API_KEY'
     ];
 
-    const missingVars = requiredVars.filter(varName => !process.env[varName]);
-    
-    if (missingVars.length > 0) {
-      logger.error('❌ Missing required environment variables:', missingVars);
-      throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+    // Check required variables based on environment
+    if (this.isRailway) {
+      requiredVars.push('DATABASE_URL', 'REDIS_URL');
     }
 
-    logger.info('✅ All required environment variables are present');
+    const missingRequired = requiredVars.filter(varName => !process.env[varName]);
+    const missingOptional = optionalVars.filter(varName => !process.env[varName]);
+    
+    if (missingRequired.length > 0) {
+      logger.error('❌ Missing required environment variables:', missingRequired);
+      throw new Error(`Missing required environment variables: ${missingRequired.join(', ')}`);
+    }
+
+    if (missingOptional.length > 0) {
+      logger.warn('⚠️ Missing optional environment variables:', missingOptional);
+    }
+
+    logger.info('✅ Environment validation completed');
   }
 
   /**
@@ -167,9 +214,11 @@ class RailwayConfig {
       isRailway: this.isRailway,
       port: this.port,
       host: this.host,
-      environment: process.env.NODE_ENV,
+      environment: this.environment,
       railwayEnvironment: process.env.RAILWAY_ENVIRONMENT,
-      railwayProjectId: process.env.RAILWAY_PROJECT_ID
+      railwayProjectId: process.env.RAILWAY_PROJECT_ID,
+      railwayStaticUrl: process.env.RAILWAY_STATIC_URL,
+      railwayPublicDomain: process.env.RAILWAY_PUBLIC_DOMAIN
     };
   }
 
@@ -191,6 +240,45 @@ class RailwayConfig {
       headersTimeout: parseInt(process.env.HEADERS_TIMEOUT) || 66000,
       maxConnections: parseInt(process.env.MAX_CONNECTIONS) || 1000
     };
+  }
+
+  /**
+   * Get database configuration
+   */
+  getDatabaseConfig() {
+    return {
+      databaseUrl: process.env.DATABASE_URL || process.env.POSTGRES_URL,
+      redisUrl: process.env.REDIS_URL,
+      redisHost: process.env.REDIS_HOST,
+      redisPassword: process.env.REDIS_PASSWORD,
+      redisPort: process.env.REDIS_PORT || 6379
+    };
+  }
+
+  /**
+   * Get security configuration
+   */
+  getSecurityConfig() {
+    return {
+      jwtSecret: process.env.JWT_SECRET,
+      refreshSecret: process.env.REFRESH_SECRET,
+      sessionSecret: process.env.SESSION_SECRET,
+      nodeEnv: this.environment
+    };
+  }
+
+  /**
+   * Log configuration summary
+   */
+  logConfigurationSummary() {
+    logger.info('📋 Railway Configuration Summary:');
+    logger.info(`   Environment: ${this.environment}`);
+    logger.info(`   Railway: ${this.isRailway ? 'Yes' : 'No'}`);
+    logger.info(`   Port: ${this.port}`);
+    logger.info(`   Host: ${this.host}`);
+    logger.info(`   Database: ${this.getDatabaseConfig().databaseUrl ? 'Configured' : 'Not configured'}`);
+    logger.info(`   Redis: ${this.getDatabaseConfig().redisUrl ? 'Configured' : 'Not configured'}`);
+    logger.info(`   JWT Secret: ${this.getSecurityConfig().jwtSecret ? 'Configured' : 'Not configured'}`);
   }
 }
 

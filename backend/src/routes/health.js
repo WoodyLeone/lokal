@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const databaseManager = require('../config/database');
+const databaseManager = require('../config/database-simple');
 
 /**
  * @route GET /api/health
@@ -18,7 +18,11 @@ router.get('/', async (req, res) => {
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       memory: process.memoryUsage(),
-      database: dbStatus,
+      database: {
+        railway: 'Available (via API routes)',
+        redis: dbStatus.redis === 'ready' ? 'Available' : 'Unavailable',
+        cache: dbStatus.cache ? 'Available' : 'Unavailable'
+      },
       features: {
         yolo: 'Available',
         openai: openaiStatus,
@@ -28,10 +32,17 @@ router.get('/', async (req, res) => {
       }
     };
 
-    // Check if database is healthy
-    if (!dbStatus.isConnected) {
+    // Check if Railway PostgreSQL is healthy (main database)
+    try {
+      const response = await fetch(`${req.protocol}://${req.get('host')}/api/database/test`);
+      const result = await response.json();
+      if (!result.success) {
+        healthStatus.status = 'DEGRADED';
+        healthStatus.message = 'Railway PostgreSQL connection issues detected';
+      }
+    } catch (error) {
       healthStatus.status = 'DEGRADED';
-      healthStatus.message = 'Database connection issues detected';
+      healthStatus.message = 'Railway PostgreSQL connection issues detected';
     }
 
     res.json(healthStatus);
@@ -56,23 +67,18 @@ router.get('/database', async (req, res) => {
     
     // Test database connections
     const tests = {
-      supabase: false,
+      railway: false,
       redis: false,
       cache: false
     };
 
-    // Test Supabase
+    // Test Railway PostgreSQL (via database routes)
     try {
-      if (databaseManager.getSupabase()) {
-        const { error } = await databaseManager.getSupabase()
-          .from('videos')
-          .select('count')
-          .limit(1);
-        
-        tests.supabase = !error;
-      }
+      const response = await fetch(`${req.protocol}://${req.get('host')}/api/database/test`);
+      const result = await response.json();
+      tests.railway = result.success;
     } catch (error) {
-      tests.supabase = false;
+      tests.railway = false;
     }
 
     // Test Redis
@@ -97,11 +103,11 @@ router.get('/database', async (req, res) => {
     }
 
     const status = {
-      overall: tests.supabase && (tests.redis || tests.cache),
+      overall: tests.railway && (tests.redis || tests.cache),
       details: {
-        supabase: {
-          connected: tests.supabase,
-          status: dbStatus.supabase ? 'connected' : 'disconnected'
+        railway: {
+          connected: tests.railway,
+          status: tests.railway ? 'connected' : 'disconnected'
         },
         redis: {
           connected: tests.redis,
