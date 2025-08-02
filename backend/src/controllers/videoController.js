@@ -6,7 +6,7 @@ const { PythonShell } = require('python-shell');
 const enhancedObjectDetectionService = require('../services/enhancedObjectDetectionService');
 const productService = require('../services/productService');
 const learningService = require('../services/learningService');
-const databaseManager = require('../config/database');
+const { Pool } = require('pg');
 
 // Helper function to generate AI suggestions
 function generateAISuggestionsForObjects(detectedObjects) {
@@ -210,59 +210,69 @@ const videoController = {
         }
       }
       
-      // Save video to database (now with service role access)
-      console.log('🔍 Attempting to save video to database...');
-      let supabase;
-      try {
-        supabase = databaseManager.getSupabase();
-        console.log('✅ Supabase client obtained successfully');
-      } catch (error) {
-        console.warn('⚠️ Supabase not available:', error.message);
-        supabase = null;
-      }
+      // Save video to Railway PostgreSQL database
+      console.log('🔍 Attempting to save video to Railway PostgreSQL database...');
       
-      if (supabase) {
-        console.log('🔍 Supabase is available, proceeding with database save...');
+      try {
+        // Create database connection
+        const pool = new Pool({
+          connectionString: process.env.DATABASE_URL,
+          ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        });
         
         // Use authenticated user ID or create a demo user ID
         let userId = req.user?.id;
         if (!userId) {
-          // Create a demo user ID using UUID for proper format
-          const userEmail = req.body.userEmail || req.headers['x-user-email'] || 'demo@lokal.com';
-          // Generate a deterministic UUID based on email
-          const emailHash = require('crypto').createHash('md5').update(userEmail).digest('hex');
-          userId = `${emailHash.slice(0, 8)}-${emailHash.slice(8, 12)}-${emailHash.slice(12, 16)}-${emailHash.slice(16, 20)}-${emailHash.slice(20, 32)}`;
-          console.log(`🔧 Using demo user ID: ${userId} for email: ${userEmail}`);
+          // Get the test user ID from the database
+          const userEmail = req.body.userEmail || req.headers['x-user-email'] || 'test@example.com';
+          const userResult = await pool.query(
+            'SELECT id FROM users WHERE email = $1',
+            [userEmail]
+          );
+          
+          if (userResult.rows.length > 0) {
+            userId = userResult.rows[0].id;
+            console.log(`🔧 Using existing user ID: ${userId} for email: ${userEmail}`);
+          } else {
+            // Create a demo user if it doesn't exist
+            const demoUserResult = await pool.query(
+              `INSERT INTO users (email, password_hash, username) 
+               VALUES ($1, $2, $3) 
+               RETURNING id`,
+              [userEmail, 'demo_password_hash', 'demo_user']
+            );
+            userId = demoUserResult.rows[0].id;
+            console.log(`🔧 Created demo user ID: ${userId} for email: ${userEmail}`);
+          }
         }
         
         let insertData = {
           id: videoId,
           title,
           description: description || '',
-          video_url: videoUrl || 'demo://test-video', // Provide default for NOT NULL constraint
+          video_url: videoUrl || 'demo://test-video',
           user_id: userId,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
         
         console.log('🔍 Inserting video data:', JSON.stringify(insertData, null, 2));
-        const { data: videoRecord, error: dbError } = await supabase
-          .from('videos')
-          .insert(insertData)
-          .select()
-          .single();
+        const result = await pool.query(
+          `INSERT INTO videos (id, title, description, video_url, user_id, created_at, updated_at) 
+           VALUES ($1, $2, $3, $4, $5, $6, $7) 
+           RETURNING *`,
+          [insertData.id, insertData.title, insertData.description, insertData.video_url, insertData.user_id, insertData.created_at, insertData.updated_at]
+        );
 
-        if (dbError) {
-          console.error('❌ Error saving video to database:', dbError);
-          console.error('❌ Error details:', JSON.stringify(dbError, null, 2));
-          console.warn('⚠️ Continuing with in-memory storage only');
-        } else {
-          console.log(`✅ Video saved to database with ID: ${videoId}`);
-          console.log('✅ Database record:', JSON.stringify(videoRecord, null, 2));
-        }
-      } else {
-        console.warn('⚠️ Supabase not available, using in-memory storage only');
-      }
+                 console.log('✅ Video saved to Railway PostgreSQL database successfully');
+         console.log(`✅ Video saved to database with ID: ${videoId}`);
+         console.log('✅ Database record:', JSON.stringify(result.rows[0], null, 2));
+         await pool.end();
+       } catch (error) {
+         console.error('❌ Error saving video to Railway PostgreSQL database:', error);
+         console.error('❌ Error details:', JSON.stringify(error, null, 2));
+         console.warn('⚠️ Continuing with in-memory storage only');
+       }
 
       // Initialize processing status
       updateVideoStatus(videoId, {

@@ -146,5 +146,24 @@
     "timestamp": "2025-08-01T22:51:38.894Z",
     "confidence": 0.5,
     "demoMode": false
+  },
+  {
+    "videoId": "30663205-f0f3-4985-af1b-837547f45e76",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754101451379-296902876.mov",
+    "detectedObjects": [
+      "cup",
+      "table",
+      "spoon"
+    ],
+    "suggestions": [
+      "Contigo Autoseal",
+      "Yeti Rambler",
+      "Crate & Barrel Dining Table"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-02T02:24:31.553Z",
+    "confidence": "0.3",
+    "demoMode": true
   }
 ]

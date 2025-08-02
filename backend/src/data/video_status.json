@@ -5356,5 +5356,280 @@
       "Secretlab Titan"
     ],
     "completedAt": "2025-08-01T23:04:14.888Z"
+  },
+  "30663205-f0f3-4985-af1b-837547f45e76": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Playing with grandpa",
+    "createdAt": "2025-08-02T02:24:23.440Z",
+    "detectedObjects": [
+      "cup",
+      "table",
+      "spoon"
+    ],
+    "matchedProducts": [
+      {
+        "id": "west-elm-parsons",
+        "title": "West Elm Parsons Dining Table",
+        "description": "Modern dining table with clean lines",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=West+Elm+Parsons",
+        "price": 899,
+        "currency": "USD",
+        "buyUrl": "https://www.westelm.com/products/parsons-dining-table/",
+        "category": "furniture",
+        "brand": "West Elm",
+        "rating": 4.5,
+        "reviewCount": 567,
+        "keywords": [
+          "table",
+          "dining table",
+          "furniture",
+          "west elm",
+          "parsons",
+          "modern"
+        ]
+      },
+      {
+        "id": "ikea-linnmon",
+        "title": "IKEA Linnmon Table Top",
+        "description": "Versatile table top for desks and dining",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=IKEA+Linnmon",
+        "price": 29.99,
+        "currency": "USD",
+        "buyUrl": "https://www.ikea.com/us/en/p/linnmon-table-top-white-00463850/",
+        "category": "furniture",
+        "brand": "IKEA",
+        "rating": 4.1,
+        "reviewCount": 2341,
+        "keywords": [
+          "table",
+          "desk",
+          "furniture",
+          "ikea",
+          "linnmon",
+          "table top"
+        ]
+      },
+      {
+        "id": "yeti-rambler",
+        "title": "Yeti Rambler 20oz Tumbler",
+        "description": "Vacuum insulated tumbler keeps drinks cold for hours",
+        "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Yeti+Rambler",
+        "price": 34.99,
+        "currency": "USD",
+        "buyUrl": "https://www.yeti.com/en_US/rambler-20-oz-tumbler/YRAM20.html",
+        "category": "kitchen",
+        "brand": "Yeti",
+        "rating": 4.8,
+        "reviewCount": 3456,
+        "keywords": [
+          "tumbler",
+          "cup",
+          "mug",
+          "yeti",
+          "kitchen",
+          "insulated",
+          "vacuum"
+        ]
+      },
+      {
+        "id": "starbucks-mug",
+        "title": "Starbucks Ceramic Coffee Mug",
+        "description": "Classic ceramic coffee mug with Starbucks branding",
+        "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Starbucks+Mug",
+        "price": 12.99,
+        "currency": "USD",
+        "buyUrl": "https://www.starbucks.com/store/product/coffee-mug",
+        "category": "kitchen",
+        "brand": "Starbucks",
+        "rating": 4.2,
+        "reviewCount": 156,
+        "keywords": [
+          "mug",
+          "cup",
+          "coffee",
+          "starbucks",
+          "kitchen",
+          "ceramic"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Contigo Autoseal",
+      "Yeti Rambler",
+      "Crate & Barrel Dining Table"
+    ],
+    "completedAt": "2025-08-02T02:24:31.150Z"
+  },
+  "e272d1ab-637e-4ce6-ab43-47d25fdb2ad6": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Test Video",
+    "description": "Test upload",
+    "createdAt": "2025-08-02T02:25:26.269Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-02T02:25:26.286Z"
   }
 }
