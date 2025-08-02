@@ -15,8 +15,8 @@ const winston = require('winston');
 // Load environment variables
 dotenv.config();
 
-// Initialize simplified database manager (Redis + Cache only)
-const databaseManager = require('./config/database-simple');
+// Initialize database manager (PostgreSQL + Redis + Cache)
+const databaseManager = require('./config/database');
 
 // Initialize auth service
 const authService = require('./services/authService');

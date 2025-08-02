@@ -9,13 +9,14 @@
     "test": "jest",
     "test:db": "node src/tests/test-database.js",
     "test:connection": "node src/tests/test-database.js",
+    "migrate": "node src/config/migrations.js",
     "build": "echo 'No build step required'",
     "postinstall": "node scripts/download-models.js",
     "download-models": "node scripts/download-models.js",
     "check-deployment": "node scripts/check-deployment-readiness.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.38.4",
+
     "axios": "^1.11.0",
     "compression": "^1.7.4",
     "connect-redis": "^7.1.0",

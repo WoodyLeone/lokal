@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const databaseManager = require('../config/database-simple');
+const databaseManager = require('../config/database');
 
 /**
  * @route GET /api/health
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
       uptime: process.uptime(),
       memory: process.memoryUsage(),
       database: {
-        railway: 'Available (via API routes)',
+        postgresql: dbStatus.postgresql ? 'Available' : 'Unavailable',
         redis: dbStatus.redis === 'ready' ? 'Available' : 'Unavailable',
         cache: dbStatus.cache ? 'Available' : 'Unavailable'
       },
@@ -32,17 +32,15 @@ router.get('/', async (req, res) => {
       }
     };
 
-    // Check if Railway PostgreSQL is healthy (main database)
+    // Check if PostgreSQL is healthy (main database)
     try {
-      const response = await fetch(`${req.protocol}://${req.get('host')}/api/database/test`);
-      const result = await response.json();
-      if (!result.success) {
+      if (!dbStatus.postgresql) {
         healthStatus.status = 'DEGRADED';
-        healthStatus.message = 'Railway PostgreSQL connection issues detected';
+        healthStatus.message = 'PostgreSQL connection issues detected';
       }
     } catch (error) {
       healthStatus.status = 'DEGRADED';
-      healthStatus.message = 'Railway PostgreSQL connection issues detected';
+      healthStatus.message = 'PostgreSQL connection issues detected';
     }
 
     res.json(healthStatus);
@@ -67,18 +65,24 @@ router.get('/database', async (req, res) => {
     
     // Test database connections
     const tests = {
-      railway: false,
+      postgresql: false,
       redis: false,
       cache: false
     };
 
-    // Test Railway PostgreSQL (via database routes)
+    // Test PostgreSQL directly
     try {
-      const response = await fetch(`${req.protocol}://${req.get('host')}/api/database/test`);
-      const result = await response.json();
-      tests.railway = result.success;
+      if (databaseManager.getPool()) {
+        const client = await databaseManager.getPool().connect();
+        try {
+          await client.query('SELECT 1');
+          tests.postgresql = true;
+        } finally {
+          client.release();
+        }
+      }
     } catch (error) {
-      tests.railway = false;
+      tests.postgresql = false;
     }
 
     // Test Redis
@@ -103,11 +107,11 @@ router.get('/database', async (req, res) => {
     }
 
     const status = {
-      overall: tests.railway && (tests.redis || tests.cache),
+      overall: tests.postgresql && (tests.redis || tests.cache),
       details: {
-        railway: {
-          connected: tests.railway,
-          status: tests.railway ? 'connected' : 'disconnected'
+        postgresql: {
+          connected: tests.postgresql,
+          status: tests.postgresql ? 'connected' : 'disconnected'
         },
         redis: {
           connected: tests.redis,

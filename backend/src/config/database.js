@@ -1,9 +1,9 @@
 /**
  * Database Connection Manager
- * Handles Supabase connections with robust error handling and reconnection logic
+ * Handles Railway PostgreSQL connections with robust error handling and reconnection logic
  */
 
-const { createClient } = require('@supabase/supabase-js');
+const { Pool } = require('pg');
 const Redis = require('ioredis');
 const NodeCache = require('node-cache');
 const winston = require('winston');
@@ -31,7 +31,7 @@ const logger = winston.createLogger({
 
 class DatabaseManager {
   constructor() {
-    this.supabase = null;
+    this.pool = null;
     this.redis = null;
     this.cache = null;
     this.isConnected = false;
@@ -47,14 +47,10 @@ class DatabaseManager {
    */
   async initialize() {
     try {
-      logger.info('Initializing database connections...');
+      logger.info('Initializing Railway PostgreSQL database connections...');
       
-      // Initialize Supabase (optional)
-      try {
-        await this.initializeSupabase();
-      } catch (error) {
-        logger.warn('Supabase initialization failed (optional):', error.message);
-      }
+      // Initialize PostgreSQL
+      await this.initializePostgreSQL();
       
       // Initialize Redis
       await this.initializeRedis();
@@ -74,62 +70,53 @@ class DatabaseManager {
   }
 
   /**
-   * Initialize Supabase connection with enhanced error handling
+   * Initialize Railway PostgreSQL connection
    */
-  async initializeSupabase() {
+  async initializePostgreSQL() {
     try {
-      const supabaseUrl = process.env.SUPABASE_URL;
-      // Use service role key if available, otherwise fall back to anon key
-      const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
-
-      if (!supabaseUrl || !supabaseKey) {
-        logger.warn('Supabase configuration not found, skipping Supabase initialization');
-        return false;
+      const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
+      
+      if (!databaseUrl) {
+        throw new Error('DATABASE_URL or POSTGRES_URL environment variable is required');
       }
 
-      // Log which key we're using
-      const keyType = process.env.SUPABASE_SERVICE_ROLE_KEY ? 'service role' : 'anon';
-      logger.info(`Using Supabase ${keyType} key for backend operations`);
+      logger.info('Connecting to Railway PostgreSQL...');
 
-      this.supabase = createClient(supabaseUrl, supabaseKey, {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: false
-        },
-        db: {
-          schema: 'public'
-        },
-        global: {
-          headers: {
-            'X-Client-Info': 'lokal-backend'
-          }
-        }
+      this.pool = new Pool({
+        connectionString: databaseUrl,
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        max: 20, // Maximum number of clients in the pool
+        idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+        connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection could not be established
+        maxUses: 7500, // Close (and replace) a connection after it has been used 7500 times
       });
 
-      // Test connection with timeout
-      const testPromise = this.supabase
-        .from('videos')
-        .select('count')
-        .limit(1);
-      
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Supabase connection timeout')), 15000)
-      );
-      
-      const { data, error } = await Promise.race([testPromise, timeoutPromise]);
+      // Handle pool events
+      this.pool.on('connect', (client) => {
+        logger.info('PostgreSQL client connected');
+        this.isConnected = true;
+      });
 
-      if (error) {
-        throw new Error(`Supabase connection test failed: ${error.message}`);
+      this.pool.on('error', (err, client) => {
+        logger.error('Unexpected error on idle client', err);
+        this.isConnected = false;
+        this.handleReconnection();
+      });
+
+      // Test connection
+      const client = await this.pool.connect();
+      try {
+        await client.query('SELECT NOW()');
+        logger.info('Railway PostgreSQL connection established');
+        this.isConnected = true;
+      } finally {
+        client.release();
       }
 
-      logger.info('Supabase connection established');
       return true;
     } catch (error) {
-      logger.error('Failed to initialize Supabase:', error);
-      // Don't throw error, allow app to continue without Supabase
-      this.supabase = null;
-      return false;
+      logger.error('Failed to initialize Railway PostgreSQL:', error);
+      throw error;
     }
   }
 
@@ -138,73 +125,36 @@ class DatabaseManager {
    */
   async initializeRedis() {
     try {
-      // Check if using Upstash Redis
-      const isUpstash = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN;
+      const redisUrl = process.env.REDIS_URL;
       
-      let redisConfig;
-      
-      if (isUpstash) {
-        // Use Upstash Redis configuration
-        const upstashUrl = process.env.UPSTASH_REDIS_REST_URL;
-        const upstashToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-        
-        // For Upstash Redis, we need to use the REST API format
-        // The URL should be in format: https://hostname:port
-        const url = new URL(upstashUrl);
-        const host = url.hostname;
-        const port = parseInt(url.port) || 6379;
-        
-        redisConfig = {
-          host: host,
-          port: port,
-          password: upstashToken,
-          retryDelayOnFailover: 100,
-          maxRetriesPerRequest: 3,
-          lazyConnect: true,
-          keepAlive: 30000,
-          connectTimeout: this.connectionTimeout,
-          commandTimeout: 5000,
-          tls: {
-            rejectUnauthorized: false
-          },
-          // Upstash specific settings
-          enableReadyCheck: false,
-          maxRetriesPerRequest: 1
-        };
-      } else {
-        // Use standard Redis configuration
-        redisConfig = {
-          host: process.env.REDIS_HOST || 'localhost',
-          port: parseInt(process.env.REDIS_PORT) || 6379,
-          password: process.env.REDIS_PASSWORD || undefined,
-          db: parseInt(process.env.REDIS_DB) || 0,
-          retryDelayOnFailover: 100,
-          maxRetriesPerRequest: 3,
-          lazyConnect: true,
-          keepAlive: 30000,
-          connectTimeout: this.connectionTimeout,
-          commandTimeout: 5000
-        };
+      if (!redisUrl) {
+        logger.warn('REDIS_URL not configured, skipping Redis initialization');
+        return false;
       }
 
-      this.redis = new Redis(redisConfig);
+      logger.info('Connecting to Redis...');
+
+      this.redis = new Redis(redisUrl, {
+        retryDelayOnFailover: 100,
+        maxRetriesPerRequest: 3,
+        lazyConnect: true,
+        keepAlive: 30000,
+        connectTimeout: this.connectionTimeout,
+        commandTimeout: 5000,
+        tls: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
+      });
 
       // Handle Redis events
       this.redis.on('connect', () => {
         logger.info('Redis connected');
-        this.isConnected = true;
       });
 
       this.redis.on('error', (error) => {
         logger.error('Redis error:', error);
-        this.isConnected = false;
-        this.handleReconnection();
       });
 
       this.redis.on('close', () => {
         logger.warn('Redis connection closed');
-        this.isConnected = false;
-        this.handleReconnection();
       });
 
       this.redis.on('reconnecting', () => {
@@ -272,16 +222,14 @@ class DatabaseManager {
     
     this.heartbeatInterval = setInterval(async () => {
       try {
-        // Test Supabase connection
-        if (this.supabase) {
-          const { error } = await this.supabase
-            .from('videos')
-            .select('count')
-            .limit(1);
-          
-          if (error) {
-            logger.warn('Supabase heartbeat failed:', error);
-            this.isConnected = false;
+        // Test PostgreSQL connection
+        if (this.pool) {
+          const client = await this.pool.connect();
+          try {
+            await client.query('SELECT 1');
+            this.isConnected = true;
+          } finally {
+            client.release();
           }
         }
 
@@ -289,8 +237,6 @@ class DatabaseManager {
         if (this.redis) {
           await this.redis.ping();
         }
-
-        this.isConnected = true;
       } catch (error) {
         logger.warn('Heartbeat check failed:', error);
         this.isConnected = false;
@@ -299,13 +245,13 @@ class DatabaseManager {
   }
 
   /**
-   * Get Supabase client
+   * Get PostgreSQL pool
    */
-  getSupabase() {
-    if (!this.supabase) {
-      throw new Error('Supabase not initialized');
+  getPool() {
+    if (!this.pool) {
+      throw new Error('PostgreSQL not initialized');
     }
-    return this.supabase;
+    return this.pool;
   }
 
   /**
@@ -327,6 +273,27 @@ class DatabaseManager {
    */
   isDatabaseConnected() {
     return this.isConnected;
+  }
+
+  /**
+   * Execute a query with error handling
+   */
+  async query(text, params = []) {
+    if (!this.pool) {
+      throw new Error('PostgreSQL not initialized');
+    }
+
+    const start = Date.now();
+    try {
+      const res = await this.pool.query(text, params);
+      const duration = Date.now() - start;
+      logger.debug('Executed query', { text, duration, rows: res.rowCount });
+      return res;
+    } catch (error) {
+      const duration = Date.now() - start;
+      logger.error('Query error', { text, duration, error: error.message });
+      throw error;
+    }
   }
 
   /**
@@ -422,6 +389,11 @@ class DatabaseManager {
       clearInterval(this.heartbeatInterval);
     }
 
+    // Close PostgreSQL pool
+    if (this.pool) {
+      await this.pool.end();
+    }
+
     // Close Redis
     if (this.redis) {
       await this.redis.quit();
@@ -440,7 +412,7 @@ class DatabaseManager {
    */
   getStatus() {
     return {
-      supabase: !!this.supabase,
+      postgresql: !!this.pool,
       redis: this.redis ? this.redis.status : 'disconnected',
       cache: !!this.cache,
       isConnected: this.isConnected,
