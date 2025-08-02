@@ -5,7 +5,7 @@ export const ENV = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   
   // Backend API Configuration - Railway Production
-  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'https://lokal-backend-production.up.railway.app/api',
+  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'https://lokal-prod-production.up.railway.app/api',
   
   // App Configuration
   APP_NAME: process.env.EXPO_PUBLIC_APP_NAME || 'Lokal',
@@ -41,9 +41,9 @@ export const ENV = {
 
 // Railway production URLs
 const RAILWAY_URLS = [
+  'https://lokal-prod-production.up.railway.app',
   'https://lokal-backend-production.up.railway.app',
   'https://lokal-backend.up.railway.app',
-  'https://lokal-production.up.railway.app',
 ];
 
 // Local development URLs
