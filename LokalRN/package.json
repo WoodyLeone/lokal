@@ -13,7 +13,19 @@
     "setup-railway": "node scripts/setup-railway-fixed.js",
     "test-database": "node scripts/test-database-simple.js",
     "update-app-to-railway": "node scripts/update-app-to-railway.js",
-    "cleanup-env": "node scripts/cleanup-env.js"
+    "cleanup-env": "node scripts/cleanup-env.js",
+    "setup-environments": "node scripts/setup-environments.js",
+    "start:dev": "EXPO_ENV=development expo start",
+    "start:prod": "EXPO_ENV=production expo start",
+    "build:dev": "EXPO_ENV=development expo build",
+    "build:prod": "EXPO_ENV=production expo build",
+    "deploy:dev": "railway up --environment development",
+    "deploy:prod": "railway up --environment production",
+    "test:dev": "EXPO_ENV=development npm run test-database",
+    "test:prod": "EXPO_ENV=production npm run test-database",
+    "switch:dev": "node scripts/switch-env.js dev",
+    "switch:prod": "node scripts/switch-env.js prod",
+    "quick-setup": "node scripts/quick-setup.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.2",
