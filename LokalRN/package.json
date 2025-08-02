@@ -25,7 +25,8 @@
     "test:prod": "EXPO_ENV=production npm run test-database",
     "switch:dev": "node scripts/switch-env.js dev",
     "switch:prod": "node scripts/switch-env.js prod",
-    "quick-setup": "node scripts/quick-setup.js"
+    "quick-setup": "node scripts/quick-setup.js",
+    "create-env-files": "node scripts/create-env-files.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.2",
