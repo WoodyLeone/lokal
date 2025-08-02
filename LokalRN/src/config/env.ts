@@ -1,11 +1,11 @@
 // Environment configuration for Lokal React Native app
 export const ENV = {
-  // Supabase Configuration
-  SUPABASE_URL: process.env.EXPO_PUBLIC_SUPABASE_URL || 'YOUR_SUPABASE_URL',
-  SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY',
+  // Database Configuration (Railway PostgreSQL)
+  DATABASE_URL: process.env.EXPO_PUBLIC_DATABASE_URL || 'YOUR_DATABASE_URL',
+  NODE_ENV: process.env.NODE_ENV || 'development',
   
-  // Backend API Configuration - Production Railway deployment
-  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'https://lokal-production.up.railway.app/api',
+  // Backend API Configuration - Local development
+  API_BASE_URL: process.env.EXPO_PUBLIC_API_BASE_URL || 'http://192.168.1.207:3001/api',
   
   // App Configuration
   APP_NAME: process.env.EXPO_PUBLIC_APP_NAME || 'Lokal',
@@ -35,8 +35,8 @@ export const ENV = {
   DETECTION_TIMEOUT: parseInt(process.env.EXPO_PUBLIC_DETECTION_TIMEOUT || '300000'), // 5 minutes for object detection
   
   // Debug Configuration
-  DEBUG: process.env.EXPO_PUBLIC_DEBUG === 'true',
-  DEV_MODE: process.env.EXPO_PUBLIC_DEV_MODE === 'true',
+  DEBUG: process.env.EXPO_PUBLIC_DEBUG === 'true' || true, // Force debug mode for troubleshooting
+  DEV_MODE: process.env.EXPO_PUBLIC_DEV_MODE === 'true' || true, // Force dev mode for troubleshooting
 };
 
 // Validation function to check if required environment variables are set

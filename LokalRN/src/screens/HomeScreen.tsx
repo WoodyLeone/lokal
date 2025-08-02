@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { VideoPlayer } from '../components/VideoPlayer';
 import { ProductCard } from '../components/ProductCard';
 import { VideoFrontend, ProductFrontend } from '../types';
-import { SupabaseService } from '../services/supabase';
+import { DatabaseService } from '../services/databaseService';
 import { DemoDataService } from '../services/demoData';
 import { ApiService, checkNetworkStatus } from '../services/api';
 import { formatDate, isDemoMode } from '../utils/helpers';
@@ -69,7 +69,7 @@ export const HomeScreen: React.FC = () => {
       } else {
         console.log('🔗 Using Supabase mode');
         // Try to load from Supabase
-        const { data, error } = await SupabaseService.getVideos();
+        const { data, error } = await DatabaseService.getVideos();
         if (error) {
           console.error('❌ Error loading videos from Supabase:', error);
           // Fallback to demo data

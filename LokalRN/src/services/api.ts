@@ -1,5 +1,6 @@
 import { ObjectDetectionResponse, ProductMatchResponse, VideoUploadResponse } from '../types';
 import { getApiEndpoint, ENV } from '../config/env';
+import { errorRecovery, NetworkError, ErrorRecoveryOptions } from './errorRecovery';
 
 // Network connectivity testing
 const testBackendConnectivity = async (): Promise<{ url: string; latency: number } | null> => {
@@ -17,12 +18,15 @@ const testBackendConnectivity = async (): Promise<{ url: string; latency: number
       console.log(`🔍 Testing connection to: ${baseUrl}`);
       const startTime = Date.now();
       
-      // Use AbortController for timeout
+      // Use AbortController for timeout with longer timeout
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => controller.abort(), 8000); // Increased timeout
       
       const response = await fetch(`${baseUrl}/api/health`, {
         method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
         signal: controller.signal,
       });
       
@@ -31,11 +35,19 @@ const testBackendConnectivity = async (): Promise<{ url: string; latency: number
       const latency = endTime - startTime;
 
       if (response.ok) {
+        const data = await response.json();
         console.log(`✅ Backend reachable at: ${baseUrl} (${latency}ms)`);
+        console.log(`📊 Backend status: ${data.status}`);
         return { url: baseUrl, latency };
+      } else {
+        console.log(`❌ HTTP ${response.status} from: ${baseUrl}`);
       }
     } catch (error) {
-      console.log(`❌ Failed to connect to: ${baseUrl} - ${error}`);
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.log(`⏰ Timeout connecting to: ${baseUrl}`);
+      } else {
+        console.log(`❌ Failed to connect to: ${baseUrl} - ${error}`);
+      }
     }
   }
 
@@ -60,6 +72,28 @@ const getBackendUrl = async (): Promise<string> => {
   // Fallback to configured URL
   const fallbackUrl = ENV.API_BASE_URL.replace('/api', '');
   console.log(`⚠️ Using fallback URL: ${fallbackUrl}`);
+  
+  // Test the fallback URL before returning it
+  try {
+    const response = await fetch(`${fallbackUrl}/api/health`, {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      signal: AbortSignal.timeout(5000),
+    });
+    
+    if (response.ok) {
+      console.log(`✅ Fallback URL is working: ${fallbackUrl}`);
+      cachedBackendUrl = fallbackUrl;
+      return fallbackUrl;
+    } else {
+      console.log(`❌ Fallback URL failed: HTTP ${response.status}`);
+    }
+  } catch (error) {
+    console.log(`❌ Fallback URL error: ${error.message}`);
+  }
+  
+  // If all else fails, return the fallback URL anyway
+  console.log(`🚨 All backend URLs failed, using fallback: ${fallbackUrl}`);
   return fallbackUrl;
 };
 
@@ -193,6 +227,18 @@ export class ApiService {
       }
       if (affiliateLink) {
         formData.append('affiliateLink', affiliateLink);
+      }
+      
+      // Add user email for demo authentication
+      try {
+        const { supabase } = await import('../config/supabase');
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.email) {
+          formData.append('userEmail', user.email);
+          console.log('📤 Added user email to upload:', user.email);
+        }
+      } catch (error) {
+        console.log('📤 No authenticated user email available');
       }
 
       console.log('📤 FormData created successfully');
@@ -490,37 +536,90 @@ export class ApiService {
       console.log('📊 Checking video status for:', videoId);
       
       const backendUrl = await getBackendUrl();
-      const endpoint = `${backendUrl}/api/videos/${videoId}/status`;
+      const endpoint = `${backendUrl}/api/videos/status/${videoId}`;
       
-      const response = await fetchWithRetry(endpoint, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }, 10000); // 10 second timeout for status check
+      console.log('🔗 Status endpoint:', endpoint);
+      
+      // Use a more robust fetch with better error handling
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+      
+      try {
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          signal: controller.signal,
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error(`❌ HTTP ${response.status} from status endpoint:`, errorText);
+          throw new Error(`Status check failed (HTTP ${response.status}): ${errorText}`);
+        }
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Status check failed (HTTP ${response.status}): ${errorText}`);
+        const data = await response.json();
+        console.log('📊 Video status response:', data);
+        
+        // Handle different response formats
+        if (data.success === false) {
+          throw new Error(data.error || 'Status check failed');
+        }
+        
+        // Return standardized response
+        return {
+          status: data.status || 'unknown',
+          progress: data.progress || 0,
+          detectedObjects: data.detectedObjects || data.objects || [],
+          matchedProducts: data.matchedProducts || data.products || [],
+        };
+        
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        
+        if (fetchError instanceof Error && fetchError.name === 'AbortError') {
+          throw new Error('Status check timeout - server took too long to respond');
+        }
+        
+        throw fetchError;
       }
-
-      const data = await response.json();
-      console.log('📊 Video status response:', data);
       
-      if (!data.success) {
-        throw new Error(data.error || 'Status check failed');
-      }
-      
-      return {
-        status: data.status,
-        progress: data.progress,
-        detectedObjects: data.detectedObjects || [],
-        matchedProducts: data.matchedProducts || [],
-      };
     } catch (error) {
-      console.error('❌ Get video status error:', error);
+      // Use error recovery system to analyze the error
+      const networkError = errorRecovery.analyzeError(error);
+      const operationId = `video-status-${videoId}`;
+      
+      // Log the error for debugging
+      errorRecovery.logError(operationId, error, networkError);
+      
+      // Check if we should retry
+      const retryOptions: ErrorRecoveryOptions = {
+        maxRetries: 3,
+        retryDelay: 2000,
+        exponentialBackoff: true
+      };
+      
+      if (errorRecovery.shouldRetry(operationId, networkError, retryOptions)) {
+        errorRecovery.incrementRetryCount(operationId);
+        const retryDelay = errorRecovery.getRetryDelay(operationId, retryOptions);
+        
+        console.log(`🔄 Retrying video status in ${retryDelay}ms...`);
+        
+        // Wait and retry
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
+        return this.getVideoStatus(videoId);
+      }
+      
+      // Reset retry count since we're giving up
+      errorRecovery.resetRetryCount(operationId);
+      
+      // Return a more informative error status
       return {
-        status: 'error',
+        status: 'network_error',
         progress: 0,
         detectedObjects: [],
         matchedProducts: [],
@@ -538,37 +637,61 @@ export class ApiService {
       console.log('⏳ Waiting for video processing to complete...');
       
       const startTime = Date.now();
-      const pollInterval = 2000; // Check every 2 seconds
+      const pollInterval = 3000; // Check every 3 seconds (increased for stability)
+      let consecutiveErrors = 0;
+      const maxConsecutiveErrors = 3;
       
       while (Date.now() - startTime < maxWaitTime) {
-        const status = await this.getVideoStatus(videoId);
-        console.log(`📊 Current status: ${status.status}, Progress: ${status.progress}%`);
-        
-        // Call progress callback if provided
-        if (onProgress) {
-          onProgress(status.progress || 0, status.status);
+        try {
+          const status = await this.getVideoStatus(videoId);
+          console.log(`📊 Current status: ${status.status}, Progress: ${status.progress}%`);
+          
+          // Reset error counter on successful request
+          consecutiveErrors = 0;
+          
+          // Call progress callback if provided
+          if (onProgress) {
+            onProgress(status.progress || 0, status.status);
+          }
+          
+          if (status.status === 'completed') {
+            console.log('✅ Video processing completed successfully');
+            return {
+              success: true,
+              objects: status.detectedObjects,
+              products: status.matchedProducts,
+            };
+          }
+          
+          if (status.status === 'error' || status.status === 'network_error') {
+            console.log(`❌ Video processing failed with status: ${status.status}`);
+            return {
+              success: false,
+              error: `Video processing failed: ${status.status}`,
+            };
+          }
+          
+          // Still processing, wait before next check
+          console.log(`⏳ Still processing (${status.progress}%), waiting ${pollInterval}ms...`);
+          await new Promise(resolve => setTimeout(resolve, pollInterval));
+          
+        } catch (statusError) {
+          consecutiveErrors++;
+          console.error(`❌ Status check error (attempt ${consecutiveErrors}):`, statusError);
+          
+          if (consecutiveErrors >= maxConsecutiveErrors) {
+            console.error('❌ Too many consecutive errors, giving up');
+            return {
+              success: false,
+              error: `Network error: ${statusError instanceof Error ? statusError.message : 'Unknown error'}`,
+            };
+          }
+          
+          // Wait longer on errors to avoid overwhelming the server
+          const errorWaitTime = pollInterval * 2;
+          console.log(`⏳ Waiting ${errorWaitTime}ms before retry...`);
+          await new Promise(resolve => setTimeout(resolve, errorWaitTime));
         }
-        
-        if (status.status === 'completed') {
-          console.log('✅ Video processing completed successfully');
-          return {
-            success: true,
-            objects: status.detectedObjects,
-            products: status.matchedProducts,
-          };
-        }
-        
-        if (status.status === 'error') {
-          console.log('❌ Video processing failed');
-          return {
-            success: false,
-            error: 'Video processing failed',
-          };
-        }
-        
-        // Still processing, wait before next check
-        console.log(`⏳ Still processing (${status.progress}%), waiting ${pollInterval}ms...`);
-        await new Promise(resolve => setTimeout(resolve, pollInterval));
       }
       
       console.log('⏰ Timeout waiting for video processing');

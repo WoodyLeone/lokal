@@ -4,13 +4,20 @@ async function testBackendConnection() {
   console.log('🔍 Testing backend connection...');
   
   try {
+    // Load environment variables
+    const dotenv = require('dotenv');
+    dotenv.config();
+    
+    const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL || 'https://lokal-prod-production.up.railway.app/api';
+    const healthUrl = `${apiBaseUrl}/health`;
+    
     // Test backend health endpoint
     const startTime = Date.now();
-    const response = await axios.get('http://localhost:3001/api/health');
+    const response = await axios.get(healthUrl);
     const latency = Date.now() - startTime;
     
     console.log('✅ Backend connection successful!');
-    console.log(`🌐 URL: http://localhost:3001/api/health`);
+    console.log(`🌐 URL: ${healthUrl}`);
     console.log(`⏱️ Latency: ${latency}ms`);
     console.log(`📊 Status: ${response.data.status}`);
     console.log(`💾 Database: ${response.data.database.isConnected ? 'Connected' : 'Disconnected'}`);

@@ -7,7 +7,7 @@ import { HomeScreen } from './src/screens/HomeScreen';
 import { UploadScreen } from './src/screens/UploadScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 import { AuthScreen } from './src/screens/AuthScreen';
-import { SupabaseService } from './src/services/supabase';
+import { DatabaseService } from './src/services/databaseService';
 import { validateEnvironment, ENV } from './src/config/env';
 import { isDemoMode } from './src/utils/helpers';
 
@@ -50,7 +50,7 @@ export default function App() {
         setIsAuthenticated(true); // Auto-authenticate in demo mode
       } else {
         // Real authentication with Supabase
-        const session = await SupabaseService.getCurrentUser();
+        const session = await DatabaseService.getCurrentUser();
         
         if (session.user) {
           setIsAuthenticated(true);
@@ -59,7 +59,7 @@ export default function App() {
         }
 
         // Set up auth state listener
-        SupabaseService.onAuthStateChange((user) => {
+        DatabaseService.onAuthStateChange((user) => {
           setIsAuthenticated(!!user);
         });
       }
@@ -81,7 +81,7 @@ export default function App() {
         setIsAuthenticated(false);
       } else {
         // Real sign out with Supabase
-        const { error } = await SupabaseService.signOut();
+        const { error } = await DatabaseService.signOut();
         if (error) {
           Alert.alert('Error', 'Failed to sign out');
         } else {

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { VideoPlayer } from '../components/VideoPlayer';
 import { ProductCard } from '../components/ProductCard';
 import { VideoFrontend, User } from '../types';
-import { SupabaseService } from '../services/supabase';
+import { DatabaseService } from '../services/databaseService';
 import { formatDate, isDemoMode } from '../utils/helpers';
 import { DemoDataService } from '../services/demoData';
 
@@ -40,7 +40,7 @@ export const ProfileScreen: React.FC = () => {
       }
       
       // Real mode - get current user
-      const userSession = await SupabaseService.getCurrentUser();
+      const userSession = await DatabaseService.getCurrentUser();
       if (!userSession.user) {
         throw new Error('User not authenticated');
       }
@@ -56,7 +56,7 @@ export const ProfileScreen: React.FC = () => {
       setUser(userData);
 
       // Get user's videos
-      const { data: videos, error: videosError } = await SupabaseService.getVideos(userSession.user.id);
+      const { data: videos, error: videosError } = await DatabaseService.getVideos(userSession.user.id);
       if (videosError) {
         console.error('Error loading videos:', videosError);
       } else {
@@ -85,7 +85,7 @@ export const ProfileScreen: React.FC = () => {
                 // In demo mode, just show success message
                 Alert.alert('Success', 'Signed out successfully (Demo Mode)');
               } else {
-                const { error } = await SupabaseService.signOut();
+                const { error } = await DatabaseService.signOut();
                 if (error) {
                   Alert.alert('Error', 'Failed to sign out');
                 } else {

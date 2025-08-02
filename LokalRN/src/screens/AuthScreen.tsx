@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { SupabaseService } from '../services/supabase';
+import { DatabaseService } from '../services/databaseService';
 import { DemoAuthService } from '../services/demoAuth';
 import { isDemoMode } from '../config/env';
 
@@ -40,7 +40,7 @@ export const AuthScreen: React.FC = () => {
       console.log('🔧 Auth attempt:', { email, isSignUp, demoMode: isDemoMode() });
       
       if (isSignUp) {
-        const { error } = await SupabaseService.signUp(email, password, username);
+        const { error } = await DatabaseService.signUp(email, password, username);
         if (error) {
           console.log('🔧 Sign up error:', error);
           Alert.alert('Sign Up Error', error.message);
@@ -52,7 +52,7 @@ export const AuthScreen: React.FC = () => {
           );
         }
       } else {
-        const { error } = await SupabaseService.signIn(email, password);
+        const { error } = await DatabaseService.signIn(email, password);
         if (error) {
           console.log('🔧 Sign in error:', error);
           Alert.alert('Sign In Error', error.message);

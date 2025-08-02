@@ -1,48 +1,29 @@
-# Lokal - React Native App
+# 🚀 Lokal - React Native App
 
-A React Native app for video sharing with object detection and product matching capabilities, built with Expo and Supabase.
+A modern React Native application for product matching and video analysis, powered by Railway PostgreSQL.
 
-## 🎉 **Status: Supabase Integration Complete!**
+## 🏗️ Architecture
 
-✅ **Fully functional with complete Supabase integration**  
-✅ **Production-ready database and authentication**  
-✅ **File storage with RLS policies**  
-✅ **TypeScript types aligned with database schema**
+- **Frontend**: React Native with Expo
+- **Database**: Railway PostgreSQL
+- **Authentication**: JWT-based
+- **Backend API**: Railway-hosted Node.js
+- **Object Detection**: Python-based ML pipeline
 
-## Features
-
-- 📱 Cross-platform mobile app (iOS & Android)
-- 🎥 Video upload and playback
-- 🔍 Object detection in videos
-- 🛍️ Product matching and recommendations
-- 👤 User authentication and profiles ✅ **Complete**
-- ☁️ Cloud storage with Supabase ✅ **Complete**
-- 🎨 Modern UI with Tailwind CSS
-
-## Tech Stack
-
-- **Frontend**: React Native, Expo, TypeScript
-- **Backend**: Supabase (Database, Auth, Storage) ✅ **Complete**
-- **Styling**: NativeWind (Tailwind CSS for React Native)
-- **Navigation**: React Navigation
-- **Video**: Expo AV
-- **Image Picker**: Expo Image Picker
-
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Node.js (v18 or higher)
 - npm or yarn
 - Expo CLI
-- iOS Simulator (for iOS development)
-- Android Studio (for Android development)
+- Railway account (for database)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone <your-repo-url>
    cd LokalRN
    ```
 
@@ -51,20 +32,20 @@ A React Native app for video sharing with object detection and product matching 
    npm install
    ```
 
-3. **Set up Supabase** ✅ **Already Complete**
+3. **Configure Railway PostgreSQL**
    ```bash
-   npm run setup-supabase
+   # Configure your Railway database connection
+   npm run configure-railway
    ```
 
-4. **Configure environment variables**
+4. **Setup database schema**
    ```bash
-   cp .env.example .env
-   # Edit .env with your Supabase credentials
+   npm run setup-railway
    ```
 
-5. **Verify setup** ✅ **Already Verified**
+5. **Test database connection**
    ```bash
-   npm run verify-supabase
+   npm run test-database
    ```
 
 6. **Start the development server**
@@ -72,215 +53,198 @@ A React Native app for video sharing with object detection and product matching 
    npm start
    ```
 
-## Supabase Setup ✅ **Complete**
+## 🔧 Configuration
 
-### 1. Create a Supabase Project ✅ **Done**
-
-1. Go to [Supabase](https://supabase.com) and create a new project
-2. Note your project URL and anon key from the API settings
-
-### 2. Configure Environment Variables ✅ **Done**
+### Environment Variables
 
 Create a `.env` file in the root directory:
 
 ```env
-# Supabase Configuration
-EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
-EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# Railway PostgreSQL Configuration
+EXPO_PUBLIC_DATABASE_URL=postgresql://postgres:password@mainline.proxy.rlwy.net:25135/railway
 
 # Backend API Configuration
-EXPO_PUBLIC_API_BASE_URL=http://localhost:3001/api
+EXPO_PUBLIC_API_BASE_URL=https://your-backend.railway.app/api
 
 # App Configuration
 EXPO_PUBLIC_APP_NAME=Lokal
 EXPO_PUBLIC_APP_VERSION=1.0.0
 ```
 
-### 3. Run Database Setup ✅ **Done**
+### Railway PostgreSQL Setup
 
-The setup script will:
-- Initialize Supabase project structure
-- Create database migrations
-- Set up storage buckets
-- Generate environment templates
+1. **Create Railway Project**
+   - Go to [Railway](https://railway.app)
+   - Create a new project
+   - Add a PostgreSQL database
 
-```bash
-npm run setup-supabase
-```
+2. **Get Connection String**
+   - Go to your PostgreSQL database in Railway
+   - Click "Connect" tab
+   - Copy the "Postgres Connection URL"
 
-### 4. Execute Database Migrations ✅ **Done**
+3. **Configure Locally**
+   ```bash
+   npm run configure-railway
+   # Paste your connection string when prompted
+   ```
 
-1. Go to your Supabase dashboard
-2. Navigate to the SQL Editor
-3. Run the SQL from `scripts/supabase-setup.sql`
-
-### 5. Create Storage Buckets ✅ **Done**
-
-In your Supabase dashboard:
-1. Go to Storage
-2. Create two buckets:
-   - `videos` (public)
-   - `thumbnails` (public)
-
-### 6. Verify Setup ✅ **Done**
-
-```bash
-npm run verify-supabase
-```
-
-## Database Schema ✅ **Complete**
+## 🗄️ Database Schema
 
 ### Tables
 
-#### profiles ✅ **Working**
-- `id` (UUID, Primary Key) - References auth.users
-- `username` (TEXT, Unique)
-- `avatar_url` (TEXT)
-- `created_at` (TIMESTAMP)
-- `updated_at` (TIMESTAMP)
+- **users**: User authentication and profiles
+- **profiles**: Extended user information
+- **videos**: Video uploads and metadata
+- **products**: Product catalog and matching data
 
-#### videos ✅ **Working**
-- `id` (UUID, Primary Key)
-- `user_id` (UUID) - References auth.users
-- `title` (TEXT)
-- `description` (TEXT)
-- `video_url` (TEXT)
-- `thumbnail_url` (TEXT)
-- `duration` (INTEGER)
-- `detected_objects` (TEXT[])
-- `products` (JSONB)
-- `created_at` (TIMESTAMP)
-- `updated_at` (TIMESTAMP)
+### Sample Data
 
-#### products ✅ **Working with Sample Data**
-- `id` (UUID, Primary Key)
-- `title` (TEXT)
-- `description` (TEXT)
-- `image_url` (TEXT)
-- `price` (DECIMAL)
-- `currency` (TEXT)
-- `buy_url` (TEXT)
-- `category` (TEXT)
-- `brand` (TEXT)
-- `rating` (DECIMAL)
-- `review_count` (INTEGER)
-- `created_at` (TIMESTAMP)
+The database comes with sample products and a test user:
+- **Test User**: `test@example.com` / `password`
+- **Sample Products**: Nike Air Max 270, Adidas Ultraboost, etc.
 
-### Row Level Security (RLS) ✅ **Complete**
+## 🛠️ Available Scripts
 
-The database includes comprehensive RLS policies:
-- Users can only access their own data
-- Public read access for videos and products
-- Authenticated users can create content
-- Proper storage policies for file uploads
+```bash
+# Development
+npm start              # Start Expo development server
+npm run android        # Start Android emulator
+npm run ios           # Start iOS simulator
+npm run web           # Start web version
 
-## Project Structure
+# Database Management
+npm run configure-railway     # Configure Railway connection
+npm run test-railway-connection  # Test database connection
+npm run setup-railway         # Setup database schema
+npm run test-database         # Test database operations
+
+# Utilities
+npm run clean                 # Clean and reinstall dependencies
+npm run cleanup-env           # Clean environment file
+```
+
+## 🔐 Authentication
+
+The app uses JWT-based authentication with Railway PostgreSQL:
+
+- **Registration**: Create new user accounts
+- **Login**: Authenticate with email/password
+- **Profile Management**: Update user information
+- **Session Management**: Automatic token refresh
+
+## 📱 Features
+
+### Core Features
+- **User Authentication**: Secure login/registration
+- **Product Catalog**: Browse and search products
+- **Video Upload**: Upload and process videos
+- **Object Detection**: AI-powered product matching
+- **Profile Management**: User settings and preferences
+
+### Technical Features
+- **Real-time Database**: Railway PostgreSQL with connection pooling
+- **Offline Support**: Local data caching
+- **Error Handling**: Comprehensive error recovery
+- **Performance**: Optimized queries and caching
+
+## 🏗️ Project Structure
 
 ```
 LokalRN/
 ├── src/
 │   ├── components/          # Reusable UI components
-│   ├── config/             # Configuration files
-│   │   ├── env.ts          # Environment variables
-│   │   ├── supabase.ts     # Supabase client configuration ✅ Complete
-│   │   └── database.ts     # Database connection
 │   ├── screens/            # App screens
-│   ├── services/           # API and service layer
-│   │   ├── supabase.ts     # Supabase service methods ✅ Complete
-│   │   ├── api.ts          # Backend API integration
-│   │   └── demoData.ts     # Demo data for development
-│   ├── types/              # TypeScript type definitions ✅ Complete
+│   ├── services/           # Business logic and API calls
+│   ├── config/             # Configuration files
+│   ├── types/              # TypeScript type definitions
 │   └── utils/              # Utility functions
-├── scripts/                # Setup and utility scripts
-│   ├── setup-supabase.js   # Supabase project setup ✅ Complete
-│   ├── verify-supabase.js  # Connection verification ✅ Complete
-│   └── supabase-setup.sql  # Database schema ✅ Complete
+├── scripts/                # Database and setup scripts
 ├── assets/                 # Static assets
-└── package.json
+└── docs/                   # Documentation
 ```
 
-## Available Scripts
+## 🔧 Development
 
-- `npm start` - Start Expo development server
-- `npm run android` - Start Android development
-- `npm run ios` - Start iOS development
-- `npm run web` - Start web development
-- `npm run setup-supabase` - Initialize Supabase project ✅ **Complete**
-- `npm run verify-supabase` - Verify Supabase connection ✅ **Complete**
-- `npm run create-test-user` - Create test user account
-- `npm run setup` - Complete setup process ✅ **Complete**
-
-## Development
-
-### Adding New Features
-
-1. **Database Changes**: Update `scripts/supabase-setup.sql`
-2. **Types**: Add to `src/types/index.ts` ✅ **Complete**
-3. **Services**: Extend `src/services/supabase.ts` ✅ **Complete**
-4. **Components**: Create in `src/components/`
-5. **Screens**: Add to `src/screens/`
-
-### Testing ✅ **Complete**
+### Database Development
 
 ```bash
-# Verify Supabase connection
-npm run verify-supabase
+# Test database connection
+npm run test-railway-connection
 
-# Create test user
-npm run create-test-user
+# Setup fresh database
+npm run setup-railway
+
+# Test all operations
+npm run test-database
 ```
 
-### Environment Variables
+### Code Quality
 
-The app supports different environments:
-- **Development**: Uses localhost backend
-- **Production**: Uses production Supabase instance ✅ **Complete**
-- **Demo Mode**: Falls back to demo data when Supabase is not configured
+- **TypeScript**: Full type safety
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **Expo**: Modern React Native development
 
-## Current Status ✅ **Complete**
+## 🚀 Deployment
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **Supabase Connection** | ✅ **Working** | Credentials properly configured |
-| **Database Tables** | ✅ **Working** | All 3 tables accessible and functional |
-| **Products Data** | ✅ **Working** | 4 sample products present |
-| **Videos Table** | ✅ **Ready** | Empty but accessible for video uploads |
-| **Profiles Table** | ✅ **Ready** | Empty but accessible for user profiles |
-| **Storage Buckets** | ✅ **Working** | Both buckets accessible and RLS policies active |
-| **TypeScript Types** | ✅ **Updated** | Match actual database schema |
-| **Database Services** | ✅ **Working** | All queries correct and functional |
-| **Authentication** | ✅ **Working** | Ready for user signup/signin |
+### Railway Deployment
 
-## Troubleshooting
+1. **Database**: Already configured on Railway
+2. **Backend API**: Deployed on Railway
+3. **Frontend**: Build and deploy to app stores
+
+### Production Checklist
+
+- [ ] Environment variables configured
+- [ ] Database schema deployed
+- [ ] API endpoints tested
+- [ ] Authentication working
+- [ ] Error handling implemented
+- [ ] Performance optimized
+
+## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **Supabase Connection Failed** ✅ **Resolved**
-   - Check environment variables
-   - Verify project URL and anon key
-   - Run `npm run verify-supabase`
+**Database Connection Failed**
+```bash
+# Test connection
+npm run test-railway-connection
 
-2. **Database Tables Missing** ✅ **Resolved**
-   - Run the SQL setup in Supabase dashboard
-   - Check RLS policies are enabled
+# Reconfigure if needed
+npm run configure-railway
+```
 
-3. **Storage Upload Failed** ✅ **Resolved**
-   - Verify storage buckets exist
-   - Check bucket permissions
-   - Ensure RLS policies are configured
+**App Won't Start**
+```bash
+# Clean and reinstall
+npm run clean
 
-4. **Authentication Issues** ✅ **Resolved**
-   - Check auth configuration
-   - Verify user registration flow
-   - Test with `npm run create-test-user`
+# Check environment
+npm run test-database
+```
 
-### Getting Help
+**Authentication Issues**
+- Verify database is running
+- Check JWT configuration
+- Test with sample credentials
 
-- Check the [TROUBLESHOOTING.md](TROUBLESHOOTING.md) file
-- Review Supabase documentation
-- Check Expo documentation for React Native issues
+## 📊 Performance
 
-## Contributing
+### Database Performance
+- **Connection Pooling**: Optimized with Railway
+- **Query Optimization**: Indexed tables
+- **Caching**: Local data caching
+- **Real-time**: Live data updates
+
+### App Performance
+- **Lazy Loading**: Components load on demand
+- **Image Optimization**: Compressed assets
+- **Memory Management**: Efficient state management
+- **Network Optimization**: Minimal API calls
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -288,25 +252,18 @@ The app supports different environments:
 4. Test thoroughly
 5. Submit a pull request
 
-## License
+## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
 
-## Support
+## 🆘 Support
 
 For support and questions:
-- Create an issue in the repository
-- Check the documentation
-- Review the troubleshooting guide
+- Check the troubleshooting section
+- Review the documentation
+- Test database connectivity
+- Verify environment configuration
 
-## 🎉 **Ready for Production!**
+---
 
-Your Lokal app is now **100% functional** with complete Supabase integration:
-
-- ✅ **Database**: All tables working with proper RLS policies
-- ✅ **Authentication**: User signup/signin fully functional
-- ✅ **Storage**: File upload and retrieval working
-- ✅ **Types**: TypeScript types match database schema
-- ✅ **Demo Mode**: Fallback system for development
-
-**You can start developing features immediately!** 🚀 
+**Built with ❤️ using Railway PostgreSQL and React Native** 
