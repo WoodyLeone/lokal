@@ -398,16 +398,17 @@ class EnhancedObjectDetector:
 
 def main():
     """Main function for command line usage"""
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
         print(json.dumps({
-            "error": "Usage: python enhanced_detect_objects.py <video_path>"
+            "error": "Usage: python enhanced_detect_objects.py <video_path> [confidence_threshold]"
         }))
         sys.exit(1)
     
     video_path = sys.argv[1]
+    confidence_threshold = float(sys.argv[2]) if len(sys.argv) > 2 else 0.6
     
-    # Initialize detector with higher confidence threshold
-    detector = EnhancedObjectDetector(confidence_threshold=0.6, iou_threshold=0.45)
+    # Initialize detector with provided confidence threshold
+    detector = EnhancedObjectDetector(confidence_threshold=confidence_threshold, iou_threshold=0.45)
     
     # Run detection
     result = detector.detect_objects(video_path)

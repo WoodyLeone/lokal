@@ -5,12 +5,16 @@ const { uploadVideo, handleUploadError } = require('../middleware/upload');
 
 // Video upload and processing
 router.post('/upload', uploadVideo, handleUploadError, videoController.uploadVideo);
+router.post('/upload-file', uploadVideo, handleUploadError, videoController.uploadVideo);
 
 // Video status and detection
 router.get('/status/:videoId', videoController.getVideoStatus);
 router.get('/detect/:videoId', videoController.detectObjects);
 
-// Video management
+// Learning and feedback endpoints
+router.get('/learning/stats', videoController.getLearningStats);
+
+// Video management (these must come after specific routes)
 router.get('/', videoController.getAllVideos);
 router.get('/:id', videoController.getVideoById);
 

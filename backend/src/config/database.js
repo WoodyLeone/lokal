@@ -79,12 +79,17 @@ class DatabaseManager {
   async initializeSupabase() {
     try {
       const supabaseUrl = process.env.SUPABASE_URL;
-      const supabaseKey = process.env.SUPABASE_ANON_KEY;
+      // Use service role key if available, otherwise fall back to anon key
+      const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
       if (!supabaseUrl || !supabaseKey) {
         logger.warn('Supabase configuration not found, skipping Supabase initialization');
         return false;
       }
+
+      // Log which key we're using
+      const keyType = process.env.SUPABASE_SERVICE_ROLE_KEY ? 'service role' : 'anon';
+      logger.info(`Using Supabase ${keyType} key for backend operations`);
 
       this.supabase = createClient(supabaseUrl, supabaseKey, {
         auth: {

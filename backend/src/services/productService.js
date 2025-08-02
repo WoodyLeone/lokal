@@ -1,5 +1,63 @@
 // Comprehensive product database with real products
 const dummyProducts = [
+  // Travel & Luggage Products
+  {
+    id: 'samsonite-luggage',
+    title: 'Samsonite Omni PC Hardside Luggage',
+    description: 'Lightweight hardside spinner luggage with TSA lock',
+    imageUrl: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Samsonite+Luggage',
+    price: 189.99,
+    currency: 'USD',
+    buyUrl: 'https://www.samsonite.com/omni-pc-hardside-luggage/',
+    category: 'travel',
+    brand: 'Samsonite',
+    rating: 4.6,
+    reviewCount: 1247,
+    keywords: ['luggage', 'suitcase', 'travel', 'samsonite', 'hardside', 'spinner', 'tsa lock']
+  },
+  {
+    id: 'away-luggage',
+    title: 'Away The Carry-On',
+    description: 'Premium polycarbonate carry-on with built-in battery',
+    imageUrl: 'https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage',
+    price: 275.00,
+    currency: 'USD',
+    buyUrl: 'https://www.awaytravel.com/luggage/carry-on',
+    category: 'travel',
+    brand: 'Away',
+    rating: 4.7,
+    reviewCount: 892,
+    keywords: ['luggage', 'suitcase', 'travel', 'away', 'carry-on', 'polycarbonate', 'battery']
+  },
+  {
+    id: 'delsey-luggage',
+    title: 'Delsey Paris Helium Aero Hardside Luggage',
+    description: 'Ultra-lightweight hardside luggage with smart features',
+    imageUrl: 'https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Delsey+Luggage',
+    price: 299.99,
+    currency: 'USD',
+    buyUrl: 'https://www.delsey.com/helium-aero-hardside/',
+    category: 'travel',
+    brand: 'Delsey',
+    rating: 4.5,
+    reviewCount: 567,
+    keywords: ['luggage', 'suitcase', 'travel', 'delsey', 'hardside', 'lightweight', 'helium']
+  },
+  {
+    id: 'travelpro-luggage',
+    title: 'Travelpro Maxlite 5 Softside Luggage',
+    description: 'Ultra-lightweight softside luggage for frequent travelers',
+    imageUrl: 'https://via.placeholder.com/300x200/f59e0b/ffffff?text=Travelpro+Luggage',
+    price: 159.99,
+    currency: 'USD',
+    buyUrl: 'https://www.travelpro.com/maxlite-5-softside/',
+    category: 'travel',
+    brand: 'Travelpro',
+    rating: 4.4,
+    reviewCount: 734,
+    keywords: ['luggage', 'suitcase', 'travel', 'travelpro', 'softside', 'lightweight', 'maxlite']
+  },
+
   // Apple Products
   {
     id: 'apple-watch-9',
@@ -634,55 +692,100 @@ const dummyProducts = [
 ];
 
 class ProductService {
-  // Match products based on detected objects
-  async matchProductsByObjects(objects) {
+  constructor() {
+    this.demoMode = process.env.DEMO_MODE === 'true';
+    this.productionMatching = process.env.PRODUCTION_MATCHING === 'true';
+    this.suggestionThreshold = process.env.SUGGESTION_RELEVANCE_THRESHOLD || 0.5;
+    
+    console.log(`🛍️ Product Service initialized:`);
+    console.log(`   - Demo Mode: ${this.demoMode}`);
+    console.log(`   - Production Matching: ${this.productionMatching}`);
+    console.log(`   - Suggestion Threshold: ${this.suggestionThreshold}`);
+  }
+
+  // Match products based on detected objects with production logic
+  async matchProductsByObjects(objects, manualProductName = null) {
     const matchedProducts = [];
     const objectKeywords = objects.map(obj => obj.toLowerCase());
 
-    console.log('Matching products for objects:', objects);
+    console.log('🛍️ Matching products for objects:', objects);
+    console.log('🛍️ Manual product name:', manualProductName || 'None');
 
-    // If no objects detected, return empty array instead of random products
-    if (!objects || objects.length === 0) {
-      console.log('No objects detected, returning empty product list');
+    // If no objects detected and no manual product name, return empty array
+    if ((!objects || objects.length === 0) && !manualProductName) {
+      console.log('⚠️ No objects detected and no manual product name, returning empty product list');
       return [];
     }
 
-    // Enhanced matching with scoring system
+    // In production mode, prioritize manual product name over detected objects
+    let searchTerms = [];
+    if (manualProductName) {
+      searchTerms.push(manualProductName.toLowerCase());
+      console.log(`🎯 Prioritizing manual product name: ${manualProductName}`);
+    }
+    if (objects && objects.length > 0) {
+      searchTerms.push(...objectKeywords);
+    }
+
+    // Enhanced matching with production logic
     const scoredProducts = [];
 
     for (const product of dummyProducts) {
       let score = 0;
       const productTitle = product.title.toLowerCase();
       const productKeywords = product.keywords.map(keyword => keyword.toLowerCase());
+      const productBrand = product.brand.toLowerCase();
       
-      // Calculate match score for each object
-      for (const object of objectKeywords) {
-        // Exact match in product title (highest score)
-        if (productTitle.includes(object) || object.includes(productTitle)) {
-          score += 10;
-          console.log(`🎯 Exact title match: ${product.title} for object: ${object}`);
-        }
-        
-        // Exact match in keywords (high score)
-        if (productKeywords.includes(object)) {
-          score += 8;
-          console.log(`✅ Exact keyword match: ${product.title} for object: ${object}`);
+      // Calculate match score for each search term
+      for (const searchTerm of searchTerms) {
+        // Manual product name gets highest priority
+        if (manualProductName && searchTerm === manualProductName.toLowerCase()) {
+          // Exact match in product title (highest score for manual input)
+          if (productTitle.includes(searchTerm) || searchTerm.includes(productTitle)) {
+            score += 20;
+            console.log(`🎯 Manual exact title match: ${product.title} for: ${searchTerm}`);
+          }
+          
+          // Exact match in keywords (high score for manual input)
+          if (productKeywords.includes(searchTerm)) {
+            score += 15;
+            console.log(`✅ Manual exact keyword match: ${product.title} for: ${searchTerm}`);
+          }
+          
+          // Brand match for manual input
+          if (productBrand.includes(searchTerm) || searchTerm.includes(productBrand)) {
+            score += 12;
+            console.log(`🏷️ Manual brand match: ${product.title} for: ${searchTerm}`);
+          }
+        } else {
+          // Regular object detection matching (lower priority)
+          if (productTitle.includes(searchTerm) || searchTerm.includes(productTitle)) {
+            score += 10;
+            console.log(`🎯 Exact title match: ${product.title} for object: ${searchTerm}`);
+          }
+          
+          if (productKeywords.includes(searchTerm)) {
+            score += 8;
+            console.log(`✅ Exact keyword match: ${product.title} for object: ${searchTerm}`);
+          }
         }
         
         // Partial match in keywords (medium score)
         for (const keyword of productKeywords) {
-          if (keyword.includes(object) || object.includes(keyword)) {
-            if (keyword.length > 3 && object.length > 3) { // Avoid matching short words
-              score += 5;
-              console.log(`🔍 Partial keyword match: ${product.title} (${keyword}) for object: ${object}`);
+          if (keyword.includes(searchTerm) || searchTerm.includes(keyword)) {
+            if (keyword.length > 3 && searchTerm.length > 3) { // Avoid matching short words
+              const partialScore = manualProductName ? 8 : 5;
+              score += partialScore;
+              console.log(`🔍 Partial keyword match: ${product.title} (${keyword}) for: ${searchTerm}`);
             }
           }
         }
         
         // Category-based matching (lower score)
-        if (product.category && product.category.includes(object)) {
-          score += 3;
-          console.log(`📂 Category match: ${product.title} (${product.category}) for object: ${object}`);
+        if (product.category && product.category.includes(searchTerm)) {
+          const categoryScore = manualProductName ? 5 : 3;
+          score += categoryScore;
+          console.log(`📂 Category match: ${product.title} (${product.category}) for: ${searchTerm}`);
         }
       }
       
@@ -691,12 +794,13 @@ class ProductService {
         score += 2;
       }
       
-      // Add product to scored list if it has any matches
+      // Add product to scored list if it meets threshold
       if (score > 0) {
+        const matchType = score >= 15 ? 'exact' : score >= 8 ? 'partial' : 'category';
         scoredProducts.push({
           product,
           score,
-          matchType: score >= 8 ? 'exact' : score >= 5 ? 'partial' : 'category'
+          matchType
         });
       }
     }

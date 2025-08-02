@@ -6,6 +6,7 @@ const { PythonShell } = require('python-shell');
 const enhancedObjectDetectionService = require('../services/enhancedObjectDetectionService');
 const productService = require('../services/productService');
 const learningService = require('../services/learningService');
+const databaseManager = require('../config/database');
 
 // Helper function to generate AI suggestions
 function generateAISuggestionsForObjects(detectedObjects) {
@@ -66,8 +67,96 @@ function generateAISuggestionsForObjects(detectedObjects) {
   }
 }
 
-// In-memory storage for video processing status (in production, use Redis or database)
+// Persistent storage for video processing status
 const videoProcessingStatus = new Map();
+
+// File-based persistence for video status (fallback when database is not available)
+const VIDEO_STATUS_FILE = path.join(__dirname, '../data/video_status.json');
+
+// Ensure data directory exists
+const dataDir = path.dirname(VIDEO_STATUS_FILE);
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// Load existing video status from file
+function loadVideoStatusFromFile() {
+  try {
+    if (fs.existsSync(VIDEO_STATUS_FILE)) {
+      const data = fs.readFileSync(VIDEO_STATUS_FILE, 'utf8');
+      const statusData = JSON.parse(data);
+      for (const [videoId, status] of Object.entries(statusData)) {
+        videoProcessingStatus.set(videoId, status);
+      }
+      console.log(`📁 Loaded ${videoProcessingStatus.size} video statuses from file`);
+    }
+  } catch (error) {
+    console.error('Error loading video status from file:', error);
+  }
+}
+
+// Save video status to file
+function saveVideoStatusToFile() {
+  try {
+    const statusData = {};
+    for (const [videoId, status] of videoProcessingStatus.entries()) {
+      statusData[videoId] = status;
+    }
+    fs.writeFileSync(VIDEO_STATUS_FILE, JSON.stringify(statusData, null, 2));
+  } catch (error) {
+    console.error('Error saving video status to file:', error);
+  }
+}
+
+// Helper function to update video status with persistence
+function updateVideoStatus(videoId, status) {
+  videoProcessingStatus.set(videoId, status);
+  saveVideoStatusToFile();
+  console.log(`📝 Updated video status for ${videoId}: ${status.status} (${status.progress}%)`);
+}
+
+// Helper function to update video in database
+async function updateVideoInDatabase(videoId, status) {
+  let supabase;
+  try {
+    supabase = databaseManager.getSupabase();
+  } catch (error) {
+    console.warn('⚠️ Supabase not available for update:', error.message);
+    return;
+  }
+  
+  if (supabase) {
+    try {
+      const updateData = {
+        updated_at: new Date().toISOString()
+      };
+
+      // Add optional fields if they exist (only use columns that actually exist in the schema)
+      if (status.detectedObjects) {
+        updateData.detected_objects = status.detectedObjects;
+      }
+      if (status.matchedProducts) {
+        updateData.products = status.matchedProducts;
+      }
+
+      const { error: dbError } = await supabase
+        .from('videos')
+        .update(updateData)
+        .eq('id', videoId);
+
+      if (dbError) {
+        console.error('Error updating video in database:', dbError);
+      } else {
+        console.log(`✅ Updated video ${videoId} in database: ${status.status}`);
+      }
+    } catch (error) {
+      console.error('Error updating video in database:', error);
+    }
+  }
+}
+
+// Initialize by loading existing statuses
+loadVideoStatusFromFile();
 
 const videoController = {
   // Upload video and start processing
@@ -121,8 +210,62 @@ const videoController = {
         }
       }
       
+      // Save video to database (now with service role access)
+      console.log('🔍 Attempting to save video to database...');
+      let supabase;
+      try {
+        supabase = databaseManager.getSupabase();
+        console.log('✅ Supabase client obtained successfully');
+      } catch (error) {
+        console.warn('⚠️ Supabase not available:', error.message);
+        supabase = null;
+      }
+      
+      if (supabase) {
+        console.log('🔍 Supabase is available, proceeding with database save...');
+        
+        // Use authenticated user ID or create a demo user ID
+        let userId = req.user?.id;
+        if (!userId) {
+          // Create a demo user ID using UUID for proper format
+          const userEmail = req.body.userEmail || req.headers['x-user-email'] || 'demo@lokal.com';
+          // Generate a deterministic UUID based on email
+          const emailHash = require('crypto').createHash('md5').update(userEmail).digest('hex');
+          userId = `${emailHash.slice(0, 8)}-${emailHash.slice(8, 12)}-${emailHash.slice(12, 16)}-${emailHash.slice(16, 20)}-${emailHash.slice(20, 32)}`;
+          console.log(`🔧 Using demo user ID: ${userId} for email: ${userEmail}`);
+        }
+        
+        let insertData = {
+          id: videoId,
+          title,
+          description: description || '',
+          video_url: videoUrl || 'demo://test-video', // Provide default for NOT NULL constraint
+          user_id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        };
+        
+        console.log('🔍 Inserting video data:', JSON.stringify(insertData, null, 2));
+        const { data: videoRecord, error: dbError } = await supabase
+          .from('videos')
+          .insert(insertData)
+          .select()
+          .single();
+
+        if (dbError) {
+          console.error('❌ Error saving video to database:', dbError);
+          console.error('❌ Error details:', JSON.stringify(dbError, null, 2));
+          console.warn('⚠️ Continuing with in-memory storage only');
+        } else {
+          console.log(`✅ Video saved to database with ID: ${videoId}`);
+          console.log('✅ Database record:', JSON.stringify(videoRecord, null, 2));
+        }
+      } else {
+        console.warn('⚠️ Supabase not available, using in-memory storage only');
+      }
+
       // Initialize processing status
-      videoProcessingStatus.set(videoId, {
+      updateVideoStatus(videoId, {
         status: 'uploaded',
         progress: 0,
         videoUrl,
@@ -133,11 +276,14 @@ const videoController = {
         createdAt: new Date().toISOString()
       });
 
-      // Start object detection in background
-      const self = this;
-      setTimeout(async function() {
+      // Start object detection immediately (no setTimeout to avoid restart issues)
+      console.log(`🚀 Starting immediate processing for video: ${videoId}`);
+      
+      // Process video in background without blocking the response
+      setImmediate(async function() {
         try {
-          videoProcessingStatus.set(videoId, {
+          console.log(`📊 Updating status to processing for video: ${videoId}`);
+          updateVideoStatus(videoId, {
             ...videoProcessingStatus.get(videoId),
             status: 'processing',
             progress: 25
@@ -181,7 +327,8 @@ const videoController = {
           // Handle case where no video file is provided (for testing)
           if (!finalVideoPath || !fs.existsSync(finalVideoPath)) {
             console.log('⚠️ No video file available - using demo objects for testing');
-            // Use demo objects for testing
+            
+            // Use demo objects for testing when no video file is provided
             const demoObjects = ['laptop', 'chair', 'car'];
             const manualProductName = videoProcessingStatus.get(videoId).manualProductName;
             
@@ -191,8 +338,7 @@ const videoController = {
             if (manualProductName) {
               // If manual product name is provided, prioritize it in matching
               console.log(`🎯 Demo mode - Manual product name provided: ${manualProductName}`);
-              const searchTerms = [manualProductName, ...demoObjects];
-              matchedProducts = await productService.matchProductsByObjects(searchTerms);
+              matchedProducts = await productService.matchProductsByObjects(demoObjects, manualProductName);
               aiSuggestions = generateAISuggestionsForObjects([manualProductName]);
             } else {
               // Use only detected objects for matching
@@ -200,7 +346,7 @@ const videoController = {
               aiSuggestions = generateAISuggestionsForObjects(demoObjects);
             }
             
-            videoProcessingStatus.set(videoId, {
+            const finalStatus = {
               ...videoProcessingStatus.get(videoId),
               status: 'completed',
               progress: 100,
@@ -208,50 +354,32 @@ const videoController = {
               matchedProducts: matchedProducts,
               aiSuggestions: aiSuggestions,
               completedAt: new Date().toISOString()
-            });
+            };
+            updateVideoStatus(videoId, finalStatus);
+            await updateVideoInDatabase(videoId, finalStatus);
             return;
           }
 
-          videoProcessingStatus.set(videoId, {
+          updateVideoStatus(videoId, {
             ...videoProcessingStatus.get(videoId),
             progress: 50
           });
 
-          // Run enhanced object detection
-          const objects = await enhancedObjectDetectionService.detectObjects(finalVideoPath);
+          // Run enhanced object detection with manual product name context
+          const manualProductName = videoProcessingStatus.get(videoId).manualProductName;
+          const objects = await enhancedObjectDetectionService.detectObjects(finalVideoPath, manualProductName);
           console.log('🎯 Detection results:', objects);
-          
-          // Handle empty detection results
-          if (!objects || objects.length === 0) {
-            console.log('⚠️ No objects detected - setting empty results');
-            videoProcessingStatus.set(videoId, {
-              ...videoProcessingStatus.get(videoId),
-              status: 'completed',
-              progress: 100,
-              detectedObjects: [],
-              matchedProducts: [],
-              aiSuggestions: [],
-              completedAt: new Date().toISOString()
-            });
-            
-            // Record empty detection pattern for learning
-            enhancedObjectDetectionService.recordDetectionPattern(videoId, finalVideoPath, [], [], null);
-            return;
-          }
           
           // Match products with detected objects and manual product name
           let matchedProducts;
           let aiSuggestions = [];
           
-          const manualProductName = videoProcessingStatus.get(videoId).manualProductName;
-          
           if (manualProductName) {
             // If manual product name is provided, prioritize it in matching
             console.log(`🎯 Manual product name provided: ${manualProductName}`);
             
-            // Create a combined search that prioritizes the manual product name
-            const searchTerms = [manualProductName, ...objects];
-            matchedProducts = await productService.matchProductsByObjects(searchTerms);
+            // Use the improved matching logic that prioritizes manual product name
+            matchedProducts = await productService.matchProductsByObjects(objects, manualProductName);
             
             // Generate AI suggestions based on manual product name
             aiSuggestions = generateAISuggestionsForObjects([manualProductName]);
@@ -261,7 +389,27 @@ const videoController = {
             aiSuggestions = generateAISuggestionsForObjects(objects);
           }
           
-          videoProcessingStatus.set(videoId, {
+          // Handle empty results - don't fall back to demo data in production
+          if (!matchedProducts || matchedProducts.length === 0) {
+            console.log('⚠️ No products matched - returning empty results');
+            const finalStatus = {
+              ...videoProcessingStatus.get(videoId),
+              status: 'completed',
+              progress: 100,
+              detectedObjects: objects || [],
+              matchedProducts: [],
+              aiSuggestions: aiSuggestions || [],
+              completedAt: new Date().toISOString()
+            };
+            updateVideoStatus(videoId, finalStatus);
+            await updateVideoInDatabase(videoId, finalStatus);
+            
+            // Record detection pattern for learning
+            enhancedObjectDetectionService.recordDetectionPattern(videoId, finalVideoPath, objects || [], aiSuggestions || [], null);
+            return;
+          }
+          
+          const finalStatus = {
             ...videoProcessingStatus.get(videoId),
             status: 'completed',
             progress: 100,
@@ -269,7 +417,9 @@ const videoController = {
             matchedProducts: matchedProducts,
             aiSuggestions: aiSuggestions,
             completedAt: new Date().toISOString()
-          });
+          };
+          updateVideoStatus(videoId, finalStatus);
+          await updateVideoInDatabase(videoId, finalStatus);
 
           // Record detection pattern for learning (without final selection yet)
           enhancedObjectDetectionService.recordDetectionPattern(videoId, finalVideoPath, objects, aiSuggestions);
@@ -281,13 +431,15 @@ const videoController = {
 
         } catch (error) {
           console.error('Processing error:', error);
-          videoProcessingStatus.set(videoId, {
+          const errorStatus = {
             ...videoProcessingStatus.get(videoId),
             status: 'error',
             error: error.message
-          });
+          };
+          updateVideoStatus(videoId, errorStatus);
+          await updateVideoInDatabase(videoId, errorStatus);
         }
-      }, 1000);
+      });
 
       res.json({
         success: true,

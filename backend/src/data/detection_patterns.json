@@ -1,17 +1,150 @@
-{
-  "objectFrequency": {
-    "person": 1
+[
+  {
+    "videoId": "4e6342ad-a761-4215-b311-ce791652d306",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754079943903-850175959.mov",
+    "detectedObjects": [
+      "car",
+      "chair",
+      "truck"
+    ],
+    "suggestions": [
+      "Tesla Model 3",
+      "Toyota Camry",
+      "Herman Miller Aeron"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T20:26:04.497Z",
+    "confidence": 0.5,
+    "demoMode": false
   },
-  "contextMappings": {
-    "person": {
-      "sneakers": 1,
-      "athletic shoes": 1,
-      "running shoes": 1
-    }
+  {
+    "videoId": "25ea62b4-f884-4972-8508-73a120799580",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754080160511-597153621.mov",
+    "detectedObjects": [
+      "cup"
+    ],
+    "suggestions": [
+      "Stanley Quencher",
+      "Contigo Autoseal"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T20:29:35.027Z",
+    "confidence": 0.5,
+    "demoMode": false
   },
-  "successfulMatches": {
-    "sneakers": 1
+  {
+    "videoId": "3e0b05cd-75c5-49cd-bf98-ccb88df5ac5c",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754080788673-531266386.mov",
+    "detectedObjects": [
+      "cup"
+    ],
+    "suggestions": [
+      "Hydro Flask",
+      "Contigo Autoseal"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T20:40:04.383Z",
+    "confidence": 0.5,
+    "demoMode": false
   },
-  "failedMatches": {},
-  "videoCategories": {}
-}
+  {
+    "videoId": "53a2f667-bb23-49bb-915d-81960305fc01",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754080911916-252928851.mov",
+    "detectedObjects": [
+      "cup"
+    ],
+    "suggestions": [
+      "Hydro Flask",
+      "Yeti Rambler"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T20:42:08.374Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "175b4ad8-f9f9-46ec-9d32-bf801afa19d6",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754086262870-38923993.mov",
+    "detectedObjects": [
+      "cup"
+    ],
+    "suggestions": [
+      "Contigo Autoseal",
+      "Stanley Quencher"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T22:12:00.708Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "65747cea-7fa7-42a7-908e-ded2608b028d",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754086835345-762560586.mov",
+    "detectedObjects": [],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T22:20:53.108Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "8864ae6c-0a86-4dc5-b0c8-b68c5f436709",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754086900867-375866529.mov",
+    "detectedObjects": [
+      "car",
+      "chair",
+      "truck"
+    ],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T22:22:49.291Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "3eb2aaeb-0f1a-40df-94e4-31cfa04fa623",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754087464890-19483648.mov",
+    "detectedObjects": [
+      "car",
+      "chair",
+      "truck"
+    ],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T22:31:13.470Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "71b6901b-9c64-4f52-8b2f-089b0c393757",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754088580114-301210215.mov",
+    "detectedObjects": [
+      "suitcase"
+    ],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T22:49:45.949Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "6ce99104-999d-49b8-ade7-f956c8745d1f",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754088693612-110389960.mov",
+    "detectedObjects": [],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-01T22:51:38.894Z",
+    "confidence": 0.5,
+    "demoMode": false
+  }
+]
