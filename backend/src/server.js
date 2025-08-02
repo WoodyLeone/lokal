@@ -161,11 +161,13 @@ app.use((req, res, next) => {
 const videoRoutes = require('./routes/videos');
 const productRoutes = require('./routes/products');
 const healthRoutes = require('./routes/health');
+const databaseRoutes = require('./routes/database');
 
 // Routes
 app.use('/api/videos', videoRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/health', healthRoutes);
+app.use('/api/database', databaseRoutes);
 
 // Socket.IO connection handling
 io.on('connection', (socket) => {
