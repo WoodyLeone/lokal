@@ -1,7 +1,6 @@
-import { supabase } from '../config/supabase';
+import { DatabaseService } from './databaseService';
 import { ApiService } from './api';
 import { isDemoMode } from '../config/env';
-import supabaseManager from './supabaseManager';
 
 export interface ProductMatch {
   id: string;
@@ -176,19 +175,13 @@ class ProductMatchingService {
       .map(p => p.name);
   }
 
-  // Save product match data to Supabase
+  // Save product match data to Railway PostgreSQL
   async saveProductMatch(videoId: string, matchData: ProductMatch): Promise<boolean> {
     try {
       // Check if we're in demo mode
       if (isDemoMode()) {
         console.log('📝 Demo mode: Simulating product match save');
         return true; // Simulate success in demo mode
-      }
-
-      // Use the robust Supabase manager for safe inserts
-      if (!supabaseManager.isReady()) {
-        console.log('📝 Supabase not ready - using demo mode');
-        return true;
       }
 
       // Map the match data to database columns
@@ -204,10 +197,10 @@ class ProductMatchingService {
         created_at: new Date().toISOString()
       };
 
-      console.log('🔄 Saving product match with robust manager:', insertData);
+      console.log('🔄 Saving product match to Railway PostgreSQL:', insertData);
 
-      // Use the safe insert method that handles schema cache issues
-      const result = await supabaseManager.safeInsert('product_matches', insertData);
+      // Use DatabaseService to save the product match
+      const result = await DatabaseService.saveProductMatch(insertData);
 
       if (result.success) {
         console.log('✅ Product match saved successfully');
@@ -224,19 +217,13 @@ class ProductMatchingService {
     }
   }
 
-  // Update video product data in Supabase
+  // Update video product data in Railway PostgreSQL
   async updateVideoProductData(videoId: string, productData: VideoProductData): Promise<boolean> {
     try {
       // Check if we're in demo mode
       if (isDemoMode()) {
         console.log('📝 Demo mode: Simulating video product data update');
         return true; // Simulate success in demo mode
-      }
-
-      // Use the robust Supabase manager for safe updates
-      if (!supabaseManager.isReady()) {
-        console.log('📝 Supabase not ready - using demo mode');
-        return true;
       }
 
       // Map the product data to database columns
@@ -275,10 +262,10 @@ class ProductMatchingService {
         updateData.title = productData.finalProductName || productData.manualProductName || 'Product Detected';
       }
 
-      console.log('🔄 Updating video with robust manager:', updateData);
+      console.log('🔄 Updating video in Railway PostgreSQL:', updateData);
 
-      // Use the safe update method that handles schema cache issues
-      const result = await supabaseManager.safeUpdate('videos', updateData, { id: videoId });
+      // Use DatabaseService to update the video
+      const result = await DatabaseService.updateVideo(videoId, updateData);
 
       if (result.success) {
         console.log('✅ Video product data updated successfully');
@@ -298,24 +285,21 @@ class ProductMatchingService {
   // Get product matches for a video
   async getProductMatches(videoId: string): Promise<ProductMatch[]> {
     try {
-      // Check if Supabase is configured
-      if (!supabase || isDemoMode()) {
+      // Check if we're in demo mode
+      if (isDemoMode()) {
         console.log('📝 Demo mode: Returning empty product matches');
         return []; // Return empty array in demo mode
       }
 
-      const { data, error } = await supabase
-        .from('product_matches')
-        .select('*')
-        .eq('video_id', videoId)
-        .order('created_at', { ascending: false });
+      // Use DatabaseService to get product matches
+      const result = await DatabaseService.getProductMatches(videoId);
 
-      if (error) {
-        console.error('Error getting product matches:', error);
+      if (result.success && result.data) {
+        return result.data;
+      } else {
+        console.error('Error getting product matches:', result.error);
         return [];
       }
-
-      return data || [];
     } catch (error) {
       console.error('Error getting product matches:', error);
       return [];

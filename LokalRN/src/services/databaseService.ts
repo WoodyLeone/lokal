@@ -433,6 +433,70 @@ export class DatabaseService {
     }
   }
 
+  // Product matching methods
+  static async saveProductMatch(matchData: any): Promise<{ success: boolean; error?: any }> {
+    if (isDemoMode()) {
+      return { success: true };
+    }
+    
+    if (!isDatabaseConfigured()) {
+      return { success: false, error: { message: 'Database not configured' } };
+    }
+    
+    try {
+      const result = await executeQuery(
+        `INSERT INTO product_matches (
+          video_id, detected_object, confidence_score, bounding_box, 
+          matched_product_id, match_type, ai_suggestions, user_selection, created_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+        [
+          matchData.video_id,
+          matchData.detected_object,
+          matchData.confidence_score,
+          JSON.stringify(matchData.bounding_box),
+          matchData.matched_product_id,
+          matchData.match_type,
+          JSON.stringify(matchData.ai_suggestions),
+          matchData.user_selection,
+          matchData.created_at
+        ]
+      );
+      
+      if (result.error) {
+        return { success: false, error: result.error };
+      }
+      
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: { message: 'Failed to save product match' } };
+    }
+  }
+
+  static async getProductMatches(videoId: string): Promise<{ success: boolean; data?: any[]; error?: any }> {
+    if (isDemoMode()) {
+      return { success: true, data: [] };
+    }
+    
+    if (!isDatabaseConfigured()) {
+      return { success: false, error: { message: 'Database not configured' } };
+    }
+    
+    try {
+      const result = await executeQuery(
+        'SELECT * FROM product_matches WHERE video_id = $1 ORDER BY created_at DESC',
+        [videoId]
+      );
+      
+      if (result.error) {
+        return { success: false, error: result.error };
+      }
+      
+      return { success: true, data: result.data || [] };
+    } catch (error) {
+      return { success: false, error: { message: 'Failed to get product matches' } };
+    }
+  }
+
   // Helper methods for authentication
   private static async hashPassword(password: string): Promise<string> {
     // In production, use bcrypt or similar

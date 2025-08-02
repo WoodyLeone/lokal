@@ -1,6 +1,7 @@
 import { ObjectDetectionResponse, ProductMatchResponse, VideoUploadResponse } from '../types';
 import { getApiEndpoint, ENV } from '../config/env';
 import { errorRecovery, NetworkError, ErrorRecoveryOptions } from './errorRecovery';
+import { DatabaseService } from './databaseService';
 
 // Network connectivity testing
 const testBackendConnectivity = async (): Promise<{ url: string; latency: number } | null> => {
@@ -231,11 +232,11 @@ export class ApiService {
       
       // Add user email for demo authentication
       try {
-        const { supabase } = await import('../config/supabase');
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user?.email) {
-          formData.append('userEmail', user.email);
-          console.log('📤 Added user email to upload:', user.email);
+        // Get current user from DatabaseService
+        const currentUser = await DatabaseService.getCurrentUser();
+        if (currentUser?.email) {
+          formData.append('userEmail', currentUser.email);
+          console.log('📤 Added user email to upload:', currentUser.email);
         }
       } catch (error) {
         console.log('📤 No authenticated user email available');
