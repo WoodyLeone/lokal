@@ -12,7 +12,7 @@ from video_processor import VideoProcessor
 from object_detector import ObjectDetector
 from cropper import Cropper
 from matcher import ProductMatcher
-from supabase_client import SupabaseClient
+from railway_client import RailwayClient
 
 load_dotenv()
 
@@ -40,7 +40,9 @@ class LokalPipeline:
         )
         self.cropper = Cropper()
         self.matcher = ProductMatcher()
-        self.supabase = SupabaseClient()
+        self.railway = RailwayClient()
+        # Initialize database tables
+        self.railway.create_tables()
         
         print("✅ Lokal Pipeline initialized successfully")
     
@@ -61,7 +63,7 @@ class LokalPipeline:
             print(f"🎬 Starting video processing: {video_path}")
             
             # Step 1: Save video record to database
-            video_id = self.supabase.save_video_record(video_path, user_id)
+            video_id = self.railway.save_video_record(video_path, user_id)
             print(f"📝 Video record saved with ID: {video_id}")
             
             # Step 2: Get video information
@@ -92,20 +94,26 @@ class LokalPipeline:
                         
                         if match_result.get("success", False):
                             # Save detection to database
-                            detection_id = self.supabase.save_detection(
+                            detection_id = self.railway.save_detection(
                                 video_id=video_id,
-                                label=detection["class_name"],
-                                bbox=detection["bbox"]
+                                detection_data={
+                                    "class": detection["class_name"],
+                                    "confidence": detection.get("confidence", 0.0),
+                                    "bbox": detection["bbox"]
+                                }
                             )
                             
                             # Upload crop image
-                            crop_url = self.supabase.upload_crop_image(pil_crop, detection_id)
+                            crop_url = self.railway.upload_crop_image(pil_crop, detection_id)
                             
                             # Save matched product
-                            product_id = self.supabase.save_matched_product(
-                                object_id=detection_id,
-                                label=match_result["product_name"],
-                                match_type="auto"
+                            product_id = self.railway.save_matched_product(
+                                detection_id=detection_id,
+                                product_data={
+                                    "name": match_result["product_name"],
+                                    "brand": match_result.get("brand", "Unknown"),
+                                    "similarity": match_result.get("confidence", 0.0)
+                                }
                             )
                             
                             total_matches += 1
@@ -116,7 +124,7 @@ class LokalPipeline:
                 processed_frames += 1
             
             # Step 4: Update video status
-            self.supabase.update_video_status(video_id, "completed")
+            self.railway.update_video_status(video_id, "completed")
             
             # Calculate processing time
             processing_time = time.time() - start_time
@@ -144,7 +152,7 @@ class LokalPipeline:
             
             # Update video status to failed
             if 'video_id' in locals():
-                self.supabase.update_video_status(video_id, "failed")
+                self.railway.update_video_status(video_id, "failed")
             
             return {
                 "success": False,
@@ -181,20 +189,26 @@ class LokalPipeline:
                 
                 if match_result.get("success", False):
                     # Save to database
-                    detection_id = self.supabase.save_detection(
+                    detection_id = self.railway.save_detection(
                         video_id=video_id,
-                        label=detection["class_name"],
-                        bbox=detection["bbox"]
+                        detection_data={
+                            "class": detection["class_name"],
+                            "confidence": detection.get("confidence", 0.0),
+                            "bbox": detection["bbox"]
+                        }
                     )
                     
                     # Upload crop
-                    crop_url = self.supabase.upload_crop_image(pil_crop, detection_id)
+                    crop_url = self.railway.upload_crop_image(pil_crop, detection_id)
                     
                     # Save match
-                    product_id = self.supabase.save_matched_product(
-                        object_id=detection_id,
-                        label=match_result["product_name"],
-                        match_type="auto"
+                    product_id = self.railway.save_matched_product(
+                        detection_id=detection_id,
+                        product_data={
+                            "name": match_result["product_name"],
+                            "brand": match_result.get("brand", "Unknown"),
+                            "similarity": match_result.get("confidence", 0.0)
+                        }
                     )
                     
                     results.append({
@@ -219,19 +233,19 @@ class LokalPipeline:
         """
         try:
             # Get video info
-            video_uploads = self.supabase.get_video_uploads()
+            video_uploads = self.railway.get_video_uploads()
             video_info = next((v for v in video_uploads if v["id"] == video_id), None)
             
             if not video_info:
                 return {"error": "Video not found"}
             
             # Get detections
-            detections = self.supabase.get_detected_objects(video_id)
+            detections = self.railway.get_detected_objects(video_id)
             
             # Get matches
             matches = []
             for detection in detections:
-                detection_matches = self.supabase.get_matched_products(detection["id"])
+                detection_matches = self.railway.get_matched_products(detection["id"])
                 matches.extend(detection_matches)
             
             return {
