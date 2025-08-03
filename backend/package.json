@@ -53,7 +53,7 @@
     "video-processing",
     "object-detection",
     "yolo",
-    "supabase",
+    "postgresql",
     "redis",
     "caching"
   ],
