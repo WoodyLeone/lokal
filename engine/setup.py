@@ -147,7 +147,7 @@ def main():
         print("✅ All setup steps completed successfully!")
         print("\n🎉 Lokal Engine is ready to use!")
         print("\nNext steps:")
-        print("1. Edit .env with your Supabase and OpenAI credentials")
+        print("1. Edit .env with your Railway PostgreSQL and OpenAI credentials")
         print("2. Run: python test_engine.py")
         print("3. Start processing videos with: python pipeline_runner.py")
         return True

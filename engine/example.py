@@ -189,8 +189,7 @@ def main():
     if not os.path.exists(".env"):
         print("⚠️  No .env file found. Please run setup.py first.")
         print("   Or create .env with your credentials:")
-        print("   SUPABASE_URL=your-url")
-        print("   SUPABASE_KEY=your-key")
+        print("   DATABASE_URL=postgresql://user:password@host:port/database")
         print("   OPENAI_API_KEY=your-key")
         print()
     
