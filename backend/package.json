@@ -4,8 +4,8 @@
   "description": "Backend server for Lokal - shoppable video app (Root)",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon src/server.js",
+    "start": "node --max-old-space-size=512 --expose-gc --optimize-for-size app.js",
+    "dev": "nodemon --max-old-space-size=512 --expose-gc src/server.js",
     "test": "jest",
     "test:db": "node src/tests/test-database.js",
     "test:connection": "node src/tests/test-database.js",

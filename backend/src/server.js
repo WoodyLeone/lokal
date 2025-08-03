@@ -24,6 +24,9 @@ const authService = require('./services/authService');
 // Initialize memory monitor
 const memoryMonitor = require('./utils/memoryMonitor');
 
+// Initialize memory optimizer
+const memoryOptimizer = require('./utils/memoryOptimizer');
+
 // Initialize crash prevention system
 const crashPrevention = require('../crash-prevention');
 
@@ -40,7 +43,11 @@ const logger = winston.createLogger({
   ),
   defaultMeta: { service: 'lokal-backend' },
   transports: [
-    new winston.transports.File({ filename: process.env.LOG_FILE || './logs/app.log' }),
+    new winston.transports.File({ 
+      filename: process.env.LOG_FILE || './logs/app.log',
+      maxsize: 5242880, // 5MB
+      maxFiles: 3
+    }),
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
@@ -285,6 +292,10 @@ const gracefulShutdown = async (signal) => {
   memoryMonitor.stop();
   logger.info('Memory monitoring stopped');
   
+  // Stop memory optimization
+  memoryOptimizer.stop();
+  logger.info('Memory optimization stopped');
+  
   // Close server
   server.close(() => {
     logger.info('HTTP server closed');
@@ -369,12 +380,23 @@ async function startServer() {
       logger.warn('Auth service initialization failed, continuing without auth tables:', authError.message);
     }
     
-    // Start memory monitoring
+    // Start memory monitoring (reduced frequency to prevent memory leaks)
     try {
-      memoryMonitor.start();
-      logger.info('Memory monitoring started');
+      // Only start memory monitoring if not already running
+      if (!memoryMonitor.monitoring) {
+        memoryMonitor.start();
+        logger.info('Memory monitoring started');
+      }
     } catch (monitorError) {
       logger.warn('Memory monitoring failed, continuing without monitoring:', monitorError.message);
+    }
+    
+    // Start memory optimization
+    try {
+      memoryOptimizer.start();
+      logger.info('Memory optimization started');
+    } catch (optimizerError) {
+      logger.warn('Memory optimization failed, continuing without optimization:', optimizerError.message);
     }
     
     // Configure server for connection stability
@@ -394,7 +416,6 @@ async function startServer() {
       logger.info(`📱 API available at http://${serverConfig.host}:${serverConfig.port}/api`);
       logger.info(`🏥 Health check at http://${serverConfig.host}:${serverConfig.port}/api/health`);
       logger.info(`🔌 Socket.IO available at http://${serverConfig.host}:${serverConfig.port}`);
-      logger.info(`🔗 Connection settings: keepAlive=${serverConfig.keepAliveTimeout}ms, headers=${serverConfig.headersTimeout}ms, maxConnections=${serverConfig.maxConnections}`);
       
       if (railwayConfig.isRailwayEnvironment()) {
         logger.info('🚂 Running on Railway platform');
@@ -409,4 +430,4 @@ async function startServer() {
 // Start the server
 startServer();
 
-module.exports = { app, server, io, databaseManager }; 
+module.exports = { app, server, io, databaseManager };

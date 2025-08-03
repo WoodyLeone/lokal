@@ -41,6 +41,7 @@ class CrashPrevention {
     this.memoryThreshold = 0.9; // 90% memory usage
     this.healthChecks = new Map();
     this.isShuttingDown = false;
+    this.lastMemoryLogTime = 0; // Track last memory log time
   }
 
   /**
@@ -99,11 +100,20 @@ class CrashPrevention {
       const memUsage = process.memoryUsage();
       const memUsagePercent = memUsage.heapUsed / memUsage.heapTotal;
       
-      logger.info('Memory usage:', {
-        heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
-        heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
-        usagePercent: `${Math.round(memUsagePercent * 100)}%`
-      });
+      // Only log memory usage if it's high or if we haven't logged recently
+      const now = Date.now();
+      const shouldLog = memUsagePercent > this.memoryThreshold || 
+                       !this.lastMemoryLogTime || 
+                       (now - this.lastMemoryLogTime > 300000); // 5 minutes
+      
+      if (shouldLog) {
+        logger.info('Memory usage:', {
+          heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
+          heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
+          usagePercent: `${Math.round(memUsagePercent * 100)}%`
+        });
+        this.lastMemoryLogTime = now;
+      }
 
       // Alert if memory usage is high
       if (memUsagePercent > this.memoryThreshold) {
@@ -124,7 +134,7 @@ class CrashPrevention {
         logger.error('🚨 Critical memory usage, initiating emergency shutdown');
         this.emergencyShutdown();
       }
-    }, 30000); // Check every 30 seconds
+    }, 120000); // Check every 2 minutes (increased from 30 seconds)
 
     // Store interval for cleanup
     this.memoryCheckInterval = memoryCheckInterval;
