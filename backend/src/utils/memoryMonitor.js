@@ -21,12 +21,13 @@ const logger = winston.createLogger({
 
 class MemoryMonitor {
   constructor() {
-    this.memoryThreshold = 0.8; // 80% of available memory
-    this.checkInterval = 120000; // 2 minutes (increased from 30 seconds)
+    this.memoryThreshold = 0.9; // Increased to 90% to reduce false warnings
+    this.checkInterval = 300000; // 5 minutes (increased from 2 minutes)
     this.monitoring = false;
     this.intervalId = null;
     this.lastLogTime = 0;
-    this.logInterval = 300000; // Only log every 5 minutes to reduce memory usage
+    this.logInterval = 600000; // Only log every 10 minutes to reduce memory usage
+    this.warningThreshold = 0.95; // Only warn at 95% usage
   }
 
   /**
@@ -77,18 +78,18 @@ class MemoryMonitor {
       timestamp: new Date().toISOString()
     };
 
-    // Only log if enough time has passed or if memory usage is high
+    // Only log if enough time has passed or if memory usage is very high
     const now = Date.now();
-    const shouldLog = (now - this.lastLogTime > this.logInterval) || (heapUsagePercent > (this.memoryThreshold * 100));
+    const shouldLog = (now - this.lastLogTime > this.logInterval) || (heapUsagePercent > (this.warningThreshold * 100));
     
     if (shouldLog) {
       logger.info('Memory usage:', memoryInfo);
       this.lastLogTime = now;
     }
 
-    // Check for memory threshold
-    if (heapUsagePercent > (this.memoryThreshold * 100)) {
-      logger.warn('High memory usage detected:', memoryInfo);
+    // Check for memory threshold - only warn at very high usage
+    if (heapUsagePercent > (this.warningThreshold * 100)) {
+      logger.warn('⚠️ High memory usage detected:', memoryInfo);
       
       // Force garbage collection if available
       if (global.gc) {

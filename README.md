@@ -1,153 +1,314 @@
-# Lokal - Shoppable Video Platform
+# 🛍️ Lokal - Shoppable Video Platform
 
-A fully functional shoppable video platform that allows users to upload videos, detect objects using AI, and match them to purchasable products.
+A modern React Native application for creating and discovering shoppable videos, powered by Railway PostgreSQL and AI object detection.
 
-## 🎯 Project Status: **PRODUCTION READY** ✅
+## 🎯 Vision
 
-The Lokal project has been completely rebuilt and tested. All major issues have been resolved, and the system is now 100% accurate and reliable.
+**Lokal** is a shoppable video platform where:
+- **Content Creators** upload videos and track items to make them shoppable
+- **AI Technology** automatically detects objects and suggests products
+- **Viewers** interact with videos by clicking on tracked items to shop
+- **Seamless Shopping** - direct purchase from video content
 
-### ✅ **Major Fixes Completed**
-- **Object Detection**: Removed all fake object generation - now only detects real objects
-- **Product Matching**: Accurate matching based on actual video content
-- **Video Processing**: Complete pipeline with proper error handling
-- **Testing**: Comprehensive end-to-end testing completed
+## 🏗️ Architecture
 
-## 🏗 Architecture
-
-### Backend (Node.js + Express + Python)
-- **API Server**: RESTful API with comprehensive endpoints
-- **Object Detection**: YOLOv8 integration for real-time object detection
-- **Database**: Supabase PostgreSQL with RLS policies
-- **File Processing**: Video upload, processing, and cleanup
-- **Product Matching**: Intelligent matching algorithm
-
-### Frontend Applications
-- **React Native App**: Cross-platform mobile application
-- **iOS Native App**: SwiftUI-based native iOS application
+- **Frontend**: React Native with Expo
+- **Database**: Railway PostgreSQL
+- **Authentication**: JWT-based
+- **Backend API**: Railway-hosted Node.js
+- **Object Detection**: Python-based ML pipeline with YOLOv8
+- **Video Processing**: Real-time object tracking and product matching
 
 ## 🚀 Quick Start
 
-### Backend Setup
-```bash
-cd backend
-npm install
-npm run dev
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Expo CLI
+- Railway account (for database)
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd LokalRN
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure Railway PostgreSQL**
+   ```bash
+   # Configure your Railway database connection
+   npm run configure-railway
+   ```
+
+4. **Setup database schema**
+   ```bash
+   npm run setup-railway
+   ```
+
+5. **Test database connection**
+   ```bash
+   npm run test-database
+   ```
+
+6. **Start the development server**
+   ```bash
+   npm start
+   ```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+# Railway PostgreSQL Configuration
+EXPO_PUBLIC_DATABASE_URL=postgresql://postgres:password@mainline.proxy.rlwy.net:25135/railway
+
+# Backend API Configuration
+EXPO_PUBLIC_API_BASE_URL=https://your-backend.railway.app/api
+
+# App Configuration
+EXPO_PUBLIC_APP_NAME=Lokal
+EXPO_PUBLIC_APP_VERSION=1.0.0
 ```
 
-### React Native App
+### Railway PostgreSQL Setup
+
+1. **Create Railway Project**
+   - Go to [Railway](https://railway.app)
+   - Create a new project
+   - Add a PostgreSQL database
+
+2. **Get Connection String**
+   - Go to your PostgreSQL database in Railway
+   - Click "Connect" tab
+   - Copy the "Postgres Connection URL"
+
+3. **Configure Locally**
+   ```bash
+   npm run configure-railway
+   # Paste your connection string when prompted
+   ```
+
+## 🗄️ Database Schema
+
+### Tables
+
+- **users**: User authentication and profiles
+- **profiles**: Extended user information
+- **videos**: Video uploads and metadata with tracking data
+- **products**: Product catalog and matching data
+- **tracked_items**: Item tracking coordinates and timing
+- **analytics**: Video performance and engagement metrics
+
+### Sample Data
+
+The database comes with sample products and a test user:
+- **Test User**: `test@example.com` / `password`
+- **Sample Products**: Nike Air Max 270, Adidas Ultraboost, Apple Watch Series 9, etc.
+
+## 🛠️ Available Scripts
+
 ```bash
-cd LokalRN
-npm install
-npx expo start
+# Development
+npm start              # Start Expo development server
+npm run android        # Start Android emulator
+npm run ios           # Start iOS simulator
+npm run web           # Start web version
+
+# Database Management
+npm run configure-railway     # Configure Railway connection
+npm run test-railway-connection  # Test database connection
+npm run setup-railway         # Setup database schema
+npm run test-database         # Test database operations
+
+# Utilities
+npm run clean                 # Clean and reinstall dependencies
+npm run cleanup-env           # Clean environment file
 ```
 
-### iOS Native App
-```bash
-cd Lokal
-open Lokal.xcodeproj
-```
+## 🔐 Authentication
+
+The app uses JWT-based authentication with Railway PostgreSQL:
+
+- **Registration**: Create new user accounts
+- **Login**: Authenticate with email/password
+- **Profile Management**: Update user information
+- **Session Management**: Automatic token refresh
 
 ## 📱 Features
 
-### Video Upload & Processing
-- Upload videos (15s-3min, up to 500MB)
-- Real-time object detection using YOLOv8
-- Background processing with progress tracking
-- Automatic file cleanup
+### Core Features
+- **Video Upload**: Upload videos from camera roll or local storage
+- **AI Object Detection**: Automatic object detection using YOLOv8
+- **Item Tracking**: Interactive item selection and tracking
+- **Product Matching**: Intelligent product suggestions
+- **Shoppable Videos**: Interactive hotspots and purchase flow
+- **Creator Analytics**: Performance metrics and insights
 
-### Product Matching
-- AI-powered object detection
-- Intelligent product matching
-- Real product suggestions
-- External purchase links
+### Technical Features
+- **Real-time Database**: Railway PostgreSQL with connection pooling
+- **Offline Support**: Local data caching
+- **Error Handling**: Comprehensive error recovery
+- **Performance**: Optimized queries and caching
+- **AI Integration**: Python ML pipeline with Node.js
 
-### User Experience
-- Intuitive mobile interface
-- Real-time status updates
-- Product browsing and discovery
-- Secure authentication
+## 🎬 Shoppable Video Experience
 
-## 🔧 Technical Stack
+### For Content Creators
+1. **Upload Video**: Select video from camera roll
+2. **AI Detection**: Automatic object detection
+3. **Item Selection**: Choose items to track
+4. **Product Matching**: AI suggests relevant products
+5. **Publish**: Share shoppable video with audience
 
-### Backend
-- **Node.js** + **Express** - API server
-- **Python** + **YOLOv8** - Object detection
-- **Supabase** - Database and authentication
-- **Redis** - Caching and sessions
+### For Viewers
+1. **Discover**: Browse shoppable video feed
+2. **Interact**: Tap on tracked items in videos
+3. **Shop**: View product details and pricing
+4. **Purchase**: Direct link to product pages
+5. **Engage**: Like, share, and comment on videos
 
-### Frontend
-- **React Native** - Cross-platform mobile app
-- **SwiftUI** - iOS native app
-- **Expo** - Development framework
-
-### AI/ML
-- **YOLOv8** - Real-time object detection
-- **OpenCV** - Video frame extraction
-- **Custom matching algorithm** - Product matching
-
-## 📊 Test Results
-
-The system has been thoroughly tested and verified:
+## 🏗️ Project Structure
 
 ```
-✅ Backend health check passed
-✅ Video upload completed  
-✅ Processing flow completed
-✅ No fake objects generated
-✅ Real detection and matching working
-
-🎯 Detected objects: [ 'car' ]
-📦 Matched products: 4
-   1. Tesla Model 3 (Tesla) - $38990
-   2. Ford F-150 (Ford) - $32445  
-   3. Honda Civic (Honda) - $22950
-   4. Herman Miller Aeron Chair (Herman Miller) - $1495
+LokalRN/
+├── src/
+│   ├── components/          # Reusable UI components
+│   │   ├── ShoppableVideoPlayer.tsx
+│   │   ├── ProductCard.tsx
+│   │   ├── ItemTrackingOverlay.tsx
+│   │   └── ...
+│   ├── screens/            # App screens
+│   │   ├── HomeScreen.tsx  # TikTok-style video feed
+│   │   ├── UploadScreen.tsx # Video creation flow
+│   │   ├── ProfileScreen.tsx # Creator profile
+│   │   └── AuthScreen.tsx
+│   ├── services/           # Business logic and API calls
+│   ├── config/             # Configuration files
+│   ├── types/              # TypeScript type definitions
+│   └── utils/              # Utility functions
+├── scripts/                # Database and setup scripts
+├── assets/                 # Static assets
+└── docs/                   # Documentation
 ```
 
-## 🔒 Security & Performance
+## 🔧 Development
 
-### Security Features
-- File validation and sanitization
-- Row-level security (RLS) policies
-- Secure authentication
-- Input validation
+### Database Development
 
-### Performance Optimizations
-- Background video processing
-- Automatic file cleanup
-- Redis caching
-- Efficient frame extraction
+```bash
+# Test database connection
+npm run test-railway-connection
 
-## 📚 Documentation
+# Setup fresh database
+npm run setup-railway
 
-- **[API Documentation](backend/API_DOCUMENTATION.md)** - Complete API reference
-- **[Project Update](PROJECT_UPDATE_2025-07-29.md)** - Detailed progress summary
-- **[Backend README](backend/README.md)** - Backend setup and configuration
+# Test all operations
+npm run test-database
+```
 
-## 🎯 Production Ready
+### Code Quality
 
-The Lokal project is now **production-ready** with:
+- **TypeScript**: Full type safety
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **Expo**: Modern React Native development
 
-1. **Accurate Object Detection**: Real YOLOv8 detection with no fake data
-2. **Complete Backend**: Full API with proper error handling
-3. **Mobile Apps**: React Native and iOS native applications
-4. **Database**: Secure Supabase integration
-5. **Testing**: Comprehensive end-to-end testing completed
+## 🚀 Deployment
+
+### Railway Deployment
+
+1. **Database**: Already configured on Railway
+2. **Backend API**: Deployed on Railway
+3. **Frontend**: Build and deploy to app stores
+
+### Production Checklist
+
+- [ ] Environment variables configured
+- [ ] Database schema deployed
+- [ ] AI object detection pipeline running
+- [ ] Product catalog populated
+- [ ] Analytics tracking enabled
+- [ ] Payment processing configured
+- [ ] Content moderation in place
+
+## 🎯 Key Features
+
+### AI-Powered Object Detection
+- **YOLOv8 Integration**: Real-time object detection
+- **Frame Extraction**: Automatic video processing
+- **Confidence Filtering**: Quality control for detections
+- **Fallback Systems**: Reliable processing pipeline
+
+### Interactive Video Experience
+- **Hotspot Tracking**: Clickable items in videos
+- **Product Overlays**: Seamless shopping integration
+- **Timeline Tracking**: Item visibility throughout video
+- **Purchase Flow**: Direct product links
+
+### Creator Tools
+- **Video Analytics**: Performance insights
+- **Product Management**: Catalog organization
+- **Revenue Tracking**: Sales and commission data
+- **Content Moderation**: Quality control tools
+
+### Viewer Experience
+- **TikTok-Style Feed**: Vertical video scrolling
+- **Interactive Shopping**: Tap-to-shop functionality
+- **Product Discovery**: AI-powered recommendations
+- **Social Features**: Like, share, comment
+
+## 🔮 Future Roadmap
+
+### Phase 1: Core Platform ✅
+- [x] Video upload and processing
+- [x] AI object detection
+- [x] Product matching
+- [x] Interactive video player
+- [x] Basic analytics
+
+### Phase 2: Enhanced Features
+- [ ] Advanced AI tracking
+- [ ] Multi-platform sharing
+- [ ] Creator marketplace
+- [ ] Advanced analytics
+- [ ] Mobile app stores
+
+### Phase 3: Scale & Monetization
+- [ ] Creator revenue sharing
+- [ ] Brand partnerships
+- [ ] Advanced AI features
+- [ ] Global expansion
+- [ ] Enterprise features
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Add tests if applicable
 5. Submit a pull request
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
+## 🆘 Support
+
+For support and questions:
+- Create an issue in the repository
+- Check the documentation
+- Review the troubleshooting guide
+
 ---
 
-**Last Updated**: July 29, 2025  
-**Status**: Production Ready ✅  
-**Testing**: Complete ✅ 
+**Lokal** - Transforming videos into shoppable experiences with AI-powered object detection and seamless e-commerce integration. 

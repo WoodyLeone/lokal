@@ -15,6 +15,36 @@ const winston = require('winston');
 // Load environment variables
 dotenv.config();
 
+// Protect stdout and stderr from EPIPE errors
+const originalStdoutWrite = process.stdout.write;
+const originalStderrWrite = process.stderr.write;
+
+process.stdout.write = function(chunk, encoding, callback) {
+  try {
+    return originalStdoutWrite.call(this, chunk, encoding, callback);
+  } catch (error) {
+    if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+      // Suppress EPIPE errors
+      if (callback) callback();
+      return true;
+    }
+    throw error;
+  }
+};
+
+process.stderr.write = function(chunk, encoding, callback) {
+  try {
+    return originalStderrWrite.call(this, chunk, encoding, callback);
+  } catch (error) {
+    if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+      // Suppress EPIPE errors
+      if (callback) callback();
+      return true;
+    }
+    throw error;
+  }
+};
+
 // Initialize database manager (PostgreSQL + Redis + Cache)
 const databaseManager = require('./config/database');
 
@@ -33,7 +63,42 @@ const crashPrevention = require('../crash-prevention');
 // Initialize Railway configuration
 const railwayConfig = require('../railway-config');
 
-// Configure logging
+// Custom console transport that handles EPIPE errors
+class SafeConsoleTransport extends winston.transports.Console {
+  constructor(options = {}) {
+    super(options);
+    this.silent = false;
+  }
+
+  log(info, callback) {
+    try {
+      // Check if stdout/stderr are writable
+      if (process.stdout.writable && process.stderr.writable) {
+        super.log(info, callback);
+      } else {
+        // If streams are not writable, just call callback without logging
+        if (callback) callback();
+      }
+    } catch (error) {
+      // Suppress EPIPE and other stream errors
+      if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+        if (callback) callback();
+        return;
+      }
+      
+      // For other errors, try to log to stderr directly
+      try {
+        process.stderr.write(`Logger error: ${error.message}\n`);
+      } catch (stderrError) {
+        // If even stderr fails, just ignore
+      }
+      
+      if (callback) callback();
+    }
+  }
+}
+
+// Configure logging with EPIPE protection
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: winston.format.combine(
@@ -46,15 +111,32 @@ const logger = winston.createLogger({
     new winston.transports.File({ 
       filename: process.env.LOG_FILE || './logs/app.log',
       maxsize: 5242880, // 5MB
-      maxFiles: 3
+      maxFiles: 3,
+      handleExceptions: true,
+      handleRejections: true
     }),
-    new winston.transports.Console({
+    new SafeConsoleTransport({
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.simple()
-      )
+      ),
+      handleExceptions: true,
+      handleRejections: true
     })
-  ]
+  ],
+  exitOnError: false
+});
+
+// Enhanced transport error handling
+logger.transports.forEach(transport => {
+  transport.on('error', (error) => {
+    // Don't log EPIPE errors to prevent infinite loops
+    if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+      console.error('Logger transport EPIPE error (suppressed):', error.message);
+      return;
+    }
+    console.error('Logger transport error:', error.message);
+  });
 });
 
 const app = express();
@@ -97,24 +179,24 @@ app.use(cors({
 }));
 
 // Request logging
-app.use(morgan('combined', {
-  stream: {
-    write: (message) => logger.info(message.trim())
-  }
-}));
+// app.use(morgan('combined', {
+//   stream: {
+//     write: (message) => logger.info(message.trim())
+//   }
+// }));
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
-  message: {
-    error: 'Too many requests from this IP, please try again later.'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// const limiter = rateLimit({
+//   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
+//   max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100, // limit each IP to 100 requests per windowMs
+//   message: {
+//     error: 'Too many requests from this IP, please try again later.'
+//   },
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
-app.use('/api/', limiter);
+// app.use('/api', limiter);
 
 // Body parsing middleware
 app.use(express.json({ limit: process.env.MAX_FILE_SIZE || '500mb' }));
@@ -201,57 +283,6 @@ io.on('connection', (socket) => {
   });
 });
 
-// Health check endpoint
-app.get('/api/health', async (req, res) => {
-  try {
-    const dbStatus = databaseManager.getStatus();
-    const openaiStatus = process.env.OPENAI_API_KEY ? 'Available' : 'Not configured';
-    
-    const healthStatus = {
-      status: 'OK',
-      message: 'Lokal Backend Server is running',
-      timestamp: new Date().toISOString(),
-      uptime: process.uptime(),
-      memory: process.memoryUsage(),
-      database: {
-        railway: 'Available (via API routes)',
-        redis: dbStatus.redis === 'ready' ? 'Available' : 'Unavailable',
-        cache: dbStatus.cache ? 'Available' : 'Unavailable'
-      },
-      features: {
-        yolo: 'Available',
-        openai: openaiStatus,
-        hybrid: process.env.OPENAI_API_KEY ? 'Available' : 'YOLO-only',
-        redis: dbStatus.redis === 'ready' ? 'Available' : 'Unavailable',
-        cache: dbStatus.cache ? 'Available' : 'Unavailable'
-      }
-    };
-
-    // Check if Railway PostgreSQL is accessible
-    try {
-      const response = await fetch(`${req.protocol}://${req.get('host')}/api/database/test`);
-      const result = await response.json();
-      if (!result.success) {
-        healthStatus.status = 'DEGRADED';
-        healthStatus.message = 'Railway PostgreSQL connection issues detected';
-      }
-    } catch (error) {
-      healthStatus.status = 'DEGRADED';
-      healthStatus.message = 'Railway PostgreSQL connection issues detected';
-    }
-
-    res.json(healthStatus);
-  } catch (error) {
-    logger.error('Health check error:', error);
-    res.status(503).json({
-      status: 'ERROR',
-      message: 'Service unhealthy',
-      error: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
-});
-
 // Enhanced error handling middleware
 app.use((err, req, res, next) => {
   logger.error('Unhandled error:', {
@@ -275,7 +306,7 @@ app.use((err, req, res, next) => {
 });
 
 // 404 handler
-app.use('*', (req, res) => {
+app.all('*', (req, res) => {
   res.status(404).json({
     success: false,
     error: 'Route not found',

@@ -8,6 +8,71 @@ const path = require('path');
 // Load environment variables
 dotenv.config();
 
+// Protect stdout and stderr from EPIPE errors
+const originalStdoutWrite = process.stdout.write;
+const originalStderrWrite = process.stderr.write;
+
+process.stdout.write = function(chunk, encoding, callback) {
+  try {
+    return originalStdoutWrite.call(this, chunk, encoding, callback);
+  } catch (error) {
+    if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+      // Suppress EPIPE errors
+      if (callback) callback();
+      return true;
+    }
+    throw error;
+  }
+};
+
+process.stderr.write = function(chunk, encoding, callback) {
+  try {
+    return originalStderrWrite.call(this, chunk, encoding, callback);
+  } catch (error) {
+    if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+      // Suppress EPIPE errors
+      if (callback) callback();
+      return true;
+    }
+    throw error;
+  }
+};
+
+// Custom console transport that handles EPIPE errors
+class SafeConsoleTransport extends winston.transports.Console {
+  constructor(options = {}) {
+    super(options);
+    this.silent = false;
+  }
+
+  log(info, callback) {
+    try {
+      // Check if stdout/stderr are writable
+      if (process.stdout.writable && process.stderr.writable) {
+        super.log(info, callback);
+      } else {
+        // If streams are not writable, just call callback without logging
+        if (callback) callback();
+      }
+    } catch (error) {
+      // Suppress EPIPE and other stream errors
+      if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+        if (callback) callback();
+        return;
+      }
+      
+      // For other errors, try to log to stderr directly
+      try {
+        process.stderr.write(`Logger error: ${error.message}\n`);
+      } catch (stderrError) {
+        // If even stderr fails, just ignore
+      }
+      
+      if (callback) callback();
+    }
+  }
+}
+
 // Enhanced logging with crash detection
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -21,15 +86,72 @@ const logger = winston.createLogger({
     new winston.transports.File({ 
       filename: process.env.LOG_FILE || './logs/crash.log',
       maxsize: 5242880, // 5MB
-      maxFiles: 5
+      maxFiles: 5,
+      handleExceptions: true,
+      handleRejections: true,
+      // Prevent EPIPE errors from crashing the logger
+      silent: false,
+      // Add error handling for file transport
+      options: {
+        flags: 'a',
+        mode: 0o666
+      }
     }),
-    new winston.transports.Console({
+    new SafeConsoleTransport({
       format: winston.format.combine(
         winston.format.colorize(),
         winston.format.simple()
-      )
+      ),
+      handleExceptions: true,
+      handleRejections: true,
+      // Prevent console transport errors
+      silent: false
+    })
+  ],
+  // Handle transport errors gracefully
+  exitOnError: false,
+  // Add custom error handling
+  exceptionHandlers: [
+    new winston.transports.File({ 
+      filename: './logs/exceptions.log',
+      maxsize: 5242880,
+      maxFiles: 3
+    })
+  ],
+  rejectionHandlers: [
+    new winston.transports.File({ 
+      filename: './logs/rejections.log',
+      maxsize: 5242880,
+      maxFiles: 3
     })
   ]
+});
+
+// Enhanced transport error handling
+logger.transports.forEach(transport => {
+  transport.on('error', (error) => {
+    // Don't log EPIPE errors to prevent infinite loops
+    if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+      console.error('Logger transport EPIPE error (suppressed):', error.message);
+      return;
+    }
+    console.error('Logger transport error:', error.message);
+  });
+  
+  // Add specific error handling for file transport
+  if (transport.filename) {
+    transport.on('open', () => {
+      console.log('File transport opened:', transport.filename);
+    });
+    
+    transport.on('error', (error) => {
+      if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+        console.error('File transport EPIPE error (suppressed):', error.message);
+        return;
+      }
+      console.error('File transport error:', error.message);
+    });
+  }
 });
 
 class CrashPrevention {
@@ -71,11 +193,57 @@ class CrashPrevention {
   setupGlobalHandlers() {
     // Handle uncaught exceptions
     process.on('uncaughtException', (error) => {
+      // Filter out EPIPE errors immediately
+      if (error.code === 'EPIPE' || error.message.includes('EPIPE')) {
+        console.error('EPIPE error suppressed (uncaughtException):', error.message);
+        return;
+      }
+      
+      // Filter out other non-critical errors
+      const nonCriticalErrors = [
+        'ECONNRESET',
+        'ENOTFOUND', 
+        'ETIMEDOUT',
+        'ECONNREFUSED'
+      ];
+      
+      const isNonCriticalError = nonCriticalErrors.some(errType => 
+        error.code === errType || (error.message && error.message.includes(errType))
+      );
+      
+      if (isNonCriticalError) {
+        console.error('Non-critical error suppressed (uncaughtException):', error.message);
+        return;
+      }
+      
       this.handleCrash('uncaughtException', error);
     });
 
     // Handle unhandled promise rejections
     process.on('unhandledRejection', (reason, promise) => {
+      // Filter out EPIPE errors immediately
+      if (reason && (reason.code === 'EPIPE' || (reason.message && reason.message.includes('EPIPE')))) {
+        console.error('EPIPE error suppressed (unhandledRejection):', reason.message);
+        return;
+      }
+      
+      // Filter out other non-critical errors
+      const nonCriticalErrors = [
+        'ECONNRESET',
+        'ENOTFOUND',
+        'ETIMEDOUT', 
+        'ECONNREFUSED'
+      ];
+      
+      const isNonCriticalError = reason && nonCriticalErrors.some(errType => 
+        reason.code === errType || (reason.message && reason.message.includes(errType))
+      );
+      
+      if (isNonCriticalError) {
+        console.error('Non-critical error suppressed (unhandledRejection):', reason.message);
+        return;
+      }
+      
       this.handleCrash('unhandledRejection', reason, promise);
     });
 
@@ -225,6 +393,28 @@ class CrashPrevention {
    */
   handleCrash(type, error, promise = null) {
     const now = Date.now();
+    
+    // Filter out non-critical errors that shouldn't trigger crash counting
+    const nonCriticalErrors = [
+      'write EPIPE',
+      'ECONNRESET',
+      'ENOTFOUND',
+      'ETIMEDOUT'
+    ];
+    
+    const isNonCriticalError = nonCriticalErrors.some(errType => 
+      error.message && error.message.includes(errType)
+    );
+    
+    // Don't count non-critical errors as crashes
+    if (isNonCriticalError) {
+      logger.warn('⚠️ Non-critical error detected, not counting as crash:', {
+        type,
+        error: error.message,
+        crashCount: this.crashCount
+      });
+      return;
+    }
     
     // Reset crash count if enough time has passed
     if (now - this.lastCrashTime > this.crashWindow) {

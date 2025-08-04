@@ -1,62 +1,62 @@
 {
-  "name": "lokal-workspace",
+  "name": "lokalrn",
   "version": "1.0.0",
-  "description": "Lokal - Shoppable Video App Workspace",
-  "private": true,
-  "workspaces": [
-    "LokalRN",
-    "backend",
-    "Lokal/backend"
-  ],
+  "main": "index.js",
   "scripts": {
-    "install:all": "npm install && npm run install:rn && npm run install:backend && npm run install:backend-lokal",
-    "install:rn": "cd LokalRN && npm install",
-    "install:backend": "cd backend && npm install",
-    "install:backend-lokal": "cd Lokal/backend && npm install",
-    "start:rn": "cd LokalRN && npm start",
-    "start:backend": "cd backend && npm run dev",
-    "start:backend-lokal": "cd Lokal/backend && npm run dev",
-    "dev": "concurrently \"npm run start:backend\" \"npm run start:rn\"",
-    "dev:all": "concurrently \"npm run start:backend\" \"npm run start:backend-lokal\" \"npm run start:rn\"",
-    "build:rn": "cd LokalRN && npm run build",
-    "test": "npm run test:backend && npm run test:rn",
-    "test:backend": "cd backend && npm test",
-    "test:rn": "cd LokalRN && npm test",
-    "clean": "npm run clean:node_modules && npm run clean:lock",
-    "clean:node_modules": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +",
-    "clean:lock": "find . -name 'package-lock.json' -type f -delete"
-  },
-  "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.28.0",
-    "concurrently": "^8.2.2",
-    "typescript": "^5.8.3"
-  },
-  "keywords": [
-    "react-native",
-    "expo",
-    "nodejs",
-    "express",
-    "video-processing",
-    "object-detection",
-    "shoppable-video",
-    "monorepo"
-  ],
-  "author": "Lokal Team",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/your-org/lokal.git"
-  },
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "clean": "rm -rf node_modules && npm install",
+    "configure-railway": "node scripts/configure-railway.js",
+    "test-railway-connection": "node scripts/test-railway-connection.js",
+    "setup-railway": "node scripts/setup-railway-fixed.js",
+    "test-database": "node scripts/test-database-simple.js",
+    "update-app-to-railway": "node scripts/update-app-to-railway.js",
+    "cleanup-env": "node scripts/cleanup-env.js",
+    "setup-environments": "node scripts/setup-environments.js",
+    "start:dev": "EXPO_ENV=development expo start",
+    "start:prod": "EXPO_ENV=production expo start",
+    "build:dev": "EXPO_ENV=development expo build",
+    "build:prod": "EXPO_ENV=production expo build",
+    "deploy:dev": "railway up --environment development",
+    "deploy:prod": "railway up --environment production",
+    "test:dev": "EXPO_ENV=development npm run test-database",
+    "test:prod": "EXPO_ENV=production npm run test-database",
+    "switch:dev": "node scripts/switch-env.js dev",
+    "switch:prod": "node scripts/switch-env.js prod",
+    "quick-setup": "node scripts/quick-setup.js",
+    "create-env-files": "node scripts/create-env-files.js",
+    "cleanup-and-configure": "node scripts/cleanup-and-configure.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.28.2",
-    "ansi-regex": "^6.1.0",
-    "color-convert": "^3.1.0",
-    "color-name": "^2.0.0",
-    "postgres": "^3.4.7",
-    "simple-swizzle": "^0.2.2"
-  }
+    "@expo/vector-icons": "^14.1.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@react-native-community/netinfo": "^11.1.0",
+    "@react-navigation/bottom-tabs": "^7.4.5",
+    "@react-navigation/native": "^7.1.17",
+    "axios": "^1.11.0",
+    "expo": "^53.0.20",
+    "expo-av": "^15.1.7",
+    "expo-file-system": "^18.1.11",
+    "expo-haptics": "^14.1.4",
+    "expo-image-picker": "^16.1.4",
+    "expo-linear-gradient": "^14.1.5",
+    "expo-status-bar": "~2.2.3",
+    "expo-web-browser": "^14.2.0",
+    "react": "19.0.0",
+    "react-native": "0.79.5",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-safe-area-context": "5.4.0",
+    "react-native-screens": "~4.11.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/plugin-transform-runtime": "^7.28.0",
+    "@react-native-community/cli": "^19.1.1",
+    "@types/react": "~19.0.10",
+    "typescript": "~5.8.3"
+  },
+  "private": true
 }
