@@ -1,7 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator, Modal } from 'react-native';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
+import { Hotspot } from '../types';
 
 interface VideoPlayerProps {
   uri: string;
@@ -11,6 +12,9 @@ interface VideoPlayerProps {
   loop?: boolean;
   showControls?: boolean;
   style?: any;
+  hotspots?: Hotspot[];
+  onHotspotPress?: (hotspot: Hotspot) => void;
+  isInteractive?: boolean;
 }
 
 const { width } = Dimensions.get('window');
@@ -23,7 +27,10 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   autoPlay = false, 
   loop = false, 
   showControls = true,
-  style 
+  style,
+  hotspots = [],
+  onHotspotPress,
+  isInteractive = false
 }) => {
   const videoRef = useRef<Video>(null);
   const [status, setStatus] = useState<AVPlaybackStatus | null>(null);
@@ -31,6 +38,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [showControlsOverlay, setShowControlsOverlay] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [selectedHotspot, setSelectedHotspot] = useState<Hotspot | null>(null);
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -73,9 +83,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   const handleProgress = (data: AVPlaybackStatus) => {
-    if (data.isLoaded && onProgress) {
+    if (data.isLoaded) {
       const progress = data.positionMillis / (data.durationMillis || 1);
-      onProgress(progress);
+      const timeInSeconds = data.positionMillis / 1000;
+      setCurrentTime(timeInSeconds);
+      if (onProgress) {
+        onProgress(progress);
+      }
     }
   };
 
@@ -95,6 +109,21 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     if (videoRef.current && status?.isLoaded && status.durationMillis) {
       const newPosition = position * status.durationMillis;
       await videoRef.current.setPositionAsync(newPosition);
+    }
+  };
+
+  // Check if hotspot should be visible at current time
+  const isHotspotVisible = (hotspot: Hotspot) => {
+    return currentTime >= hotspot.startTime && currentTime <= hotspot.endTime;
+  };
+
+  // Handle hotspot press
+  const handleHotspotPress = (hotspot: Hotspot) => {
+    if (onHotspotPress) {
+      onHotspotPress(hotspot);
+    } else {
+      setSelectedHotspot(hotspot);
+      setShowProductModal(true);
     }
   };
 
@@ -128,6 +157,41 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         onLoad={handleLoad}
         onError={handleError}
       />
+      
+      {/* Interactive Hotspots */}
+      {isInteractive && hotspots.map((hotspot) => {
+        const isVisible = isHotspotVisible(hotspot);
+        if (!isVisible) return null;
+        
+        return (
+          <TouchableOpacity
+            key={hotspot.id}
+            style={{
+              position: 'absolute',
+              left: `${hotspot.x}%`,
+              top: `${hotspot.y}%`,
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: 'rgba(99, 102, 241, 0.8)',
+              borderWidth: 3,
+              borderColor: '#ffffff',
+              justifyContent: 'center',
+              alignItems: 'center',
+              transform: [{ translateX: -20 }, { translateY: -20 }],
+              shadowColor: '#000',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+              elevation: 5,
+            }}
+            onPress={() => handleHotspotPress(hotspot)}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="bag" size={20} color="#ffffff" />
+          </TouchableOpacity>
+        );
+      })}
       
       {/* Loading Overlay */}
       {isLoading && (
@@ -228,6 +292,78 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           </View>
         </TouchableOpacity>
       )}
+
+      {/* Product Modal */}
+      <Modal
+        visible={showProductModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowProductModal(false)}
+      >
+        <View style={{
+          flex: 1,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 20,
+        }}>
+          <View style={{
+            backgroundColor: '#ffffff',
+            borderRadius: 16,
+            padding: 24,
+            width: '100%',
+            maxWidth: 400,
+          }}>
+            {selectedHotspot?.product && (
+              <>
+                <View style={{ alignItems: 'center', marginBottom: 20 }}>
+                  <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#000000', marginBottom: 8 }}>
+                    {selectedHotspot.product.name}
+                  </Text>
+                  <Text style={{ fontSize: 18, color: '#6366f1', fontWeight: '600' }}>
+                    ${selectedHotspot.product.price}
+                  </Text>
+                </View>
+                
+                <View style={{ flexDirection: 'row', gap: 12 }}>
+                  <TouchableOpacity
+                    style={{
+                      flex: 1,
+                      backgroundColor: '#374151',
+                      paddingVertical: 12,
+                      borderRadius: 8,
+                      alignItems: 'center',
+                    }}
+                    onPress={() => setShowProductModal(false)}
+                  >
+                    <Text style={{ color: '#ffffff', fontWeight: '600' }}>
+                      Cancel
+                    </Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    style={{
+                      flex: 1,
+                      backgroundColor: '#6366f1',
+                      paddingVertical: 12,
+                      borderRadius: 8,
+                      alignItems: 'center',
+                    }}
+                    onPress={() => {
+                      // Handle purchase - open link or navigate to product
+                      setShowProductModal(false);
+                    }}
+                  >
+                    <Text style={{ color: '#ffffff', fontWeight: '600' }}>
+                      Buy Now
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }; 

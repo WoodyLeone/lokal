@@ -101,6 +101,110 @@ router.post('/auth/signup', async (req, res) => {
   }
 });
 
+// Email verification endpoints for streamlined auth
+router.post('/auth/email-verification', async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({
+        success: false,
+        error: 'Valid email address required'
+      });
+    }
+    
+    // Check if user exists
+    let user = await authService.getUserByEmail(email);
+    
+    if (!user) {
+      // Create new user with email only (no password)
+      user = await authService.createUserWithEmail(email);
+    }
+    
+    // Generate verification token
+    const verificationToken = authService.generateVerificationToken(user);
+    
+    // Store verification token
+    await authService.storeVerificationToken(user.id, verificationToken);
+    
+    // TODO: Send actual email with verification link
+    // For now, just return success
+    console.log(`📧 Verification email would be sent to: ${email}`);
+    console.log(`🔗 Verification token: ${verificationToken}`);
+    
+    res.json({
+      success: true,
+      data: {
+        message: 'Verification email sent',
+        email: email
+      }
+    });
+  } catch (error) {
+    console.error('Email verification error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+router.post('/auth/verify-email', async (req, res) => {
+  try {
+    const { token } = req.body;
+    
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        error: 'Verification token required'
+      });
+    }
+    
+    // Verify token and get user
+    const user = await authService.verifyEmailToken(token);
+    
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: 'Invalid or expired verification token'
+      });
+    }
+    
+    // Generate authentication tokens
+    const accessToken = authService.generateAccessToken(user);
+    const { refreshToken, tokenHash } = authService.generateRefreshToken(user);
+    
+    // Store refresh token
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7); // 7 days
+    await authService.storeRefreshToken(user.id, tokenHash, expiresAt);
+    
+    // Mark email as verified
+    await authService.markEmailVerified(user.id);
+    
+    res.json({
+      success: true,
+      data: {
+        user: {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          created_at: user.created_at
+        },
+        session: { 
+          access_token: accessToken,
+          refresh_token: refreshToken
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Verify email error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 router.post('/auth/signin', async (req, res) => {
   try {
     const { email, password } = req.body;

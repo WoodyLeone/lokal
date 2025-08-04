@@ -118,4 +118,49 @@ export class DemoAuthService {
       password: 'demo123'
     };
   }
+
+  // Email-only authentication for streamlined login
+  static async signInWithEmail(email: string): Promise<AuthResponse> {
+    console.log('🔧 Demo email auth:', { email });
+    
+    // Validate email format
+    if (!email || !email.includes('@')) {
+      return { 
+        data: null, 
+        error: { message: 'Please enter a valid email address' } 
+      };
+    }
+
+    // Create or get existing demo user
+    let user = DEMO_USERS.find(u => u.email === email);
+    
+    if (!user) {
+      // Create new demo user with email
+      user = {
+        id: `demo-user-${Date.now()}`,
+        email,
+        password: 'demo123',
+        username: email.split('@')[0],
+        name: email.split('@')[0]
+      };
+      DEMO_USERS.push(user);
+    }
+
+    // Create session
+    const session = {
+      user: {
+        id: user.id,
+        email: user.email,
+        user_metadata: { username: user.username }
+      },
+      session: {
+        access_token: `demo-token-${Date.now()}`,
+        refresh_token: `demo-refresh-${Date.now()}`,
+        expires_at: Date.now() + (24 * 60 * 60 * 1000) // 24 hours
+      }
+    };
+
+    currentSession = session;
+    return { data: session, error: null };
+  }
 } 

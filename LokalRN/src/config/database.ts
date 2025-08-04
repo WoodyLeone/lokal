@@ -47,7 +47,11 @@ export const executeQuery = async <T = any>(
     const result = await response.json();
     return { data: result.data, error: null };
   } catch (error) {
-    console.error('API call error:', error);
+    // Don't log 401 errors as they're expected when no authentication token is provided
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    if (!errorMessage.includes('401')) {
+      console.error('API call error:', error);
+    }
     return { 
       data: null, 
       error: error instanceof Error ? error.message : 'API call failed' 
@@ -68,7 +72,7 @@ export const executeTransaction = async <T = any>(
       }
       results.push(result.data);
     }
-    return { data: results, error: null };
+    return { data: results as T, error: null };
   } catch (error) {
     console.error('Transaction error:', error);
     return { 

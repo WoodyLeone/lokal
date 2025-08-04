@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { View, Text, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, ActivityIndicator, Alert, StatusBar } from 'react-native';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { UploadScreen } from './src/screens/UploadScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
@@ -10,6 +10,7 @@ import { AuthScreen } from './src/screens/AuthScreen';
 import { DatabaseService } from './src/services/databaseService';
 import { validateEnvironment, ENV } from './src/config/env';
 import { isDemoMode } from './src/utils/helpers';
+import { Colors, Typography } from './src/utils/designSystem';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,9 +58,6 @@ export default function App() {
         } else {
           setIsAuthenticated(false);
         }
-
-        // Note: No real-time auth state changes with Railway PostgreSQL
-        // User will need to manually sign in/out
       }
     } catch (error) {
       console.error('Auth check error:', error);
@@ -94,59 +92,49 @@ export default function App() {
   // Loading screen
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#0f172a' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000' }}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
         <View style={{ alignItems: 'center' }}>
           <View style={{
             width: 80,
             height: 80,
             borderRadius: 40,
-            backgroundColor: '#6366f1',
+            backgroundColor: Colors.primary,
             justifyContent: 'center',
             alignItems: 'center',
-            marginBottom: 16,
+            marginBottom: 20,
           }}>
             <Ionicons name="videocam" size={40} color="#fff" />
           </View>
-          <Text style={{ color: '#f8fafc', fontSize: 24, fontWeight: 'bold', marginBottom: 8 }}>
+          <Text style={{ color: '#fff', fontSize: Typography.xl, fontWeight: 'bold', marginBottom: 8 }}>
             Lokal
           </Text>
-          <ActivityIndicator size="large" color="#6366f1" style={{ marginTop: 16 }} />
-          <Text style={{ color: '#94a3b8', marginTop: 16 }}>Loading...</Text>
+          <Text style={{ color: '#94a3b8', fontSize: Typography.md }}>
+            Shoppable Video Platform
+          </Text>
         </View>
       </View>
     );
   }
 
-  // Environment configuration error screen
+  // Environment errors
   if (envErrors.length > 0) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#0f172a', padding: 24 }}>
-        <View style={{ alignItems: 'center', maxWidth: 400 }}>
-          <Ionicons name="warning" size={64} color="#f59e0b" style={{ marginBottom: 16 }} />
-          <Text style={{ color: '#f8fafc', fontSize: 24, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
-            Configuration Required
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000', padding: 20 }}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <View style={{ alignItems: 'center' }}>
+          <Ionicons name="warning" size={64} color="#ef4444" />
+          <Text style={{ color: '#fff', fontSize: Typography.lg, fontWeight: 'bold', marginTop: 20, marginBottom: 10 }}>
+            Configuration Error
           </Text>
-          <Text style={{ color: '#94a3b8', fontSize: 16, textAlign: 'center', marginBottom: 24, lineHeight: 24 }}>
-            Please configure the following environment variables to run the app:
+          <Text style={{ color: '#94a3b8', fontSize: Typography.md, textAlign: 'center', marginBottom: 20 }}>
+            Please check your environment configuration
           </Text>
-          
-          <View style={{ width: '100%', marginBottom: 24 }}>
-            {envErrors.map((error, index) => (
-              <View key={index} style={{ 
-                backgroundColor: '#1e293b', 
-                padding: 12, 
-                borderRadius: 8, 
-                marginBottom: 8 
-              }}>
-                <Text style={{ color: '#f59e0b', fontSize: 14 }}>• {error}</Text>
-              </View>
-            ))}
-          </View>
-
-          <Text style={{ color: '#64748b', fontSize: 14, textAlign: 'center', lineHeight: 20 }}>
-            Create a .env file in the LokalRN directory with your Railway PostgreSQL credentials.{'\n'}
-            See README.md for detailed setup instructions.
-          </Text>
+          {envErrors.map((error, index) => (
+            <Text key={index} style={{ color: '#ef4444', fontSize: Typography.sm, marginBottom: 5 }}>
+              • {error}
+            </Text>
+          ))}
         </View>
       </View>
     );
@@ -154,12 +142,18 @@ export default function App() {
 
   // Authentication screen
   if (!isAuthenticated) {
-    return <AuthScreen />;
+    return (
+      <View style={{ flex: 1, backgroundColor: '#000' }}>
+        <StatusBar barStyle="light-content" backgroundColor="#000" />
+        <AuthScreen />
+      </View>
+    );
   }
 
-  // Main app with navigation
+  // Main app with tab navigation
   return (
     <NavigationContainer>
+      <StatusBar barStyle="light-content" backgroundColor="#000" />
       <Tab.Navigator
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -177,48 +171,42 @@ export default function App() {
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
-          tabBarActiveTintColor: '#007AFF',
-          tabBarInactiveTintColor: '#8E8E93',
+          tabBarActiveTintColor: Colors.primary,
+          tabBarInactiveTintColor: '#64748b',
           tabBarStyle: {
-            backgroundColor: '#ffffff',
-            borderTopColor: '#C6C6C8',
+            backgroundColor: '#000',
+            borderTopColor: '#1f2937',
+            borderTopWidth: 1,
+            height: 60,
             paddingBottom: 8,
             paddingTop: 8,
-            height: 60,
           },
-          headerStyle: {
-            backgroundColor: '#ffffff',
-          },
-          headerTintColor: '#000000',
-          headerTitleStyle: {
-            fontWeight: 'bold',
+          headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: '500',
           },
         })}
       >
         <Tab.Screen 
           name="Home" 
           component={HomeScreen}
-          options={{ title: 'Discover' }}
+          options={{
+            title: 'Discover',
+          }}
         />
         <Tab.Screen 
           name="Upload" 
           component={UploadScreen}
-          options={{ title: 'Upload Video' }}
+          options={{
+            title: 'Create',
+          }}
         />
         <Tab.Screen 
           name="Profile" 
           component={ProfileScreen}
-          options={{ 
+          options={{
             title: 'Profile',
-            headerRight: () => (
-              <Ionicons 
-                name="log-out-outline" 
-                size={24} 
-                color="#007AFF" 
-                style={{ marginRight: 16 }}
-                onPress={handleSignOut}
-              />
-            ),
           }}
         />
       </Tab.Navigator>

@@ -230,6 +230,122 @@ class AuthService {
   }
 
   /**
+   * Create user with email only (for streamlined auth)
+   */
+  async createUserWithEmail(email) {
+    try {
+      // Check if user already exists
+      const existingUser = await this.getUserByEmail(email);
+      if (existingUser) {
+        return existingUser;
+      }
+
+      // Generate username from email
+      const username = email.split('@')[0];
+
+      // Create user without password (will be set after email verification)
+      const result = await this.pool.query(
+        'INSERT INTO users (email, username, email_verified) VALUES ($1, $2, false) RETURNING id, email, username, created_at',
+        [email, username]
+      );
+
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error creating user with email:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Generate verification token
+   */
+  generateVerificationToken(user) {
+    return jwt.sign(
+      {
+        userId: user.id,
+        email: user.email,
+        type: 'verification'
+      },
+      this.jwtSecret,
+      { expiresIn: '1h' } // 1 hour expiry
+    );
+  }
+
+  /**
+   * Store verification token
+   */
+  async storeVerificationToken(userId, token) {
+    try {
+      const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + 1); // 1 hour from now
+      
+      await this.pool.query(
+        'INSERT INTO verification_tokens (user_id, token_hash, expires_at) VALUES ($1, $2, $3) ON CONFLICT (user_id) DO UPDATE SET token_hash = $2, expires_at = $3',
+        [userId, tokenHash, expiresAt]
+      );
+    } catch (error) {
+      console.error('Error storing verification token:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Verify email token
+   */
+  async verifyEmailToken(token) {
+    try {
+      const decoded = jwt.verify(token, this.jwtSecret);
+      if (decoded.type !== 'verification') {
+        throw new Error('Invalid token type');
+      }
+
+      // Check if verification token exists and is not expired
+      const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+      const result = await this.pool.query(
+        'SELECT * FROM verification_tokens WHERE token_hash = $1 AND user_id = $2 AND expires_at > NOW()',
+        [tokenHash, decoded.userId]
+      );
+
+      if (result.rows.length === 0) {
+        throw new Error('Verification token not found or expired');
+      }
+
+      // Get user
+      const user = await this.getUserById(decoded.userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      return user;
+    } catch (error) {
+      console.error('Error verifying email token:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Mark email as verified
+   */
+  async markEmailVerified(userId) {
+    try {
+      await this.pool.query(
+        'UPDATE users SET email_verified = true, updated_at = NOW() WHERE id = $1',
+        [userId]
+      );
+      
+      // Clean up verification token
+      await this.pool.query(
+        'DELETE FROM verification_tokens WHERE user_id = $1',
+        [userId]
+      );
+    } catch (error) {
+      console.error('Error marking email verified:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Verify user credentials
    */
   async verifyCredentials(email, password) {
@@ -268,8 +384,9 @@ class AuthService {
         CREATE TABLE IF NOT EXISTS users (
           id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
           email VARCHAR(255) UNIQUE NOT NULL,
-          password_hash VARCHAR(255) NOT NULL,
+          password_hash VARCHAR(255),
           username VARCHAR(255) NOT NULL,
+          email_verified BOOLEAN DEFAULT false,
           created_at TIMESTAMP DEFAULT NOW(),
           updated_at TIMESTAMP DEFAULT NOW()
         )
@@ -280,6 +397,16 @@ class AuthService {
         CREATE TABLE IF NOT EXISTS refresh_tokens (
           id SERIAL PRIMARY KEY,
           user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          token_hash VARCHAR(255) NOT NULL UNIQUE,
+          expires_at TIMESTAMP NOT NULL,
+          created_at TIMESTAMP DEFAULT NOW()
+        )
+      `);
+
+      // Create verification_tokens table if it doesn't exist
+      await this.pool.query(`
+        CREATE TABLE IF NOT EXISTS verification_tokens (
+          user_id UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
           token_hash VARCHAR(255) NOT NULL UNIQUE,
           expires_at TIMESTAMP NOT NULL,
           created_at TIMESTAMP DEFAULT NOW()
@@ -301,6 +428,18 @@ class AuthService {
       
       await this.pool.query(`
         CREATE INDEX IF NOT EXISTS idx_refresh_tokens_expires_at ON refresh_tokens(expires_at)
+      `);
+
+      await this.pool.query(`
+        CREATE INDEX IF NOT EXISTS idx_verification_tokens_user_id ON verification_tokens(user_id)
+      `);
+
+      await this.pool.query(`
+        CREATE INDEX IF NOT EXISTS idx_verification_tokens_token_hash ON verification_tokens(token_hash)
+      `);
+
+      await this.pool.query(`
+        CREATE INDEX IF NOT EXISTS idx_verification_tokens_expires_at ON verification_tokens(expires_at)
       `);
 
       console.log('✅ Auth tables initialized successfully');

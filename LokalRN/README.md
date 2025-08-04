@@ -1,6 +1,14 @@
-# 🚀 Lokal - React Native App
+# 🛍️ Lokal - Shoppable Video Platform
 
-A modern React Native application for product matching and video analysis, powered by Railway PostgreSQL.
+A modern React Native application for creating and discovering shoppable videos, powered by Railway PostgreSQL and AI object detection.
+
+## 🎯 Vision
+
+**Lokal** is a shoppable video platform where:
+- **Content Creators** upload videos and track items to make them shoppable
+- **AI Technology** automatically detects objects and suggests products
+- **Viewers** interact with videos by clicking on tracked items to shop
+- **Seamless Shopping** - direct purchase from video content
 
 ## 🏗️ Architecture
 
@@ -8,7 +16,8 @@ A modern React Native application for product matching and video analysis, power
 - **Database**: Railway PostgreSQL
 - **Authentication**: JWT-based
 - **Backend API**: Railway-hosted Node.js
-- **Object Detection**: Python-based ML pipeline
+- **Object Detection**: Python-based ML pipeline with YOLOv8
+- **Video Processing**: Real-time object tracking and product matching
 
 ## 🚀 Quick Start
 
@@ -95,14 +104,16 @@ EXPO_PUBLIC_APP_VERSION=1.0.0
 
 - **users**: User authentication and profiles
 - **profiles**: Extended user information
-- **videos**: Video uploads and metadata
+- **videos**: Video uploads and metadata with tracking data
 - **products**: Product catalog and matching data
+- **tracked_items**: Item tracking coordinates and timing
+- **analytics**: Video performance and engagement metrics
 
 ### Sample Data
 
 The database comes with sample products and a test user:
 - **Test User**: `test@example.com` / `password`
-- **Sample Products**: Nike Air Max 270, Adidas Ultraboost, etc.
+- **Sample Products**: Nike Air Max 270, Adidas Ultraboost, Apple Watch Series 9, etc.
 
 ## 🛠️ Available Scripts
 
@@ -136,17 +147,35 @@ The app uses JWT-based authentication with Railway PostgreSQL:
 ## 📱 Features
 
 ### Core Features
-- **User Authentication**: Secure login/registration
-- **Product Catalog**: Browse and search products
-- **Video Upload**: Upload and process videos
-- **Object Detection**: AI-powered product matching
-- **Profile Management**: User settings and preferences
+- **Video Upload**: Upload videos from camera roll or local storage
+- **AI Object Detection**: Automatic object detection using YOLOv8
+- **Item Tracking**: Interactive item selection and tracking
+- **Product Matching**: Intelligent product suggestions
+- **Shoppable Videos**: Interactive hotspots and purchase flow
+- **Creator Analytics**: Performance metrics and insights
 
 ### Technical Features
 - **Real-time Database**: Railway PostgreSQL with connection pooling
 - **Offline Support**: Local data caching
 - **Error Handling**: Comprehensive error recovery
 - **Performance**: Optimized queries and caching
+- **AI Integration**: Python ML pipeline with Node.js
+
+## 🎬 Shoppable Video Experience
+
+### For Content Creators
+1. **Upload Video**: Select video from camera roll
+2. **AI Detection**: Automatic object detection
+3. **Item Selection**: Choose items to track
+4. **Product Matching**: AI suggests relevant products
+5. **Publish**: Share shoppable video with audience
+
+### For Viewers
+1. **Discover**: Browse shoppable video feed
+2. **Interact**: Tap on tracked items in videos
+3. **Shop**: View product details and pricing
+4. **Purchase**: Direct link to product pages
+5. **Engage**: Like, share, and comment on videos
 
 ## 🏗️ Project Structure
 
@@ -154,7 +183,15 @@ The app uses JWT-based authentication with Railway PostgreSQL:
 LokalRN/
 ├── src/
 │   ├── components/          # Reusable UI components
+│   │   ├── ShoppableVideoPlayer.tsx
+│   │   ├── ProductCard.tsx
+│   │   ├── ItemTrackingOverlay.tsx
+│   │   └── ...
 │   ├── screens/            # App screens
+│   │   ├── HomeScreen.tsx  # TikTok-style video feed
+│   │   ├── UploadScreen.tsx # Video creation flow
+│   │   ├── ProfileScreen.tsx # Creator profile
+│   │   └── AuthScreen.tsx
 │   ├── services/           # Business logic and API calls
 │   ├── config/             # Configuration files
 │   ├── types/              # TypeScript type definitions
@@ -198,72 +235,80 @@ npm run test-database
 
 - [ ] Environment variables configured
 - [ ] Database schema deployed
-- [ ] API endpoints tested
-- [ ] Authentication working
-- [ ] Error handling implemented
-- [ ] Performance optimized
+- [ ] AI object detection pipeline running
+- [ ] Product catalog populated
+- [ ] Analytics tracking enabled
+- [ ] Payment processing configured
+- [ ] Content moderation in place
 
-## 🐛 Troubleshooting
+## 🎯 Key Features
 
-### Common Issues
+### AI-Powered Object Detection
+- **YOLOv8 Integration**: Real-time object detection
+- **Frame Extraction**: Automatic video processing
+- **Confidence Filtering**: Quality control for detections
+- **Fallback Systems**: Reliable processing pipeline
 
-**Database Connection Failed**
-```bash
-# Test connection
-npm run test-railway-connection
+### Interactive Video Experience
+- **Hotspot Tracking**: Clickable items in videos
+- **Product Overlays**: Seamless shopping integration
+- **Timeline Tracking**: Item visibility throughout video
+- **Purchase Flow**: Direct product links
 
-# Reconfigure if needed
-npm run configure-railway
-```
+### Creator Tools
+- **Video Analytics**: Performance insights
+- **Product Management**: Catalog organization
+- **Revenue Tracking**: Sales and commission data
+- **Content Moderation**: Quality control tools
 
-**App Won't Start**
-```bash
-# Clean and reinstall
-npm run clean
+### Viewer Experience
+- **TikTok-Style Feed**: Vertical video scrolling
+- **Interactive Shopping**: Tap-to-shop functionality
+- **Product Discovery**: AI-powered recommendations
+- **Social Features**: Like, share, comment
 
-# Check environment
-npm run test-database
-```
+## 🔮 Future Roadmap
 
-**Authentication Issues**
-- Verify database is running
-- Check JWT configuration
-- Test with sample credentials
+### Phase 1: Core Platform ✅
+- [x] Video upload and processing
+- [x] AI object detection
+- [x] Product matching
+- [x] Interactive video player
+- [x] Basic analytics
 
-## 📊 Performance
+### Phase 2: Enhanced Features
+- [ ] Advanced AI tracking
+- [ ] Multi-platform sharing
+- [ ] Creator marketplace
+- [ ] Advanced analytics
+- [ ] Mobile app stores
 
-### Database Performance
-- **Connection Pooling**: Optimized with Railway
-- **Query Optimization**: Indexed tables
-- **Caching**: Local data caching
-- **Real-time**: Live data updates
-
-### App Performance
-- **Lazy Loading**: Components load on demand
-- **Image Optimization**: Compressed assets
-- **Memory Management**: Efficient state management
-- **Network Optimization**: Minimal API calls
+### Phase 3: Scale & Monetization
+- [ ] Creator revenue sharing
+- [ ] Brand partnerships
+- [ ] Advanced AI features
+- [ ] Global expansion
+- [ ] Enterprise features
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Add tests if applicable
 5. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🆘 Support
 
 For support and questions:
-- Check the troubleshooting section
-- Review the documentation
-- Test database connectivity
-- Verify environment configuration
+- Create an issue in the repository
+- Check the documentation
+- Review the troubleshooting guide
 
 ---
 
-**Built with ❤️ using Railway PostgreSQL and React Native** 
+**Lokal** - Transforming videos into shoppable experiences with AI-powered object detection and seamless e-commerce integration. 

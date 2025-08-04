@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { VideoPlayer } from '../components/VideoPlayer';
 import { ProductCard } from '../components/ProductCard';
-import { ProductInput } from '../components/ProductInput';
-import { ProductMatchSelector } from '../components/ProductMatchSelector';
-import { DebugDataDisplay } from '../components/DebugDataDisplay';
-import { VideoFrontend, ProductFrontend } from '../types';
+import { ItemTrackingOverlay } from '../components/ItemTrackingOverlay';
+import { VideoFrontend, ProductFrontend, TrackedItem, VideoMetadata } from '../types';
 import { ApiService, checkNetworkStatus } from '../services/api';
 import { DemoDataService } from '../services/demoData';
 import { productMatchingService } from '../services/productMatchingService';
 import { formatDate, validateVideo } from '../utils/helpers';
 import { ENV } from '../config/env';
-import { LearningService } from '../services/learningService';
-import { FeedbackModal } from '../components/FeedbackModal';
+import { Colors, Typography, Spacing, BorderRadius, Shadows } from '../utils/designSystem';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 export const UploadScreen: React.FC = () => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
@@ -24,95 +23,46 @@ export const UploadScreen: React.FC = () => {
   const [processing, setProcessing] = useState(false);
   const [detectedObjects, setDetectedObjects] = useState<string[]>([]);
   const [matchedProducts, setMatchedProducts] = useState<ProductFrontend[]>([]);
-  const [currentStep, setCurrentStep] = useState<'select' | 'preview' | 'upload' | 'process' | 'verify' | 'match' | 'complete'>('select');
-  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
-  const [finalSelection, setFinalSelection] = useState<string>('');
+  const [currentStep, setCurrentStep] = useState<'select' | 'preview' | 'track' | 'upload' | 'process' | 'complete'>('select');
   const [videoId, setVideoId] = useState<string>('');
   const [useDemoMode, setUseDemoMode] = useState(false);
   const [processingProgress, setProcessingProgress] = useState(0);
   const [processingStatus, setProcessingStatus] = useState('');
   
-  // Product matching state
-  const [manualProductName, setManualProductName] = useState('');
-  const [affiliateLink, setAffiliateLink] = useState('');
-  const [isProductInputExpanded, setIsProductInputExpanded] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
-  const [finalProductMatch, setFinalProductMatch] = useState<{
-    productName: string;
-    matchType: 'manual' | 'ai_suggestion' | 'yolo_direct';
-  } | null>(null);
+  // Item tracking state
+  const [trackedItems, setTrackedItems] = useState<TrackedItem[]>([]);
+  const [videoMetadata, setVideoMetadata] = useState<VideoMetadata | null>(null);
+  const [currentVideoTime, setCurrentVideoTime] = useState(0);
+  const [isTrackingMode, setIsTrackingMode] = useState(false);
+  const [selectedTrackingItem, setSelectedTrackingItem] = useState<string | null>(null);
 
   const pickVideo = async () => {
     try {
-      // Request permissions first
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission Required', 'Please grant permission to access your photo library.');
-        return;
-      }
-
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Videos,
         allowsEditing: true,
+        aspect: [9, 16], // Vertical video format for mobile
         quality: 0.8,
         videoMaxDuration: ENV.MAX_VIDEO_DURATION,
-        aspect: [16, 9], // 16:9 aspect ratio
       });
 
       if (!result.canceled && result.assets[0]) {
         const asset = result.assets[0];
+        const durationInSeconds = asset.duration || 0;
         
-        // Convert duration to seconds if it's in milliseconds
-        let durationInSeconds = asset.duration;
-        if (asset.duration && asset.duration > 1000) {
-          // If duration is greater than 1000, it's likely in milliseconds
-          durationInSeconds = asset.duration / 1000;
-          console.log(`Converted duration from ${asset.duration}ms to ${durationInSeconds}s`);
-        } else if (asset.duration && asset.duration < 1) {
-          // If duration is less than 1, it might be in minutes, convert to seconds
-          durationInSeconds = asset.duration * 60;
-          console.log(`Converted duration from ${asset.duration}min to ${durationInSeconds}s`);
-        } else if (asset.duration && asset.duration > 60) {
-          // If duration is greater than 60, it might already be in seconds
-          durationInSeconds = asset.duration;
-          console.log(`Using duration as seconds: ${durationInSeconds}s`);
-        }
-        
-        // Debug logging
-        console.log('Selected video:', {
-          uri: asset.uri,
-          fileSize: asset.fileSize,
-          originalDuration: asset.duration,
-          durationInSeconds: durationInSeconds,
-          type: asset.type,
-          fileName: asset.fileName
-        });
-        
-        // Additional debug for duration validation
-        console.log('Duration validation debug:', {
-          originalDuration: asset.duration,
-          durationInSeconds: durationInSeconds,
-          maxDuration: ENV.MAX_VIDEO_DURATION,
-          isValid: durationInSeconds ? durationInSeconds <= ENV.MAX_VIDEO_DURATION : false
-        });
-        
-        // Additional debug info
-        console.log('Video validation settings:', {
-          maxDuration: ENV.MAX_VIDEO_DURATION,
-          maxSize: ENV.MAX_VIDEO_SIZE,
-          supportedFormats: ENV.SUPPORTED_VIDEO_FORMATS
-        });
-        
-        // Validate video with converted duration
-        const validation = validateVideo(asset.uri, asset.fileSize || undefined, durationInSeconds || undefined);
-        console.log('Video validation result:', validation);
-        
+        // Validate video
+        const validation = validateVideo(asset);
         if (!validation.isValid) {
-          Alert.alert('Invalid Video', validation.error || 'Please select a valid video file.');
+          Alert.alert('Invalid Video', validation.error);
           return;
         }
 
         setSelectedVideo(asset.uri);
+        setVideoMetadata({
+          duration: durationInSeconds || 0,
+          width: asset.width || 1920,
+          height: asset.height || 1080
+        });
         setCurrentStep('preview');
       }
     } catch (error) {
@@ -121,14 +71,12 @@ export const UploadScreen: React.FC = () => {
     }
   };
 
-  // Simulate object detection for demo mode with context awareness
+  // Enhanced object detection with tracking capabilities
   const simulateObjectDetection = (): Promise<string[]> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        // Analyze video title and description for context
         const videoText = `${title} ${description}`.toLowerCase();
         
-        // Define context-based object sets
         const contextObjects: { [key: string]: string[] } = {
           person: ['person', 'shirt', 'pants', 'sneakers', 'hat', 'watch', 'glasses'],
           outdoor: ['person', 'car', 'bicycle', 'tree', 'building', 'sky', 'road'],
@@ -139,819 +87,720 @@ export const UploadScreen: React.FC = () => {
           sports: ['person', 'sneakers', 'shirt', 'pants', 'bicycle', 'ball'],
           pets: ['person', 'dog', 'cat', 'chair', 'couch', 'floor']
         };
+
+        // Determine context and return relevant objects
+        let detectedObjects: string[] = [];
         
-        // Determine context based on video content
-        let context = 'person'; // default
-        if (videoText.includes('walk') || videoText.includes('outdoor') || videoText.includes('street')) {
-          context = 'outdoor';
+        if (videoText.includes('fashion') || videoText.includes('clothes') || videoText.includes('outfit')) {
+          detectedObjects = contextObjects.fashion;
         } else if (videoText.includes('tech') || videoText.includes('computer') || videoText.includes('laptop')) {
-          context = 'tech';
-        } else if (videoText.includes('fashion') || videoText.includes('clothes') || videoText.includes('style')) {
-          context = 'fashion';
+          detectedObjects = contextObjects.tech;
         } else if (videoText.includes('kitchen') || videoText.includes('cooking') || videoText.includes('food')) {
-          context = 'kitchen';
-        } else if (videoText.includes('sport') || videoText.includes('exercise') || videoText.includes('gym')) {
-          context = 'sports';
+          detectedObjects = contextObjects.kitchen;
+        } else if (videoText.includes('sport') || videoText.includes('fitness') || videoText.includes('workout')) {
+          detectedObjects = contextObjects.sports;
         } else if (videoText.includes('pet') || videoText.includes('dog') || videoText.includes('cat')) {
-          context = 'pets';
-        } else if (videoText.includes('indoor') || videoText.includes('home') || videoText.includes('room')) {
-          context = 'indoor';
+          detectedObjects = contextObjects.pets;
+        } else {
+          // Default to indoor context
+          detectedObjects = contextObjects.indoor;
         }
+
+        // Add some randomness and limit to 3-5 objects
+        const shuffled = detectedObjects.sort(() => 0.5 - Math.random());
+        const finalObjects = shuffled.slice(0, Math.floor(Math.random() * 3) + 3);
         
-        // Get context-appropriate objects
-        const contextObjectSet = contextObjects[context] || contextObjects.person;
-        
-        // Always include 'person' for videos with people
-        const selectedObjects: string[] = ['person'];
-        
-        // Add 2-4 additional context-appropriate objects
-        const numAdditionalObjects = Math.floor(Math.random() * 3) + 2;
-        const availableObjects = contextObjectSet.filter(obj => obj !== 'person');
-        
-        for (let i = 0; i < numAdditionalObjects && availableObjects.length > 0; i++) {
-          const randomIndex = Math.floor(Math.random() * availableObjects.length);
-          const selectedObject = availableObjects.splice(randomIndex, 1)[0];
-          if (!selectedObjects.includes(selectedObject)) {
-            selectedObjects.push(selectedObject);
-          }
-        }
-        
-        console.log(`🎭 Demo detection context: ${context}, objects: ${selectedObjects.join(', ')}`);
-        resolve(selectedObjects);
-      }, 2000); // Simulate 2-second processing time
+        resolve(finalObjects);
+      }, 2000);
     });
+  };
+
+  // Initialize tracked items from detected objects
+  const initializeTrackedItems = (objects: string[]) => {
+    const items: TrackedItem[] = objects.map((object, index) => ({
+      id: `item_${index}`,
+      name: object,
+      x: 20 + (index * 20), // Spread items horizontally
+      y: 30 + (index * 15), // Spread items vertically
+      startTime: 0,
+      endTime: videoMetadata?.duration || 0,
+      isSelected: false
+    }));
+    setTrackedItems(items);
+  };
+
+  // Handle video progress for tracking
+  const handleVideoProgress = (progress: number) => {
+    const currentTime = (videoMetadata?.duration || 0) * progress;
+    setCurrentVideoTime(currentTime);
+  };
+
+  // Handle video load
+  const handleVideoLoad = (duration: number) => {
+    if (videoMetadata) {
+      setVideoMetadata({ ...videoMetadata, duration });
+    }
+  };
+
+  // Toggle item selection for tracking
+  const toggleItemSelection = (itemId: string) => {
+    setTrackedItems(prev => prev.map(item => 
+      item.id === itemId ? { ...item, isSelected: !item.isSelected } : item
+    ));
+  };
+
+  // Update item position (for drag and drop)
+  const updateItemPosition = (itemId: string, x: number, y: number) => {
+    setTrackedItems(prev => prev.map(item => 
+      item.id === itemId ? { ...item, x, y } : item
+    ));
+  };
+
+  // Update item timing
+  const updateItemTiming = (itemId: string, startTime: number, endTime: number) => {
+    setTrackedItems(prev => prev.map(item => 
+      item.id === itemId ? { ...item, startTime, endTime } : item
+    ));
+  };
+
+  const startObjectDetection = async () => {
+    setProcessing(true);
+    setProcessingStatus('Detecting objects in video...');
+    setProcessingProgress(0);
+
+    try {
+      // Simulate progress
+      const progressInterval = setInterval(() => {
+        setProcessingProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 200);
+
+      const objects = await simulateObjectDetection();
+      setDetectedObjects(objects);
+      initializeTrackedItems(objects);
+      
+      clearInterval(progressInterval);
+      setProcessingProgress(100);
+      setProcessingStatus('Object detection complete!');
+      
+      setTimeout(() => {
+        setCurrentStep('track');
+        setProcessing(false);
+      }, 1000);
+
+    } catch (error) {
+      console.error('Object detection error:', error);
+      Alert.alert('Error', 'Failed to detect objects. Please try again.');
+      setProcessing(false);
+    }
+  };
+
+  const startProductMatching = async () => {
+    setProcessing(true);
+    setProcessingStatus('Finding products for tracked items...');
+    setProcessingProgress(0);
+
+    try {
+      const selectedItems = trackedItems.filter(item => item.isSelected);
+      if (selectedItems.length === 0) {
+        Alert.alert('No Items Selected', 'Please select at least one item to track.');
+        setProcessing(false);
+        return;
+      }
+
+      // Simulate progress
+      const progressInterval = setInterval(() => {
+        setProcessingProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + 15;
+        });
+      }, 300);
+
+      const products = await productMatchingService.matchProducts(selectedItems.map(item => item.name));
+      setMatchedProducts(products);
+      
+      clearInterval(progressInterval);
+      setProcessingProgress(100);
+      setProcessingStatus('Product matching complete!');
+      
+      setTimeout(() => {
+        setCurrentStep('upload');
+        setProcessing(false);
+      }, 1000);
+
+    } catch (error) {
+      console.error('Product matching error:', error);
+      Alert.alert('Error', 'Failed to match products. Please try again.');
+      setProcessing(false);
+    }
   };
 
   const uploadVideo = async () => {
     if (!selectedVideo || !title.trim()) {
-      Alert.alert('Error', 'Please select a video and enter a title');
+      Alert.alert('Error', 'Please select a video and enter a title.');
       return;
     }
 
+    const selectedItems = trackedItems.filter(item => item.isSelected);
+    if (selectedItems.length === 0) {
+      Alert.alert('No Items Selected', 'Please select at least one item to track.');
+      return;
+    }
+
+    setUploading(true);
+
     try {
-      setUploading(true);
-      setCurrentStep('process');
+      // Simulate upload progress
+      setProcessingStatus('Uploading video...');
+      setProcessingProgress(0);
 
-      // Test network connectivity first
-      console.log('🌐 Testing network connectivity before upload...');
-      const networkStatus = await checkNetworkStatus();
-      console.log('🌐 Network status:', networkStatus);
-      
-      if (!networkStatus.connected) {
-        console.log('❌ No backend connectivity, using demo mode');
-        setUseDemoMode(true);
-        await simulateObjectDetection().then(async (objects) => {
-          setDetectedObjects(objects);
-          console.log('🎭 Demo mode - detected objects:', objects);
-          
-          const products = DemoDataService.matchProductsByObjects(objects);
-          setMatchedProducts(products);
-          console.log('🎭 Demo mode - matched products:', products);
-          
-          // Process hybrid product matching in demo mode
-          console.log('🔄 Demo mode - processing hybrid product matching...');
-          const matchingResult = await productMatchingService.processHybridMatching(
-            'demo-video-id',
-            objects,
-            manualProductName,
-            affiliateLink
-          );
-          
-          if (matchingResult.success) {
-            setAiSuggestions(matchingResult.aiSuggestions);
-            console.log('✅ Demo mode - hybrid matching completed. AI suggestions:', matchingResult.aiSuggestions);
-            setCurrentStep('match');
-          } else {
-            console.log('⚠️ Demo mode - hybrid matching failed, proceeding to verify step');
-            setCurrentStep('verify');
+      const progressInterval = setInterval(() => {
+        setProcessingProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
           }
+          return prev + 10;
         });
-        return;
-      }
+      }, 500);
 
-      console.log(`✅ Backend connectivity confirmed: ${networkStatus.url} (${networkStatus.latency}ms)`);
+      // In demo mode, simulate upload
+      if (useDemoMode) {
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        const demoVideoId = `demo_${Date.now()}`;
+        setVideoId(demoVideoId);
+      } else {
+        // Real upload to backend
+        const response = await ApiService.uploadVideo({
+          title: title.trim(),
+          description: description.trim(),
+          videoUri: selectedVideo,
+          trackedItems: selectedItems,
+          detectedObjects,
+          matchedProducts
+        });
 
-      // Always try to use real backend first for YOLO detection
-      try {
-        console.log('🚀 Starting video upload process...');
-        console.log('📱 Selected video:', selectedVideo);
-        console.log('📝 Title:', title);
-        console.log('📝 Description:', description);
-        
-        // Upload video metadata to backend for processing
-        let uploadResponse;
-        try {
-          console.log('📤 Attempting file upload...');
-          // Try file upload first (better for larger files)
-          uploadResponse = await ApiService.uploadVideoFile(selectedVideo, title, description, manualProductName, affiliateLink);
-          console.log('📤 File upload response:', uploadResponse);
-        } catch (error) {
-          console.log('❌ File upload failed, falling back to URL upload:', error);
-          // Fallback to URL upload
-          uploadResponse = await ApiService.uploadVideo('', title, description, manualProductName, affiliateLink);
-          console.log('📤 URL upload response:', uploadResponse);
-        }
-        
-        // Validate upload response
-        if (!uploadResponse) {
-          throw new Error('No upload response received');
-        }
-        
-        if (!uploadResponse.success) {
-          throw new Error(uploadResponse.error || 'Upload failed');
-        }
-        
-        if (!uploadResponse.videoId) {
-          throw new Error('Upload succeeded but no video ID returned');
-        }
-
-        // Store video ID for product matching
-        setVideoId(uploadResponse.videoId);
-
-        console.log('✅ Video uploaded successfully, starting object detection...');
-        console.log('🎯 Video ID for detection:', uploadResponse.videoId);
-
-        // Wait for video processing to complete
-        console.log('⏳ Waiting for video processing to complete...');
-        setProcessingStatus('Processing video...');
-        setProcessingProgress(0);
-        
-        const processingResult = await ApiService.waitForVideoProcessing(
-          uploadResponse.videoId, 
-          300000, // 5 minutes max wait
-          (progress, status) => {
-            setProcessingProgress(progress);
-            setProcessingStatus(`Processing: ${status} (${progress}%)`);
-          }
-        );
-        
-        if (!processingResult.success) {
-          throw new Error(processingResult.error || 'Video processing failed');
-        }
-        
-        setProcessingProgress(100);
-        setProcessingStatus('Processing completed!');
-        
-        console.log('✅ Video processing completed successfully');
-        console.log('🎯 Detected objects:', processingResult.objects);
-        console.log('🛍️ Matched products:', processingResult.products);
-        
-        // Ensure we have the correct data structure
-        const detectedObjectsArray = Array.isArray(processingResult.objects) ? processingResult.objects : [];
-        const matchedProductsArray = Array.isArray(processingResult.products) ? processingResult.products : [];
-        
-        console.log('🔧 Processed detected objects array:', detectedObjectsArray);
-        console.log('🔧 Processed matched products array:', matchedProductsArray);
-        
-        if (detectedObjectsArray.length > 0) {
-          setDetectedObjects(detectedObjectsArray);
-          console.log('✅ Real YOLO detection results set:', detectedObjectsArray);
-
-          if (matchedProductsArray.length > 0) {
-            setMatchedProducts(matchedProductsArray);
-            console.log('✅ Setting matched products:', matchedProductsArray);
-          } else {
-            setMatchedProducts([]);
-            console.log('✅ No products matched');
-          }
-          
-          // Process hybrid product matching
-          console.log('🔄 Processing hybrid product matching...');
-          const matchingResult = await productMatchingService.processHybridMatching(
-            uploadResponse.videoId,
-            detectedObjectsArray,
-            manualProductName,
-            affiliateLink
-          );
-          
-          if (matchingResult.success) {
-            const aiSuggestionsArray = Array.isArray(matchingResult.aiSuggestions) ? matchingResult.aiSuggestions : [];
-            setAiSuggestions(aiSuggestionsArray);
-            console.log('✅ Hybrid matching completed. AI suggestions:', aiSuggestionsArray);
-            
-            // Ensure we have data before moving to match step
-            if (aiSuggestionsArray.length > 0 || matchedProductsArray.length > 0) {
-              setCurrentStep('match');
-              console.log('✅ Moving to match step with data');
-            } else {
-              setCurrentStep('verify');
-              console.log('✅ Moving to verify step (no suggestions/products)');
-            }
-          } else {
-            console.log('⚠️ Hybrid matching failed, proceeding to verify step');
-            setCurrentStep('verify');
-          }
-          setUseDemoMode(false);
+        if (response.success && response.videoId) {
+          setVideoId(response.videoId);
         } else {
-          console.log('⚠️ No objects detected. Setting step to verify with empty results.');
-          setDetectedObjects([]);
-          setMatchedProducts([]);
-          setCurrentStep('verify');
-          setUseDemoMode(false);
+          throw new Error(response.error || 'Upload failed');
         }
-        
-      } catch (backendError) {
-        console.error('❌ Backend processing failed, falling back to demo mode:', backendError);
-        
-        // Fallback to demo mode
-        setUseDemoMode(true);
-        await simulateObjectDetection().then(async (objects) => {
-          setDetectedObjects(objects);
-          console.log('🎭 Demo mode - detected objects:', objects);
-          
-          // Match products using demo service
-          const products = DemoDataService.matchProductsByObjects(objects);
-          setMatchedProducts(products);
-          console.log('🎭 Demo mode - matched products:', products);
-          
-          console.log('🎭 Demo mode - setting step to verify');
-          setCurrentStep('verify');
-        });
       }
+
+      clearInterval(progressInterval);
+      setProcessingProgress(100);
+      setProcessingStatus('Upload complete!');
+      
+      setTimeout(() => {
+        setCurrentStep('complete');
+        setUploading(false);
+      }, 1000);
 
     } catch (error) {
-      console.error('❌ Upload error:', error);
+      console.error('Upload error:', error);
+      Alert.alert('Upload Failed', 'Failed to upload video. Please try again.');
       setUploading(false);
-      setCurrentStep('upload');
-      Alert.alert('Error', 'Failed to upload video. Please try again.');
     }
   };
 
-  const resetForm = () => {
+  const resetUpload = () => {
     setSelectedVideo(null);
     setTitle('');
     setDescription('');
     setDetectedObjects([]);
     setMatchedProducts([]);
+    setTrackedItems([]);
+    setVideoMetadata(null);
+    setCurrentVideoTime(0);
     setCurrentStep('select');
-    setUseDemoMode(false);
-    setUploading(false);
-    
-    // Reset product matching state
-    setManualProductName('');
-    setAffiliateLink('');
-    setIsProductInputExpanded(false);
-    setAiSuggestions([]);
     setVideoId('');
-    setFinalProductMatch(null);
+    setProcessingProgress(0);
+    setProcessingStatus('');
   };
 
-  const handleConfirmProductMatch = async (productName: string, matchType: 'manual' | 'ai_suggestion' | 'yolo_direct') => {
-    try {
-      console.log('✅ Product match confirmed:', { productName, matchType });
-      
-      setFinalProductMatch({
-        productName,
-        matchType
-      });
-
-      // Record final selection for learning
-      setFinalSelection(productName);
-      await LearningService.updateFinalSelection(videoId, productName);
-
-      // Show feedback modal
-      setShowFeedbackModal(true);
-      
-    } catch (error) {
-      console.error('❌ Error confirming product match:', error);
-      Alert.alert('Error', 'Failed to confirm product match. Please try again.');
-    }
-  };
-
-  const handleFeedbackSubmitted = () => {
-    setShowFeedbackModal(false);
-    setCurrentStep('complete');
-  };
-
-  const handleSkipFeedback = () => {
-    setShowFeedbackModal(false);
-    setCurrentStep('complete');
-  };
-
-  const handleSkipProductMatch = () => {
-    console.log('⏭️ Skipping product match');
-    setCurrentStep('complete');
-  };
-
-  return (
-    <ScrollView style={{ flex: 1, backgroundColor: '#ffffff' }}>
-      <View style={{ padding: 20 }}>
-        {/* Header */}
-        <Text style={{ color: '#000000', fontSize: 34, fontWeight: '700', marginBottom: 24, textAlign: 'center' }}>
-          Upload Video
-        </Text>
-
-        {/* Demo Mode Notice */}
-        {useDemoMode && (
-          <View style={{ 
-            backgroundColor: '#f0f9ff', 
-            padding: 16, 
-            marginBottom: 24, 
-            borderRadius: 12,
-            borderWidth: 1,
-            borderColor: '#0ea5e9'
-          }}>
-            <Text style={{ color: '#0c4a6e', fontSize: 16, fontWeight: '600', marginBottom: 4 }}>
-              Demo Mode
-            </Text>
-            <Text style={{ color: '#0369a1', fontSize: 14 }}>
-              Using simulated object detection and demo products.
-            </Text>
-          </View>
-        )}
-
-        {/* Step Indicator */}
-        <View style={{ flexDirection: 'row', marginBottom: 32, justifyContent: 'center' }}>
-          {['select', 'preview', 'upload', 'process', 'verify', 'match', 'complete'].map((step, index) => (
-            <View key={step} style={{ flexDirection: 'row', alignItems: 'center' }}>
+  const renderStepContent = () => {
+    switch (currentStep) {
+      case 'select':
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: Spacing.lg }}>
+            <View style={{ alignItems: 'center', marginBottom: Spacing.xl }}>
               <View style={{
-                width: 28,
-                height: 28,
-                borderRadius: 14,
-                backgroundColor: currentStep === step ? '#007AFF' : '#E5E5EA',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginHorizontal: 4,
-              }}>
-                <Text style={{ color: currentStep === step ? '#ffffff' : '#8E8E93', fontSize: 12, fontWeight: '600' }}>
-                  {index + 1}
-                </Text>
-              </View>
-              {index < 6 && (
-                <View style={{
-                  width: 20,
-                  height: 2,
-                  backgroundColor: currentStep === step ? '#007AFF' : '#E5E5EA',
-                  marginHorizontal: 2,
-                }} />
-              )}
-            </View>
-          ))}
-        </View>
-
-        {/* Step 1: Select Video */}
-        {currentStep === 'select' && (
-          <View style={{ alignItems: 'center', paddingVertical: 40 }}>
-            <TouchableOpacity
-              onPress={pickVideo}
-              style={{
                 width: 120,
                 height: 120,
                 borderRadius: 60,
-                backgroundColor: '#007AFF',
+                backgroundColor: Colors.primary,
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginBottom: 24,
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.1,
-                shadowRadius: 8,
-                elevation: 4,
-              }}
-            >
-              <Ionicons name="videocam" size={48} color="#ffffff" />
-            </TouchableOpacity>
-            
-            <Text style={{ color: '#000000', fontSize: 24, fontWeight: '600', marginBottom: 8, textAlign: 'center' }}>
-              Select a Video
-            </Text>
-            <Text style={{ color: '#8E8E93', fontSize: 16, textAlign: 'center', lineHeight: 22, paddingHorizontal: 20 }}>
-              Choose a video from your camera roll to upload and analyze
-            </Text>
-            
-            <View style={{ 
-              backgroundColor: '#F2F2F7', 
-              padding: 16, 
-              borderRadius: 12, 
-              marginTop: 24,
-              width: '100%'
-            }}>
-              <Text style={{ color: '#000000', fontSize: 14, fontWeight: '600', marginBottom: 8 }}>
-                Requirements:
+                marginBottom: Spacing.lg,
+                ...Shadows.lg,
+              }}>
+                <Ionicons name="videocam" size={48} color={Colors.textPrimary} />
+              </View>
+              <Text style={{ 
+                color: Colors.textPrimary, 
+                fontSize: Typography.xl, 
+                fontWeight: 'bold',
+                textAlign: 'center',
+                marginBottom: Spacing.sm 
+              }}>
+                Create Shoppable Video
               </Text>
-              <Text style={{ color: '#8E8E93', fontSize: 14, lineHeight: 20 }}>
-                • Duration: 15 seconds to 3 minutes{'\n'}
-                • Format: MP4, MOV, or AVI{'\n'}
-                • Size: Up to 100MB
+              <Text style={{ 
+                color: Colors.textSecondary, 
+                fontSize: Typography.md,
+                textAlign: 'center',
+                lineHeight: Typography.md * 1.4
+              }}>
+                Upload a video and track items to make them shoppable for your audience
               </Text>
             </View>
-          </View>
-        )}
 
-        {/* Step 2: Preview Video */}
-        {currentStep === 'preview' && selectedVideo && (
-          <View>
-            <Text style={{ color: '#f8fafc', fontSize: 18, fontWeight: '600', marginBottom: 16 }}>
-              Preview Your Video
-            </Text>
-            
-            <VideoPlayer uri={selectedVideo} />
-            
-            <View style={{ marginTop: 16 }}>
-              <Text style={{ color: '#f8fafc', fontSize: 16, marginBottom: 8 }}>
-                Title *
+            <TouchableOpacity
+              onPress={pickVideo}
+              style={{
+                backgroundColor: Colors.primary,
+                paddingHorizontal: Spacing.xl,
+                paddingVertical: Spacing.lg,
+                borderRadius: BorderRadius.lg,
+                flexDirection: 'row',
+                alignItems: 'center',
+                ...Shadows.md,
+              }}
+            >
+              <Ionicons name="add-circle-outline" size={24} color={Colors.textPrimary} />
+              <Text style={{ 
+                color: Colors.textPrimary, 
+                fontSize: Typography.lg,
+                fontWeight: '600',
+                marginLeft: Spacing.sm 
+              }}>
+                Select Video
               </Text>
+            </TouchableOpacity>
+          </View>
+        );
+
+      case 'preview':
+        return (
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, position: 'relative' }}>
+              <VideoPlayer
+                uri={selectedVideo!}
+                onLoad={handleVideoLoad}
+                onProgress={handleVideoProgress}
+                style={{ flex: 1 }}
+              />
+            </View>
+            
+            <View style={{ padding: Spacing.lg, backgroundColor: Colors.surface }}>
+              <Text style={{ 
+                color: Colors.textPrimary, 
+                fontSize: Typography.lg,
+                fontWeight: 'bold',
+                marginBottom: Spacing.md 
+              }}>
+                Video Details
+              </Text>
+              
               <TextInput
+                placeholder="Video title"
                 value={title}
                 onChangeText={setTitle}
-                placeholder="Enter video title"
-                placeholderTextColor="#64748b"
                 style={{
-                  backgroundColor: '#1e293b',
-                  borderRadius: 8,
-                  padding: 12,
-                  color: '#f8fafc',
-                  fontSize: 16,
-                  marginBottom: 16,
+                  backgroundColor: Colors.background,
+                  padding: Spacing.md,
+                  borderRadius: BorderRadius.md,
+                  color: Colors.textPrimary,
+                  fontSize: Typography.md,
+                  marginBottom: Spacing.md,
                 }}
+                placeholderTextColor={Colors.textSecondary}
               />
-
-              <Text style={{ color: '#f8fafc', fontSize: 16, marginBottom: 8 }}>
-                Description
-              </Text>
+              
               <TextInput
+                placeholder="Description (optional)"
                 value={description}
                 onChangeText={setDescription}
-                placeholder="Enter video description (optional)"
-                placeholderTextColor="#64748b"
                 multiline
                 numberOfLines={3}
                 style={{
-                  backgroundColor: '#1e293b',
-                  borderRadius: 8,
-                  padding: 12,
-                  color: '#f8fafc',
-                  fontSize: 16,
-                  marginBottom: 16,
+                  backgroundColor: Colors.background,
+                  padding: Spacing.md,
+                  borderRadius: BorderRadius.md,
+                  color: Colors.textPrimary,
+                  fontSize: Typography.md,
+                  marginBottom: Spacing.lg,
+                  minHeight: 80,
                 }}
+                placeholderTextColor={Colors.textSecondary}
               />
 
-              {/* Product Input Component */}
-              <ProductInput
-                manualProductName={manualProductName}
-                setManualProductName={setManualProductName}
-                affiliateLink={affiliateLink}
-                setAffiliateLink={setAffiliateLink}
-                onToggle={() => setIsProductInputExpanded(!isProductInputExpanded)}
-                isExpanded={isProductInputExpanded}
-              />
-
-              <View style={{ flexDirection: 'row', gap: 12 }}>
+              <View style={{ flexDirection: 'row', gap: Spacing.md }}>
                 <TouchableOpacity
                   onPress={() => setCurrentStep('select')}
                   style={{
                     flex: 1,
-                    backgroundColor: '#374151',
-                    borderRadius: 8,
-                    padding: 16,
+                    padding: Spacing.md,
+                    borderRadius: BorderRadius.md,
+                    borderWidth: 1,
+                    borderColor: Colors.border,
                     alignItems: 'center',
                   }}
                 >
-                  <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
+                  <Text style={{ color: Colors.textSecondary, fontSize: Typography.md }}>
                     Back
                   </Text>
                 </TouchableOpacity>
-
+                
                 <TouchableOpacity
-                  onPress={() => setCurrentStep('upload')}
+                  onPress={startObjectDetection}
                   disabled={!title.trim()}
                   style={{
-                    flex: 1,
-                    backgroundColor: title.trim() ? '#6366f1' : '#374151',
-                    borderRadius: 8,
-                    padding: 16,
+                    flex: 2,
+                    backgroundColor: Colors.primary,
+                    padding: Spacing.md,
+                    borderRadius: BorderRadius.md,
                     alignItems: 'center',
+                    opacity: title.trim() ? 1 : 0.5,
                   }}
                 >
-                  <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
-                    Continue
+                  <Text style={{ color: Colors.textPrimary, fontSize: Typography.md, fontWeight: '600' }}>
+                    Detect Objects
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-        )}
+        );
 
-        {/* Step 3: Upload Confirmation */}
-        {currentStep === 'upload' && selectedVideo && (
-          <View>
-            <View style={{ alignItems: 'center', marginBottom: 24 }}>
-              <Ionicons name="cloud-upload" size={64} color="#6366f1" />
-              <Text style={{ color: '#f8fafc', fontSize: 20, fontWeight: 'bold', marginTop: 12 }}>
+      case 'track':
+        return (
+          <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, position: 'relative' }}>
+              <VideoPlayer
+                uri={selectedVideo!}
+                onLoad={handleVideoLoad}
+                onProgress={handleVideoProgress}
+                style={{ flex: 1 }}
+              />
+              
+              <ItemTrackingOverlay
+                trackedItems={trackedItems}
+                onItemToggle={toggleItemSelection}
+                onItemPositionUpdate={updateItemPosition}
+                onItemTimingUpdate={updateItemTiming}
+                currentTime={currentVideoTime}
+                videoDuration={videoMetadata?.duration || 0}
+                style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
+              />
+            </View>
+            
+            <View style={{ padding: Spacing.lg, backgroundColor: Colors.surface }}>
+              <Text style={{ 
+                color: Colors.textPrimary, 
+                fontSize: Typography.lg,
+                fontWeight: 'bold',
+                marginBottom: Spacing.md 
+              }}>
+                Select Items to Track
+              </Text>
+              
+              <Text style={{ 
+                color: Colors.textSecondary, 
+                fontSize: Typography.sm,
+                marginBottom: Spacing.lg 
+              }}>
+                Tap on items below to select them for tracking. Selected items will be shoppable in your video.
+              </Text>
+
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: Spacing.lg }}>
+                {trackedItems.map((item) => (
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={() => toggleItemSelection(item.id)}
+                    style={{
+                      backgroundColor: item.isSelected ? Colors.primary : Colors.background,
+                      paddingHorizontal: Spacing.md,
+                      paddingVertical: Spacing.sm,
+                      borderRadius: BorderRadius.md,
+                      marginRight: Spacing.sm,
+                      borderWidth: 1,
+                      borderColor: item.isSelected ? Colors.primary : Colors.border,
+                    }}
+                  >
+                    <Text style={{ 
+                      color: item.isSelected ? Colors.textPrimary : Colors.textSecondary,
+                      fontSize: Typography.sm,
+                      fontWeight: item.isSelected ? '600' : '400',
+                    }}>
+                      {item.name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+
+              <View style={{ flexDirection: 'row', gap: Spacing.md }}>
+                <TouchableOpacity
+                  onPress={() => setCurrentStep('preview')}
+                  style={{
+                    flex: 1,
+                    padding: Spacing.md,
+                    borderRadius: BorderRadius.md,
+                    borderWidth: 1,
+                    borderColor: Colors.border,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: Colors.textSecondary, fontSize: Typography.md }}>
+                    Back
+                  </Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                  onPress={startProductMatching}
+                  disabled={trackedItems.filter(item => item.isSelected).length === 0}
+                  style={{
+                    flex: 2,
+                    backgroundColor: Colors.primary,
+                    padding: Spacing.md,
+                    borderRadius: BorderRadius.md,
+                    alignItems: 'center',
+                    opacity: trackedItems.filter(item => item.isSelected).length > 0 ? 1 : 0.5,
+                  }}
+                >
+                  <Text style={{ color: Colors.textPrimary, fontSize: Typography.md, fontWeight: '600' }}>
+                    Find Products
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        );
+
+      case 'upload':
+        return (
+          <View style={{ flex: 1, padding: Spacing.lg, justifyContent: 'center' }}>
+            <View style={{ alignItems: 'center', marginBottom: Spacing.xl }}>
+              <Text style={{ 
+                color: Colors.textPrimary, 
+                fontSize: Typography.xl,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                marginBottom: Spacing.lg 
+              }}>
                 Ready to Upload
               </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14, marginTop: 4, textAlign: 'center' }}>
-                Your video will be processed to detect objects and match products
-              </Text>
-            </View>
-
-            <View style={{ backgroundColor: '#1e293b', borderRadius: 8, padding: 16, marginBottom: 24 }}>
-              <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
-                Video Details
-              </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
-                Title: {title}
-              </Text>
-              {description && (
-                <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
-                  Description: {description}
+              
+              <View style={{ marginBottom: Spacing.lg }}>
+                <Text style={{ 
+                  color: Colors.textSecondary, 
+                  fontSize: Typography.md,
+                  textAlign: 'center',
+                  marginBottom: Spacing.sm 
+                }}>
+                  {trackedItems.filter(item => item.isSelected).length} items selected
                 </Text>
+                <Text style={{ 
+                  color: Colors.textSecondary, 
+                  fontSize: Typography.md,
+                  textAlign: 'center',
+                  marginBottom: Spacing.sm 
+                }}>
+                  {matchedProducts.length} products matched
+                </Text>
+              </View>
+
+              {matchedProducts.length > 0 && (
+                <View style={{ marginBottom: Spacing.lg }}>
+                  <Text style={{ 
+                    color: Colors.textPrimary, 
+                    fontSize: Typography.md,
+                    fontWeight: '600',
+                    marginBottom: Spacing.sm 
+                  }}>
+                    Matched Products:
+                  </Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {matchedProducts.slice(0, 3).map((product) => (
+                      <View key={product.id} style={{ marginRight: Spacing.md, width: 100 }}>
+                        <ProductCard product={product} compact={true} />
+                      </View>
+                    ))}
+                  </ScrollView>
+                </View>
               )}
             </View>
 
-            <View style={{ flexDirection: 'row', gap: 12 }}>
+            <View style={{ flexDirection: 'row', gap: Spacing.md }}>
               <TouchableOpacity
-                onPress={() => setCurrentStep('preview')}
+                onPress={() => setCurrentStep('track')}
                 style={{
                   flex: 1,
-                  backgroundColor: '#374151',
-                  borderRadius: 8,
-                  padding: 16,
+                  padding: Spacing.md,
+                  borderRadius: BorderRadius.md,
+                  borderWidth: 1,
+                  borderColor: Colors.border,
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
+                <Text style={{ color: Colors.textSecondary, fontSize: Typography.md }}>
                   Back
                 </Text>
               </TouchableOpacity>
-
+              
               <TouchableOpacity
                 onPress={uploadVideo}
-                disabled={uploading}
                 style={{
-                  flex: 1,
-                  backgroundColor: !uploading ? '#6366f1' : '#374151',
-                  borderRadius: 8,
-                  padding: 16,
+                  flex: 2,
+                  backgroundColor: Colors.primary,
+                  padding: Spacing.md,
+                  borderRadius: BorderRadius.md,
                   alignItems: 'center',
                 }}
               >
-                {uploading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
-                    Upload & Process
-                  </Text>
-                )}
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-
-        {/* Step 4: Processing */}
-        {currentStep === 'process' && (
-          <View style={{ alignItems: 'center', padding: 40 }}>
-            <ActivityIndicator size="large" color="#6366f1" />
-            <Text style={{ color: '#f8fafc', fontSize: 18, marginTop: 16 }}>
-              {uploading ? 'Uploading Video...' : processingStatus || 'Processing Video...'}
-            </Text>
-            <Text style={{ color: '#94a3b8', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
-              {useDemoMode 
-                ? 'Simulating object detection' 
-                : uploading 
-                  ? 'Uploading large video file (this may take a few minutes)'
-                  : 'Detecting objects and matching products'
-              }
-            </Text>
-            
-            {/* Progress Bar */}
-            {!uploading && !useDemoMode && (
-              <View style={{ width: '100%', marginTop: 20 }}>
-                <View style={{ 
-                  width: '100%', 
-                  height: 8, 
-                  backgroundColor: '#374151', 
-                  borderRadius: 4,
-                  overflow: 'hidden'
-                }}>
-                  <View style={{ 
-                    width: `${processingProgress}%`, 
-                    height: '100%', 
-                    backgroundColor: '#6366f1',
-                    borderRadius: 4
-                  }} />
-                </View>
-                <Text style={{ color: '#94a3b8', fontSize: 12, textAlign: 'center', marginTop: 8 }}>
-                  {processingProgress}% Complete
-                </Text>
-              </View>
-            )}
-            
-            {!useDemoMode && uploading && (
-              <Text style={{ color: '#64748b', fontSize: 12, textAlign: 'center', marginTop: 8 }}>
-                Please don't close the app during upload
-              </Text>
-            )}
-          </View>
-        )}
-
-        {/* Step 5: Verify Results */}
-        {currentStep === 'verify' && (
-          <View>
-            {(() => { console.log('VERIFY STEP - detectedObjects:', detectedObjects, 'matchedProducts:', matchedProducts, 'lengths:', detectedObjects.length, matchedProducts.length); return null; })()}
-            <View style={{ alignItems: 'center', marginBottom: 24 }}>
-              <Ionicons name="checkmark-circle" size={64} color="#10b981" />
-              <Text style={{ color: '#f8fafc', fontSize: 20, fontWeight: 'bold', marginTop: 12 }}>
-                Detection Complete!
-              </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14, marginTop: 4, textAlign: 'center' }}>
-                Review the detected objects and matched products
-              </Text>
-              {useDemoMode && (
-                <Text style={{ color: '#94a3b8', fontSize: 12, marginTop: 4 }}>
-                  (Demo Mode)
-                </Text>
-              )}
-            </View>
-
-            {/* Detected Objects */}
-            {detectedObjects.length > 0 ? (
-              <View style={{ marginBottom: 24 }}>
-                <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
-                  Detected Objects ({detectedObjects.length}):
-                </Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                  {detectedObjects.map((object, index) => (
-                    <View
-                      key={index}
-                      style={{
-                        backgroundColor: '#6366f1',
-                        paddingHorizontal: 12,
-                        paddingVertical: 6,
-                        borderRadius: 16,
-                        marginRight: 8,
-                        marginBottom: 8,
-                      }}
-                    >
-                      <Text style={{ color: '#fff', fontSize: 12 }}>
-                        {object}
-                      </Text>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            ) : (
-              <View style={{ marginBottom: 24 }}>
-                <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
-                  Detected Objects:
-                </Text>
-                <Text style={{ color: '#94a3b8', fontSize: 14, fontStyle: 'italic' }}>
-                  No objects detected. This might be a processing issue.
-                </Text>
-              </View>
-            )}
-
-            {/* Matched Products */}
-            {matchedProducts.length > 0 ? (
-              <View style={{ marginBottom: 24 }}>
-                <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
-                  Matched Products ({matchedProducts.length}):
-                </Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {matchedProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </ScrollView>
-              </View>
-            ) : (
-              <View style={{ marginBottom: 24 }}>
-                <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: '600', marginBottom: 12 }}>
-                  Matched Products:
-                </Text>
-                <Text style={{ color: '#94a3b8', fontSize: 14, fontStyle: 'italic' }}>
-                  No products matched. This might be a processing issue.
-                </Text>
-              </View>
-            )}
-
-            {/* Action Buttons */}
-            <View style={{ flexDirection: 'row', gap: 12 }}>
-              <TouchableOpacity
-                onPress={() => setCurrentStep('process')}
-                style={{
-                  flex: 1,
-                  backgroundColor: '#374151',
-                  borderRadius: 8,
-                  padding: 16,
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
-                  Re-process
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                onPress={() => setCurrentStep('match')}
-                style={{
-                  flex: 1,
-                  backgroundColor: '#10b981',
-                  borderRadius: 8,
-                  padding: 16,
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
-                  Continue to Product Match
+                <Text style={{ color: Colors.textPrimary, fontSize: Typography.md, fontWeight: '600' }}>
+                  Upload Video
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
-        )}
+        );
 
-        {/* Step 6: Product Match Selection */}
-        {currentStep === 'match' && (
-          <View>
-            {/* Debug Data Display */}
-            <DebugDataDisplay
-              detectedObjects={detectedObjects}
-              matchedProducts={matchedProducts}
-              aiSuggestions={aiSuggestions}
-              manualProductName={manualProductName}
-              currentStep={currentStep}
-            />
-            
-            <ProductMatchSelector
-              detectedObjects={detectedObjects}
-              matchedProducts={matchedProducts}
-              manualProductName={manualProductName}
-              aiSuggestions={aiSuggestions}
-              onConfirmMatch={handleConfirmProductMatch}
-              onSkip={handleSkipProductMatch}
-            />
-          </View>
-        )}
-
-        {/* Step 7: Final Results */}
-        {currentStep === 'complete' && (
-          <View>
-            <View style={{ alignItems: 'center', marginBottom: 24 }}>
-              <Ionicons name="checkmark-circle" size={64} color="#10b981" />
-              <Text style={{ color: '#f8fafc', fontSize: 20, fontWeight: 'bold', marginTop: 12 }}>
-                Published Successfully!
+      case 'complete':
+        return (
+          <View style={{ flex: 1, padding: Spacing.lg, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', marginBottom: Spacing.xl }}>
+              <View style={{
+                width: 120,
+                height: 120,
+                borderRadius: 60,
+                backgroundColor: Colors.success,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: Spacing.lg,
+                ...Shadows.lg,
+              }}>
+                <Ionicons name="checkmark" size={48} color={Colors.textPrimary} />
+              </View>
+              
+              <Text style={{ 
+                color: Colors.textPrimary, 
+                fontSize: Typography.xl,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                marginBottom: Spacing.sm 
+              }}>
+                Video Uploaded!
               </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14, marginTop: 4, textAlign: 'center' }}>
-                Your video has been published with {detectedObjects.length} detected objects and {matchedProducts.length} matched products
+              
+              <Text style={{ 
+                color: Colors.textSecondary, 
+                fontSize: Typography.md,
+                textAlign: 'center',
+                lineHeight: Typography.md * 1.4
+              }}>
+                Your shoppable video is now live. Viewers can tap on tracked items to shop directly from your video.
               </Text>
-            </View>
-
-            <View style={{ backgroundColor: '#1e293b', borderRadius: 8, padding: 16, marginBottom: 24 }}>
-              <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: '600', marginBottom: 8 }}>
-                Summary
-              </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
-                Video Title: {title}
-              </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
-                Objects Detected: {detectedObjects.join(', ')}
-              </Text>
-              <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
-                Products Matched: {matchedProducts.length} items
-              </Text>
-              {finalProductMatch && (
-                <>
-                  <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
-                    Final Product: {finalProductMatch.productName}
-                  </Text>
-                  <Text style={{ color: '#94a3b8', fontSize: 14, marginBottom: 4 }}>
-                    Match Type: {finalProductMatch.matchType.replace('_', ' ')}
-                  </Text>
-                </>
-              )}
-              {affiliateLink && (
-                <Text style={{ color: '#94a3b8', fontSize: 14 }}>
-                  Affiliate Link: {affiliateLink}
-                </Text>
-              )}
             </View>
 
             <TouchableOpacity
-              onPress={resetForm}
+              onPress={resetUpload}
               style={{
-                backgroundColor: '#6366f1',
-                borderRadius: 8,
-                padding: 16,
+                backgroundColor: Colors.primary,
+                paddingHorizontal: Spacing.xl,
+                paddingVertical: Spacing.lg,
+                borderRadius: BorderRadius.lg,
                 alignItems: 'center',
+                ...Shadows.md,
               }}
             >
-              <Text style={{ color: '#f8fafc', fontSize: 16, fontWeight: 'bold' }}>
-                Upload Another Video
+              <Text style={{ color: Colors.textPrimary, fontSize: Typography.lg, fontWeight: '600' }}>
+                Create Another Video
               </Text>
             </TouchableOpacity>
           </View>
-        )}
-      </View>
+        );
 
-      {/* Feedback Modal */}
-      {showFeedbackModal && (
-        <FeedbackModal
-          videoId={videoId}
-          detectedObjects={detectedObjects}
-          finalSelection={finalSelection}
-          onClose={handleSkipFeedback}
-          onFeedbackSubmitted={handleFeedbackSubmitted}
-        />
-      )}
-    </ScrollView>
+      default:
+        return null;
+    }
+  };
+
+  const renderProcessingOverlay = () => {
+    if (!processing && !uploading) return null;
+
+    return (
+      <View style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: Colors.overlay,
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1000,
+      }}>
+        <View style={{
+          backgroundColor: Colors.surface,
+          padding: Spacing.xl,
+          borderRadius: BorderRadius.lg,
+          alignItems: 'center',
+          maxWidth: screenWidth * 0.8,
+          ...Shadows.lg,
+        }}>
+          <ActivityIndicator size="large" color={Colors.primary} style={{ marginBottom: Spacing.lg }} />
+          
+          <Text style={{ 
+            color: Colors.textPrimary, 
+            fontSize: Typography.lg,
+            fontWeight: '600',
+            textAlign: 'center',
+            marginBottom: Spacing.sm 
+          }}>
+            {processingStatus}
+          </Text>
+          
+          <View style={{
+            width: '100%',
+            height: 8,
+            backgroundColor: Colors.background,
+            borderRadius: BorderRadius.full,
+            marginTop: Spacing.md,
+            overflow: 'hidden',
+          }}>
+            <View style={{
+              width: `${processingProgress}%`,
+              height: '100%',
+              backgroundColor: Colors.primary,
+              borderRadius: BorderRadius.full,
+            }} />
+          </View>
+          
+          <Text style={{ 
+            color: Colors.textSecondary, 
+            fontSize: Typography.sm,
+            marginTop: Spacing.sm 
+          }}>
+            {processingProgress}%
+          </Text>
+        </View>
+      </View>
+    );
+  };
+
+  return (
+    <View style={{ flex: 1, backgroundColor: Colors.background }}>
+      {renderStepContent()}
+      {renderProcessingOverlay()}
+    </View>
   );
 }; 

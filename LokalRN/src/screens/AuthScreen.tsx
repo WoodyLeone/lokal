@@ -17,61 +17,52 @@ import { DemoAuthService } from '../services/demoAuth';
 import { isDemoMode } from '../config/env';
 
 export const AuthScreen: React.FC = () => {
-  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
+  const [verificationSent, setVerificationSent] = useState(false);
 
-  const handleAuth = async () => {
-    if (!email || !password || (isSignUp && !username)) {
-      Alert.alert('Error', 'Please fill in all fields');
-      return;
-    }
-
-    if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
+  const handleEmailAuth = async () => {
+    if (!email || !email.includes('@')) {
+      Alert.alert('Error', 'Please enter a valid email address');
       return;
     }
 
     setLoading(true);
 
     try {
-      console.log('🔧 Auth attempt:', { email, isSignUp, demoMode: isDemoMode() });
+      console.log('🔧 Email auth attempt:', { email, demoMode: isDemoMode() });
       
-      if (isSignUp) {
-        const { error } = await DatabaseService.signUp(email, password, username);
+      // In demo mode, auto-authenticate with any valid email
+      if (isDemoMode()) {
+        const { error } = await DemoAuthService.signInWithEmail(email);
         if (error) {
-          console.log('🔧 Sign up error:', error);
-          Alert.alert('Sign Up Error', error.message);
+          Alert.alert('Demo Error', error.message);
         } else {
+          console.log('🔧 Demo email auth successful');
+        }
+      } else {
+        // Send verification email
+        const { error } = await DatabaseService.sendVerificationEmail(email);
+        if (error) {
+          Alert.alert('Error', error.message);
+        } else {
+          setVerificationSent(true);
           Alert.alert(
-            'Success',
-            'Account created! Please check your email to verify your account.',
+            'Verification Sent',
+            'Please check your email and click the verification link to continue.',
             [{ text: 'OK' }]
           );
         }
-      } else {
-        const { error } = await DatabaseService.signIn(email, password);
-        if (error) {
-          console.log('🔧 Sign in error:', error);
-          Alert.alert('Sign In Error', error.message);
-        } else {
-          console.log('🔧 Sign in successful');
-        }
       }
     } catch (error) {
-      console.log('🔧 Auth error:', error);
-      Alert.alert('Error', 'An unexpected error occurred');
+      Alert.alert('Error', 'Authentication failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const fillDemoCredentials = () => {
-    const credentials = DemoAuthService.getDemoCredentials();
-    setEmail(credentials.email);
-    setPassword(credentials.password);
+  const fillDemoEmail = () => {
+    setEmail('demo@lokal.com');
   };
 
   return (
@@ -79,16 +70,13 @@ export const AuthScreen: React.FC = () => {
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-      >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <LinearGradient
           colors={['#0f172a', '#1e293b', '#334155']}
-          style={{ flex: 1, justifyContent: 'center', padding: 24 }}
+          style={{ flex: 1, justifyContent: 'center', padding: 20 }}
         >
           {/* Header */}
-          <View style={{ alignItems: 'center', marginBottom: 48 }}>
+          <View style={{ alignItems: 'center', marginBottom: 40 }}>
             <View style={{
               width: 80,
               height: 80,
@@ -110,41 +98,22 @@ export const AuthScreen: React.FC = () => {
 
           {/* Auth Form */}
           <View style={{ backgroundColor: '#1e293b', borderRadius: 16, padding: 24, marginBottom: 24 }}>
-            <Text style={{ color: '#f8fafc', fontSize: 24, fontWeight: 'bold', marginBottom: 24, textAlign: 'center' }}>
-              {isSignUp ? 'Create Account' : 'Welcome Back'}
+            <Text style={{ color: '#f8fafc', fontSize: 24, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
+              Welcome to Lokal
+            </Text>
+            
+            <Text style={{ color: '#94a3b8', fontSize: 14, textAlign: 'center', marginBottom: 24 }}>
+              Enter your email to get started
             </Text>
 
-            {isSignUp && (
-              <View style={{ marginBottom: 16 }}>
-                <Text style={{ color: '#f8fafc', fontSize: 16, marginBottom: 8 }}>
-                  Username
-                </Text>
-                <TextInput
-                  value={username}
-                  onChangeText={setUsername}
-                  placeholder="Enter username"
-                  placeholderTextColor="#64748b"
-                  style={{
-                    backgroundColor: '#334155',
-                    borderRadius: 8,
-                    padding: 16,
-                    color: '#f8fafc',
-                    fontSize: 16,
-                  }}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                />
-              </View>
-            )}
-
-            <View style={{ marginBottom: 16 }}>
+            <View style={{ marginBottom: 24 }}>
               <Text style={{ color: '#f8fafc', fontSize: 16, marginBottom: 8 }}>
-                Email
+                Email Address
               </Text>
               <TextInput
                 value={email}
                 onChangeText={setEmail}
-                placeholder="Enter email"
+                placeholder="Enter your email"
                 placeholderTextColor="#64748b"
                 style={{
                   backgroundColor: '#334155',
@@ -156,33 +125,14 @@ export const AuthScreen: React.FC = () => {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoCorrect={false}
+                editable={!verificationSent}
               />
             </View>
 
-            <View style={{ marginBottom: 24 }}>
-              <Text style={{ color: '#f8fafc', fontSize: 16, marginBottom: 8 }}>
-                Password
-              </Text>
-              <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Enter password"
-                placeholderTextColor="#64748b"
-                secureTextEntry
-                style={{
-                  backgroundColor: '#334155',
-                  borderRadius: 8,
-                  padding: 16,
-                  color: '#f8fafc',
-                  fontSize: 16,
-                }}
-              />
-            </View>
-
-            {/* Demo Credentials Button */}
+            {/* Demo Email Button */}
             {isDemoMode() && (
               <TouchableOpacity
-                onPress={fillDemoCredentials}
+                onPress={fillDemoEmail}
                 style={{
                   backgroundColor: '#10b981',
                   borderRadius: 8,
@@ -192,53 +142,66 @@ export const AuthScreen: React.FC = () => {
                 }}
               >
                 <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
-                  Use Demo Credentials
+                  Use Demo Email
                 </Text>
               </TouchableOpacity>
             )}
 
             <TouchableOpacity
-              onPress={handleAuth}
-              disabled={loading}
+              onPress={handleEmailAuth}
+              disabled={loading || verificationSent}
               style={{
-                backgroundColor: '#6366f1',
+                backgroundColor: verificationSent ? '#64748b' : '#6366f1',
                 borderRadius: 8,
                 padding: 16,
                 alignItems: 'center',
-                opacity: loading ? 0.6 : 1,
+                marginBottom: 16,
               }}
             >
               {loading ? (
                 <ActivityIndicator color="#fff" />
+              ) : verificationSent ? (
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
+                  Verification Sent ✓
+                </Text>
               ) : (
                 <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
-                  {isSignUp ? 'Create Account' : 'Sign In'}
+                  Continue with Email
                 </Text>
               )}
             </TouchableOpacity>
+
+            {verificationSent && (
+              <Text style={{ color: '#10b981', fontSize: 14, textAlign: 'center' }}>
+                Check your email for the verification link
+              </Text>
+            )}
           </View>
 
-          {/* Toggle Auth Mode */}
-          <View style={{ alignItems: 'center' }}>
-            <TouchableOpacity
-              onPress={() => setIsSignUp(!isSignUp)}
-              style={{ flexDirection: 'row', alignItems: 'center' }}
-            >
-              <Text style={{ color: '#94a3b8', fontSize: 16 }}>
-                {isSignUp ? 'Already have an account?' : "Don't have an account?"}
+          {/* Demo info */}
+          {isDemoMode() && (
+            <View style={{ alignItems: 'center', marginBottom: 20 }}>
+              <Text style={{ color: '#f8fafc', fontSize: 14, fontWeight: 'medium', marginBottom: 4 }}>
+                Demo Mode
               </Text>
-              <Text style={{ color: '#6366f1', fontSize: 16, fontWeight: 'bold', marginLeft: 4 }}>
-                {isSignUp ? 'Sign In' : 'Sign Up'}
+              <Text style={{ color: '#94a3b8', fontSize: 12, textAlign: 'center' }}>
+                Use any valid email format to test the app
+              </Text>
+            </View>
+          )}
+
+          {/* Legal links */}
+          <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 20 }}>
+            <TouchableOpacity>
+              <Text style={{ color: '#94a3b8', fontSize: 12 }}>
+                Privacy Policy
               </Text>
             </TouchableOpacity>
-          </View>
-
-          {/* Demo Info */}
-          <View style={{ marginTop: 32, alignItems: 'center' }}>
-            <Text style={{ color: '#64748b', fontSize: 14, textAlign: 'center', lineHeight: 20 }}>
-              For demo purposes, you can use any valid email format.{'\n'}
-              The app will work with dummy data and simulated object detection.
-            </Text>
+            <TouchableOpacity>
+              <Text style={{ color: '#94a3b8', fontSize: 12 }}>
+                Terms of Service
+              </Text>
+            </TouchableOpacity>
           </View>
         </LinearGradient>
       </ScrollView>

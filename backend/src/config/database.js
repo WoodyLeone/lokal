@@ -4,7 +4,6 @@
  */
 
 const { Pool } = require('pg');
-const Redis = require('ioredis');
 const NodeCache = require('node-cache');
 const winston = require('winston');
 const dotenv = require('dotenv');
@@ -125,45 +124,68 @@ class DatabaseManager {
    */
   async initializeRedis() {
     try {
-      const redisUrl = process.env.REDIS_URL;
+      const upstashRedisUrl = process.env.UPSTASH_REDIS_REST_URL;
+      const upstashRedisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
       
-      if (!redisUrl) {
-        logger.warn('REDIS_URL not configured, skipping Redis initialization');
+      if (!upstashRedisUrl || !upstashRedisToken) {
+        logger.warn('UPSTASH_REDIS_REST_URL or UPSTASH_REDIS_REST_TOKEN not configured, skipping Redis initialization');
         return false;
       }
 
-      logger.info('Connecting to Redis...');
+      logger.info('Connecting to Upstash Redis via REST API...');
 
-      this.redis = new Redis(redisUrl, {
-        retryDelayOnFailover: 100,
-        maxRetriesPerRequest: 3,
-        lazyConnect: true,
-        keepAlive: 30000,
-        connectTimeout: this.connectionTimeout,
-        commandTimeout: 5000,
-        tls: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
-      });
-
-      // Handle Redis events
-      this.redis.on('connect', () => {
-        logger.info('Redis connected');
-      });
-
-      this.redis.on('error', (error) => {
-        logger.error('Redis error:', error);
-      });
-
-      this.redis.on('close', () => {
-        logger.warn('Redis connection closed');
-      });
-
-      this.redis.on('reconnecting', () => {
-        logger.info('Redis reconnecting...');
-      });
+      // Create a simple REST API client for Upstash Redis
+      this.redis = {
+        url: upstashRedisUrl,
+        token: upstashRedisToken,
+        
+        async get(key) {
+          const response = await fetch(`${upstashRedisUrl}/get/${key}`, {
+            headers: {
+              'Authorization': `Bearer ${upstashRedisToken}`
+            }
+          });
+          const result = await response.json();
+          return result.result;
+        },
+        
+        async set(key, value, ttl = null) {
+          const url = ttl ? `${upstashRedisUrl}/set/${key}/${value}/ex/${ttl}` : `${upstashRedisUrl}/set/${key}/${value}`;
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${upstashRedisToken}`
+            }
+          });
+          const result = await response.json();
+          return result.result;
+        },
+        
+        async del(key) {
+          const response = await fetch(`${upstashRedisUrl}/del/${key}`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${upstashRedisToken}`
+            }
+          });
+          const result = await response.json();
+          return result.result;
+        },
+        
+        async ping() {
+          const response = await fetch(`${upstashRedisUrl}/ping`, {
+            headers: {
+              'Authorization': `Bearer ${upstashRedisToken}`
+            }
+          });
+          const result = await response.json();
+          return result.result;
+        }
+      };
 
       // Test connection
       await this.redis.ping();
-      logger.info('Redis connection established');
+      logger.info('Upstash Redis connection established');
       return true;
     } catch (error) {
       logger.error('Failed to initialize Redis:', error);

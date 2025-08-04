@@ -5631,5 +5631,326 @@
       "Secretlab Titan"
     ],
     "completedAt": "2025-08-02T02:25:26.286Z"
+  },
+  "86dcc0bf-a9fa-412d-b71f-1c059d12e846": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Laptop",
+    "createdAt": "2025-08-03T18:22:10.073Z",
+    "detectedObjects": [
+      "laptop"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Lenovo ThinkPad"
+    ],
+    "completedAt": "2025-08-03T18:22:20.145Z"
+  },
+  "15a5fc4c-e498-4789-8c57-f28240d3b0ca": {
+    "status": "completed",
+    "progress": 100,
+    "title": "My brush",
+    "createdAt": "2025-08-03T18:28:35.321Z",
+    "detectedObjects": [],
+    "matchedProducts": [],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-03T18:28:43.491Z"
+  },
+  "f2deba3b-9cbf-4ee2-b46e-c66a1b568474": {
+    "status": "completed",
+    "progress": 100,
+    "title": "The best one ",
+    "createdAt": "2025-08-03T18:33:05.555Z",
+    "detectedObjects": [
+      "laptop"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro"
+    ],
+    "completedAt": "2025-08-03T18:33:14.304Z"
+  },
+  "f781758f-6f9e-4454-ae4c-44ddd68462a0": {
+    "status": "completed",
+    "progress": 100,
+    "title": "The best ",
+    "createdAt": "2025-08-03T18:35:20.596Z",
+    "detectedObjects": [
+      "book"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "kindle-paperwhite",
+        "title": "Kindle Paperwhite",
+        "description": "Waterproof e-reader with weeks of battery life",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Kindle+Paperwhite",
+        "price": 139.99,
+        "currency": "USD",
+        "buyUrl": "https://www.amazon.com/kindle-paperwhite",
+        "category": "electronics",
+        "brand": "Amazon",
+        "rating": 4.7,
+        "reviewCount": 4567,
+        "keywords": [
+          "kindle",
+          "e-reader",
+          "amazon",
+          "electronics",
+          "paperwhite",
+          "books"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "iPad Air",
+      "Kindle Paperwhite"
+    ],
+    "completedAt": "2025-08-03T18:35:31.569Z"
+  },
+  "411d22a9-e28c-4fb5-bf81-a6680e392c0f": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Best thing ever ",
+    "createdAt": "2025-08-03T18:36:48.817Z",
+    "detectedObjects": [
+      "microwave"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      }
+    ],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-03T18:36:56.456Z"
+  },
+  "343b28db-ad13-4a94-a6cc-345e0f283548": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Rystg",
+    "manualProductName": "Tool is Titans ",
+    "createdAt": "2025-08-03T18:47:55.331Z",
+    "detectedObjects": [
+      "book"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "kindle-paperwhite",
+        "title": "Kindle Paperwhite",
+        "description": "Waterproof e-reader with weeks of battery life",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Kindle+Paperwhite",
+        "price": 139.99,
+        "currency": "USD",
+        "buyUrl": "https://www.amazon.com/kindle-paperwhite",
+        "category": "electronics",
+        "brand": "Amazon",
+        "rating": 4.7,
+        "reviewCount": 4567,
+        "keywords": [
+          "kindle",
+          "e-reader",
+          "amazon",
+          "electronics",
+          "paperwhite",
+          "books"
+        ]
+      },
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      }
+    ],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-03T18:48:07.131Z"
   }
 }

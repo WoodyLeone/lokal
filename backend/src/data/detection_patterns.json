@@ -165,5 +165,90 @@
     "timestamp": "2025-08-02T02:24:31.553Z",
     "confidence": "0.3",
     "demoMode": true
+  },
+  {
+    "videoId": "86dcc0bf-a9fa-412d-b71f-1c059d12e846",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754245316866-370524821.mov",
+    "detectedObjects": [
+      "laptop"
+    ],
+    "suggestions": [
+      "MacBook Pro",
+      "Lenovo ThinkPad"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-03T18:22:20.148Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "15a5fc4c-e498-4789-8c57-f28240d3b0ca",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754245666492-880655810.mov",
+    "detectedObjects": [],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-03T18:28:43.494Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "f2deba3b-9cbf-4ee2-b46e-c66a1b568474",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754245972623-902656768.mov",
+    "detectedObjects": [
+      "laptop"
+    ],
+    "suggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-03T18:33:14.307Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "f781758f-6f9e-4454-ae4c-44ddd68462a0",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754246094030-712669491.mov",
+    "detectedObjects": [
+      "book"
+    ],
+    "suggestions": [
+      "iPad Air",
+      "Kindle Paperwhite"
+    ],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-03T18:35:31.574Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "411d22a9-e28c-4fb5-bf81-a6680e392c0f",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754246172313-48613325.mov",
+    "detectedObjects": [
+      "microwave"
+    ],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-03T18:36:56.459Z",
+    "confidence": 0.5,
+    "demoMode": false
+  },
+  {
+    "videoId": "343b28db-ad13-4a94-a6cc-345e0f283548",
+    "videoPath": "/Volumes/T7/Lokal/backend/src/temp/video-1754246811177-646680067.mov",
+    "detectedObjects": [
+      "book"
+    ],
+    "suggestions": [],
+    "finalSelection": null,
+    "userFeedback": null,
+    "timestamp": "2025-08-03T18:48:07.135Z",
+    "confidence": 0.5,
+    "demoMode": false
   }
 ]

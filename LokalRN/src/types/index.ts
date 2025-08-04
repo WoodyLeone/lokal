@@ -1,4 +1,4 @@
-// Database types matching actual Supabase schema
+// Database types matching actual Railway PostgreSQL schema
 export interface Video {
   id: string;
   user_id: string;
@@ -9,6 +9,9 @@ export interface Video {
   duration: number;
   detected_objects: string[];
   products: any[]; // JSONB array in database
+  views?: number;
+  likes?: number;
+  shares?: number;
   created_at: string;
   updated_at: string;
 }
@@ -55,6 +58,9 @@ export interface VideoFrontend {
   duration: number;
   detectedObjects: string[];
   products: ProductFrontend[];
+  views?: number;
+  likes?: number;
+  shares?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -72,6 +78,40 @@ export interface ProductFrontend {
   rating: number;
   reviewCount: number;
   createdAt: string;
+}
+
+// NEW: Tracking and Interactive Video Types
+export interface TrackedItem {
+  id: string;
+  name: string;
+  x: number; // percentage position
+  y: number; // percentage position
+  startTime: number; // seconds
+  endTime: number; // seconds
+  product?: ProductFrontend;
+  isSelected: boolean;
+}
+
+export interface Hotspot {
+  id: string;
+  x: number; // percentage position
+  y: number; // percentage position
+  startTime: number; // seconds
+  endTime: number; // seconds
+  product?: {
+    id: string;
+    name: string;
+    price: number;
+    image: string;
+    link: string;
+  };
+  isVisible: boolean;
+}
+
+export interface VideoMetadata {
+  duration: number;
+  width: number;
+  height: number;
 }
 
 export interface VideoUploadResponse {
@@ -104,7 +144,34 @@ export interface AuthResponse {
   error: any;
 }
 
+// User Session types
 export interface UserSession {
   user: any;
   session: any;
+}
+
+// Analytics types
+export interface VideoAnalytics {
+  videoId: string;
+  views: number;
+  likes: number;
+  shares: number;
+  clicks: number;
+  conversions: number;
+  revenue: number;
+}
+
+// Creator types
+export interface CreatorProfile {
+  id: string;
+  userId: string;
+  username: string;
+  bio?: string;
+  avatarUrl?: string;
+  followers: number;
+  following: number;
+  totalViews: number;
+  totalRevenue: number;
+  createdAt: string;
+  updatedAt: string;
 } 

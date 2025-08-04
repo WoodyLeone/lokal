@@ -104,9 +104,7 @@ export const isDemoMode = (): boolean => {
   
   return databaseUrl === 'YOUR_DATABASE_URL' || 
          !databaseUrl ||
-         !apiBaseUrl ||
-         apiBaseUrl.includes('localhost') ||
-         apiBaseUrl.includes('192.168.1.207');
+         !apiBaseUrl;
 };
 
 // Debounce function

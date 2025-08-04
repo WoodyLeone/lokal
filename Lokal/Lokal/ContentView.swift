@@ -24,6 +24,16 @@ struct AppConfig {
     static let confidenceThreshold: Double = 0.5
     static let maxDetectedObjects = 10
     
+    // NEW: Interactive Video Configuration
+    static let enableInteractiveVideos = true
+    static let enableItemTracking = true
+    static let enableHotspots = true
+    static let maxTrackedItems = 5
+    static let trackingConfidenceThreshold: Double = 0.6
+    static let hotspotVisibilityDuration: TimeInterval = 60 // seconds
+    static let hotspotAnimationDuration: TimeInterval = 0.3 // seconds
+    static let hotspotPulseInterval: TimeInterval = 2.0 // seconds
+    
     // Product Configuration
     static let maxMatchedProducts = 6
     static let productMatchThreshold: Double = 0.3
@@ -71,6 +81,55 @@ struct AppConfig {
     static func apiURL(for endpoint: String) -> URL? {
         return URL(string: "\(apiBaseURL)\(endpoint)")
     }
+}
+
+// MARK: - New Data Models for Interactive Video
+struct TrackedItem: Identifiable, Codable {
+    let id: String
+    var name: String
+    var x: Double // percentage position
+    var y: Double // percentage position
+    var startTime: TimeInterval // seconds
+    var endTime: TimeInterval // seconds
+    var product: DemoProduct?
+    var isSelected: Bool
+    
+    init(id: String = UUID().uuidString, name: String, x: Double, y: Double, startTime: TimeInterval = 0, endTime: TimeInterval = 60, product: DemoProduct? = nil, isSelected: Bool = false) {
+        self.id = id
+        self.name = name
+        self.x = x
+        self.y = y
+        self.startTime = startTime
+        self.endTime = endTime
+        self.product = product
+        self.isSelected = isSelected
+    }
+}
+
+struct Hotspot: Identifiable, Codable {
+    let id: String
+    var x: Double // percentage position
+    var y: Double // percentage position
+    var startTime: TimeInterval // seconds
+    var endTime: TimeInterval // seconds
+    var product: DemoProduct?
+    var isVisible: Bool
+    
+    init(id: String = UUID().uuidString, x: Double, y: Double, startTime: TimeInterval = 0, endTime: TimeInterval = 60, product: DemoProduct? = nil, isVisible: Bool = true) {
+        self.id = id
+        self.x = x
+        self.y = y
+        self.startTime = startTime
+        self.endTime = endTime
+        self.product = product
+        self.isVisible = isVisible
+    }
+}
+
+struct VideoMetadata: Codable {
+    let duration: TimeInterval
+    let width: Int
+    let height: Int
 }
 
 struct ContentView: View {
@@ -165,7 +224,7 @@ struct AuthView: View {
                                 .fontWeight(.bold)
                                 .foregroundColor(.white)
                             
-                            Text("Mobile-first shoppable video app")
+                            Text("Interactive Shoppable Video Platform")
                                 .font(.subheadline)
                                 .foregroundColor(.white.opacity(0.8))
                         }
@@ -339,7 +398,7 @@ struct HomeView: View {
                     ScrollView {
                         LazyVStack(spacing: 20) {
                             ForEach(videos) { video in
-                                VideoCard(video: video)
+                                InteractiveVideoCard(video: video)
                             }
                         }
                         .padding()
@@ -388,6 +447,150 @@ struct HomeView: View {
     }
 }
 
+// MARK: - Interactive Video Card
+struct InteractiveVideoCard: View {
+    let video: DemoVideo
+    @State private var player: AVPlayer?
+    @State private var currentTime: TimeInterval = 0
+    @State private var isPlaying = false
+    @State private var showingProductDetail = false
+    @State private var selectedProduct: DemoProduct?
+    
+    // Convert products to hotspots for interactive video
+    private var hotspots: [Hotspot] {
+        video.products.enumerated().map { index, product in
+            Hotspot(
+                x: 20 + Double(index * 20), // Spread hotspots horizontally
+                y: 30 + Double(index * 15), // Spread hotspots vertically
+                startTime: 0,
+                endTime: 60, // Show for first 60 seconds
+                product: product
+            )
+        }
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            // Interactive Video Player
+            ZStack {
+                VideoPlayerView(videoURL: URL(string: video.videoUrl ?? ""))
+                // NOTE: To track currentTime, use AVPlayer's addPeriodicTimeObserver in VideoPlayerView and bind to currentTime if needed.
+                // The previous .onReceive(player?.publisher(for: \.currentTime)) was invalid and is removed.
+                
+                // Interactive Hotspots
+                if AppConfig.enableInteractiveVideos {
+                    ForEach(hotspots) { hotspot in
+                        if isHotspotVisible(hotspot) {
+                            HotspotView(
+                                hotspot: hotspot,
+                                onTap: {
+                                    selectedProduct = hotspot.product
+                                    showingProductDetail = true
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(video.title)
+                    .font(.headline)
+                
+                if !video.description.isEmpty {
+                    Text(video.description)
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                
+                Text(video.createdAt, style: .date)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                // Interactive indicator
+                if !video.products.isEmpty && AppConfig.enableInteractiveVideos {
+                    HStack {
+                        Image(systemName: "sparkles")
+                            .foregroundColor(.accentColor)
+                        Text("Interactive - Tap items to shop!")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundColor(.accentColor)
+                    }
+                }
+            }
+            
+            // Fallback product cards for non-interactive viewing
+            if !video.products.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Shop This Video")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(video.products) { product in
+                                ProductCard(product: product)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(16)
+        .shadow(radius: 2)
+        .sheet(isPresented: $showingProductDetail) {
+            if let product = selectedProduct {
+                ProductDetailView(product: product)
+            }
+        }
+    }
+    
+    private func isHotspotVisible(_ hotspot: Hotspot) -> Bool {
+        return currentTime >= hotspot.startTime && currentTime <= hotspot.endTime
+    }
+}
+
+// MARK: - Hotspot View
+struct HotspotView: View {
+    let hotspot: Hotspot
+    let onTap: () -> Void
+    @State private var isPulsing = false
+    
+    var body: some View {
+        Button(action: onTap) {
+            ZStack {
+                // Pulsing background
+                Circle()
+                    .fill(Color.accentColor.opacity(0.3))
+                    .frame(width: 50, height: 50)
+                    .scaleEffect(isPulsing ? 1.2 : 1.0)
+                    .animation(.easeInOut(duration: AppConfig.hotspotPulseInterval).repeatForever(autoreverses: true), value: isPulsing)
+                
+                // Main hotspot
+                Circle()
+                    .fill(Color.accentColor)
+                    .frame(width: 40, height: 40)
+                    .overlay(
+                        Image(systemName: "bag.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 16))
+                    )
+                    .shadow(radius: 4)
+            }
+        }
+        .position(
+            x: hotspot.x * UIScreen.main.bounds.width / 100,
+            y: hotspot.y * 300 / 100 // Assuming video height of 300
+        )
+        .onAppear {
+            isPulsing = true
+        }
+    }
+}
+
 // MARK: - Upload View
 struct UploadView: View {
     @State private var selectedItem: PhotosPickerItem?
@@ -398,12 +601,14 @@ struct UploadView: View {
     @State private var currentStep: UploadStep = .select
     @State private var detectedObjects: [String] = []
     @State private var matchedProducts: [DemoProduct] = []
+    @State private var trackedItems: [TrackedItem] = []
+    @State private var videoMetadata: VideoMetadata?
     @State private var showingError = false
     @State private var errorMessage = ""
     @FocusState private var focusedField: UploadField?
     
     enum UploadStep {
-        case select, upload, process, preview, complete
+        case select, preview, track, upload, process, finalPreview, complete
     }
     
     enum UploadField {
@@ -420,17 +625,32 @@ struct UploadView: View {
                     switch currentStep {
                     case .select:
                         VideoSelectionView(selectedItem: $selectedItem, selectedVideoData: $selectedVideoData, currentStep: $currentStep)
+                    case .preview:
+                        VideoPreviewView(
+                            title: $title,
+                            description: $description,
+                            selectedVideoData: $selectedVideoData,
+                            focusedField: $focusedField,
+                            onContinue: startTracking
+                        )
+                    case .track:
+                        ItemTrackingView(
+                            trackedItems: $trackedItems,
+                            videoMetadata: videoMetadata,
+                            onContinue: startUpload
+                        )
                     case .upload:
                         UploadFormView(
                             title: $title,
                             description: $description,
                             selectedVideoData: $selectedVideoData,
+                            trackedItems: trackedItems,
                             focusedField: $focusedField,
                             onUpload: startUpload
                         )
                     case .process:
                         ProcessingView()
-                    case .preview:
+                    case .finalPreview:
                         PreviewView(
                             title: title,
                             description: description,
@@ -459,12 +679,33 @@ struct UploadView: View {
         }
     }
     
+    private func startTracking() {
+        guard !title.isEmpty else {
+            errorMessage = "Please enter a title for your video"
+            showingError = true
+            return
+        }
+        
+        // Initialize tracked items from detected objects
+        trackedItems = detectedObjects.enumerated().map { index, object in
+            TrackedItem(
+                name: object,
+                x: 20 + Double(index * 20),
+                y: 30 + Double(index * 15),
+                startTime: 0,
+                endTime: videoMetadata?.duration ?? 60
+            )
+        }
+        
+        currentStep = .track
+    }
+    
     private func startUpload() {
         print("Starting upload process...")
         print("Title: \(title)")
         print("Description: \(description)")
         print("Video data available: \(selectedVideoData != nil)")
-        print("Video data size: \(selectedVideoData?.count ?? 0) bytes")
+        print("Tracked items: \(trackedItems.count)")
         
         guard !title.isEmpty else {
             errorMessage = "Please enter a title for your video"
@@ -502,14 +743,14 @@ struct UploadView: View {
                 let uploadResponse = try await NetworkService.shared.uploadVideo(
                     title: title,
                     description: description,
-                    videoData: videoData
+                    videoData: videoData,
+                    trackedItems: trackedItems
                 )
                 
                 if uploadResponse.success {
                     print("Video uploaded successfully, starting object detection...")
                     
                     // Wait for object detection to complete
-                    // In a real app, you'd poll for status updates
                     try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds for processing
                     
                     // Get detected objects from backend
@@ -571,11 +812,290 @@ struct UploadView: View {
         description = ""
         detectedObjects = []
         matchedProducts = []
+        trackedItems = []
+        videoMetadata = nil
         currentStep = .select
     }
     
     private func publishVideo() {
         currentStep = .complete
+    }
+}
+
+// MARK: - Video Preview View
+struct VideoPreviewView: View {
+    @Binding var title: String
+    @Binding var description: String
+    @Binding var selectedVideoData: Data?
+    var focusedField: FocusState<UploadView.UploadField?>.Binding
+    let onContinue: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            // Video status indicator
+            if selectedVideoData != nil {
+                HStack {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                    Text("Video ready for processing")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                .padding(.bottom, 8)
+            } else {
+                HStack {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundColor(.orange)
+                    Text("Loading video data...")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                .padding(.bottom, 8)
+            }
+            
+            TextField("Video Title", text: $title)
+                .textFieldStyle(.roundedBorder)
+                .focused(focusedField, equals: .title)
+                .accessibilityLabel("Video title")
+            
+            TextField("Description (optional)", text: $description, axis: .vertical)
+                .textFieldStyle(.roundedBorder)
+                .lineLimit(3...6)
+                .focused(focusedField, equals: .description)
+                .accessibilityLabel("Video description")
+            
+            Button("Continue to Item Tracking", action: onContinue)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(selectedVideoData != nil ? Color.accentColor : Color.gray)
+                .foregroundColor(.white)
+                .cornerRadius(12)
+                .disabled(selectedVideoData == nil)
+                .accessibilityLabel("Continue to item tracking button")
+        }
+    }
+}
+
+// MARK: - Item Tracking View
+struct ItemTrackingView: View {
+    @Binding var trackedItems: [TrackedItem]
+    let videoMetadata: VideoMetadata?
+    let onContinue: () -> Void
+    @State private var selectedItem: TrackedItem?
+    @State private var showingItemDetails = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Select Items to Track")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            Text("Choose which items you want to make shoppable in your video")
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+            
+            // Video preview with tracking overlays
+            ZStack {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .aspectRatio(16/9, contentMode: .fit)
+                    .overlay(
+                        VStack {
+                            Image(systemName: "play.circle.fill")
+                                .font(.system(size: 48))
+                                .foregroundColor(.white)
+                            Text("Video Preview")
+                                .font(.caption)
+                                .foregroundColor(.white)
+                        }
+                    )
+                    .cornerRadius(12)
+                
+                // Tracking overlays
+                ForEach(trackedItems) { item in
+                    TrackedItemOverlay(
+                        item: item,
+                        onTap: {
+                            selectedItem = item
+                            showingItemDetails = true
+                        }
+                    )
+                }
+            }
+            
+            // Item selection list
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Detected Items (\(trackedItems.filter(\.isSelected).count) selected)")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 3), spacing: 12) {
+                    ForEach($trackedItems) { $item in
+                        TrackedItemCard(item: $item)
+                    }
+                }
+            }
+            
+            // Timeline indicator
+            if let metadata = videoMetadata {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Video Duration: \(Int(metadata.duration))s")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    
+                    ProgressView(value: 0.3) // Example progress
+                        .progressViewStyle(LinearProgressViewStyle())
+                }
+            }
+            
+            // Action buttons
+            VStack(spacing: 12) {
+                Button(action: onContinue) {
+                    HStack {
+                        Image(systemName: "checkmark.circle.fill")
+                        Text("Continue to Upload (\(trackedItems.filter(\.isSelected).count) items selected)")
+                            .fontWeight(.semibold)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.accentColor)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
+                }
+                
+                Button("Back to Preview") {
+                    // Navigate back
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .foregroundColor(.primary)
+                .cornerRadius(12)
+            }
+        }
+        .sheet(isPresented: $showingItemDetails) {
+            if let item = selectedItem {
+                TrackedItemDetailView(item: item)
+            }
+        }
+    }
+}
+
+// MARK: - Tracked Item Overlay
+struct TrackedItemOverlay: View {
+    let item: TrackedItem
+    let onTap: () -> Void
+    
+    var body: some View {
+        Button(action: onTap) {
+            ZStack {
+                Circle()
+                    .fill(item.isSelected ? Color.accentColor.opacity(0.8) : Color.white.opacity(0.8))
+                    .frame(width: 60, height: 60)
+                    .overlay(
+                        Circle()
+                            .stroke(item.isSelected ? Color.accentColor : Color.gray, lineWidth: 3)
+                    )
+                
+                Image(systemName: item.isSelected ? "checkmark" : "plus")
+                    .font(.title2)
+                    .foregroundColor(item.isSelected ? .white : .accentColor)
+                
+                if item.isSelected {
+                    Circle()
+                        .fill(Color.green)
+                        .frame(width: 20, height: 20)
+                        .overlay(
+                            Image(systemName: "checkmark")
+                                .font(.caption)
+                                .foregroundColor(.white)
+                        )
+                        .offset(x: 20, y: -20)
+                }
+            }
+        }
+        .position(
+            x: item.x * 300 / 100, // Assuming video width of 300
+            y: item.y * 200 / 100  // Assuming video height of 200
+        )
+    }
+}
+
+// MARK: - Tracked Item Card
+struct TrackedItemCard: View {
+    @Binding var item: TrackedItem
+    
+    var body: some View {
+        Button(action: {
+            item.isSelected.toggle()
+        }) {
+            VStack(spacing: 8) {
+                Image(systemName: item.isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.title2)
+                    .foregroundColor(item.isSelected ? .accentColor : .gray)
+                
+                Text(item.name.capitalized)
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(item.isSelected ? .accentColor : .primary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(item.isSelected ? Color.accentColor.opacity(0.1) : Color.gray.opacity(0.1))
+            .cornerRadius(12)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Tracked Item Detail View
+struct TrackedItemDetailView: View {
+    let item: TrackedItem
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 16) {
+                        HStack {
+                            Image(systemName: "tag.fill")
+                                .font(.title)
+                                .foregroundColor(.accentColor)
+                            
+                            Text(item.name.capitalized)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 12) {
+                            DetailRow(title: "Object Type", value: item.name.capitalized)
+                            DetailRow(title: "Position", value: "\(Int(item.x))%, \(Int(item.y))%")
+                            DetailRow(title: "Start Time", value: "\(Int(item.startTime))s")
+                            DetailRow(title: "End Time", value: "\(Int(item.endTime))s")
+                            DetailRow(title: "Selected", value: item.isSelected ? "Yes" : "No")
+                        }
+                        
+                        Text("This item will be tracked throughout your video and made available for shoppers to interact with.")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.top)
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle("Item Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -644,7 +1164,7 @@ struct StepIndicator: View {
     
     var body: some View {
         HStack(spacing: 8) {
-            ForEach(0..<5) { index in
+            ForEach(0..<7) { index in
                 Circle()
                     .fill(stepColor(for: index))
                     .frame(width: 32, height: 32)
@@ -655,7 +1175,7 @@ struct StepIndicator: View {
                             .foregroundColor(.white)
                     )
                 
-                if index < 4 {
+                if index < 6 {
                     Rectangle()
                         .fill(stepColor(for: index))
                         .frame(height: 2)
@@ -670,10 +1190,12 @@ struct StepIndicator: View {
         let stepIndex: Int
         switch currentStep {
         case .select: stepIndex = 0
-        case .upload: stepIndex = 1
-        case .process: stepIndex = 2
-        case .preview: stepIndex = 3
-        case .complete: stepIndex = 4
+        case .preview: stepIndex = 1
+        case .track: stepIndex = 2
+        case .upload: stepIndex = 3
+        case .process: stepIndex = 4
+        case .finalPreview: stepIndex = 5
+        case .complete: stepIndex = 6
         }
         
         return index <= stepIndex ? .indigo : .gray.opacity(0.3)
@@ -718,7 +1240,7 @@ struct VideoSelectionView: View {
                     }
                     
                     Button("Continue to Details") {
-                        currentStep = .upload
+                        currentStep = .preview
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -737,7 +1259,7 @@ struct VideoSelectionView: View {
                         await MainActor.run {
                             selectedVideoData = videoData
                             // Automatically advance to next step after loading
-                            currentStep = .upload
+                            currentStep = .preview
                         }
                     } catch {
                         print("Failed to load video data: \(error)")
@@ -752,6 +1274,7 @@ struct UploadFormView: View {
     @Binding var title: String
     @Binding var description: String
     @Binding var selectedVideoData: Data?
+    let trackedItems: [TrackedItem]
     var focusedField: FocusState<UploadView.UploadField?>.Binding
     let onUpload: () -> Void
     
@@ -774,6 +1297,40 @@ struct UploadFormView: View {
                     Text("Loading video data...")
                         .font(.caption)
                         .foregroundColor(.secondary)
+                }
+                .padding(.bottom, 8)
+            }
+            
+            // Tracked items summary
+            if !trackedItems.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Image(systemName: "tag.fill")
+                            .foregroundColor(.accentColor)
+                        Text("Tracked Items (\(trackedItems.filter(\.isSelected).count) selected)")
+                            .font(.subheadline)
+                            .fontWeight(.medium)
+                    }
+                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 8) {
+                            ForEach(trackedItems.filter(\.isSelected)) { item in
+                                HStack {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .font(.caption)
+                                        .foregroundColor(.green)
+                                    Text(item.name.capitalized)
+                                        .font(.caption)
+                                        .fontWeight(.medium)
+                                }
+                                .padding(.horizontal, 8)
+                                .padding(.vertical, 4)
+                                .background(Color.green.opacity(0.1))
+                                .foregroundColor(.green)
+                                .cornerRadius(12)
+                            }
+                        }
+                    }
                 }
                 .padding(.bottom, 8)
             }
@@ -1849,7 +2406,7 @@ class NetworkService: ObservableObject {
     
     private init() {}
     
-    func uploadVideo(title: String, description: String, videoData: Data) async throws -> VideoUploadResponse {
+    func uploadVideo(title: String, description: String, videoData: Data, trackedItems: [TrackedItem]) async throws -> VideoUploadResponse {
         guard let url = URL(string: "\(baseURL)/videos/upload") else {
             throw NetworkError.invalidURL
         }
@@ -1858,10 +2415,11 @@ class NetworkService: ObservableObject {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body = [
+        let body: [String: Any] = [
             "title": title,
             "description": description,
-            "videoData": videoData.base64EncodedString()
+            "videoData": videoData.base64EncodedString(),
+            "trackedItems": try JSONEncoder().encode(trackedItems)
         ]
         
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
@@ -1903,7 +2461,7 @@ class NetworkService: ObservableObject {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let body = ["objects": objects]
+        let body: [String: Any] = ["objects": objects]
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
         
         let (data, response) = try await URLSession.shared.data(for: request)
