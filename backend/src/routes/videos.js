@@ -13,14 +13,11 @@ router.get('/detect/:videoId', videoController.detectObjects);
 
 // Learning and feedback endpoints
 router.get('/learning/stats', videoController.getLearningStats);
+router.post('/feedback', videoController.recordFeedback);
+router.post('/final-selection', videoController.updateFinalSelection);
 
 // Video management (these must come after specific routes)
 router.get('/', videoController.getAllVideos);
 router.get('/:id', videoController.getVideoById);
-
-// Learning and feedback endpoints
-router.get('/learning/stats', videoController.getLearningStats);
-router.post('/feedback', videoController.recordFeedback);
-router.post('/final-selection', videoController.updateFinalSelection);
 
 module.exports = router; 

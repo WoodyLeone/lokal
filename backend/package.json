@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node --max-old-space-size=512 --expose-gc --optimize-for-size app.js",
     "dev": "nodemon --max-old-space-size=512 --expose-gc src/server.js",
+    "dev-simple": "nodemon --max-old-space-size=512 --expose-gc src/server-simple.js",
     "test": "jest",
     "test:db": "node src/tests/test-database.js",
     "test:connection": "node src/tests/test-database.js",
