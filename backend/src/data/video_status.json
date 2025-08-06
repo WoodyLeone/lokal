@@ -1,0 +1,6014 @@
+{
+  "473ae0ae-2003-4600-811c-6df7653da9a8": {
+    "status": "error",
+    "progress": 0,
+    "title": "Persistence Test Video",
+    "description": "Testing video status persistence",
+    "createdAt": "2025-08-01T20:45:10.297Z",
+    "message": "Video file not found"
+  },
+  "2031ceed-dde9-479e-b303-5fbd8fa9e96f": {
+    "status": "uploaded",
+    "progress": 0,
+    "title": "playing with grandpa",
+    "createdAt": "2025-08-01T20:50:58.470Z"
+  },
+  "eeaefaaf-fbdd-4d6f-b26a-218d68a85e36": {
+    "status": "uploaded",
+    "progress": 0,
+    "title": "Persistence Test Video",
+    "description": "Testing video status persistence",
+    "createdAt": "2025-08-01T20:59:14.739Z"
+  },
+  "3d6606a3-bc01-41d1-9579-4642bb936fc0": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Persistence Test Video",
+    "description": "Testing video status persistence",
+    "createdAt": "2025-08-01T21:00:29.984Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:00:29.990Z"
+  },
+  "e3fa0051-77aa-4d6f-8f22-dd418e36ecb0": {
+    "status": "processing",
+    "progress": 50,
+    "title": "playing with grandpa",
+    "createdAt": "2025-08-01T21:01:37.162Z"
+  },
+  "cdf7739a-ab16-493f-8dd8-9b142e4532ec": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:17:15.984Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "IKEA Markus"
+    ],
+    "completedAt": "2025-08-01T21:17:15.991Z"
+  },
+  "1dcbb8fb-cd80-48be-aa88-b2b7a9abe0a1": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Persistence Test Video",
+    "description": "Testing video status persistence",
+    "createdAt": "2025-08-01T21:17:25.261Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Dell XPS",
+      "MacBook Pro",
+      "Steelcase Leap"
+    ],
+    "completedAt": "2025-08-01T21:17:25.267Z"
+  },
+  "913889fb-62e2-45be-bd99-220c07d85ea0": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:25:23.478Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T21:25:23.488Z"
+  },
+  "b2411945-78ee-4bd0-a5d9-e366318ff0fd": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Persistence Test Video",
+    "description": "Testing video status persistence",
+    "createdAt": "2025-08-01T21:25:32.431Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:25:32.438Z"
+  },
+  "163c7d34-63ec-4fab-890f-92e1d29eed03": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T21:26:27.246Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Dell XPS",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:26:27.255Z"
+  },
+  "fc5c9368-eb05-44cc-8b70-4abb95d6b0d7": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:27:30.611Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Dell XPS",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T21:27:30.623Z"
+  },
+  "ea40bf7f-5f1b-46b7-88ae-60610f9cf9d9": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:32:07.073Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:32:07.085Z"
+  },
+  "c9faf504-1850-48b0-a18c-990d19830b4a": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T21:35:02.272Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Dell XPS",
+      "Lenovo ThinkPad",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:35:02.283Z"
+  },
+  "f70f70f4-4ec9-4acf-957c-8fa0afc761df": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:35:20.050Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T21:35:20.058Z"
+  },
+  "3ab9d115-a862-4c3f-b0f6-cf17517556e9": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:43:41.950Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Lenovo ThinkPad",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T21:43:41.957Z"
+  },
+  "399813fe-da8f-4c02-ab7b-adeaa5f1852d": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:53:41.959Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Lenovo ThinkPad",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:53:41.966Z"
+  },
+  "55f42e72-e7ad-4d29-9eea-722edc5ab178": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T21:53:45.562Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Lenovo ThinkPad",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:53:45.568Z"
+  },
+  "c49add32-9f78-4474-ba10-a2aa6e1ccbf9": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:54:55.906Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Dell XPS",
+      "Steelcase Leap"
+    ],
+    "completedAt": "2025-08-01T21:54:55.912Z"
+  },
+  "d4d57647-3117-46bb-af2a-018e96179d26": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T21:54:59.182Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T21:54:59.189Z"
+  },
+  "0af4e6a8-a3e4-4c68-bf35-90dac4c378e9": {
+    "status": "error",
+    "progress": 25,
+    "videoUrl": "demo://test-video",
+    "title": "Debug Test Video",
+    "description": "Testing backend debug output",
+    "createdAt": "2025-08-01T21:55:23.455Z",
+    "error": "Invalid video URL protocol. Only HTTP/HTTPS URLs are supported."
+  },
+  "c73aa16c-0f3a-452a-a4ef-1621b583ed0a": {
+    "status": "error",
+    "progress": 25,
+    "videoUrl": "http://example.com/test.mp4",
+    "title": "Console Test",
+    "description": "Testing console output",
+    "createdAt": "2025-08-01T21:55:37.767Z",
+    "error": "Request failed with status code 404"
+  },
+  "13817a8d-1d1f-475c-9b90-9283e377751d": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T21:55:42.747Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "Dell XPS",
+      "IKEA Markus"
+    ],
+    "completedAt": "2025-08-01T21:55:42.755Z"
+  },
+  "6f628fa8-74f5-47a8-bdfd-9ac00d2d74bd": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T21:56:10.999Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Dell XPS",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T21:56:11.006Z"
+  },
+  "3db3bd18-a7f4-4c6b-b4b2-ff139b5958e2": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T21:56:14.479Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Dell XPS",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T21:56:14.488Z"
+  },
+  "8e2923f7-c5b2-4449-96ff-5d217f6a5522": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T22:02:30.929Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T22:02:30.940Z"
+  },
+  "a2c87d56-a848-49bb-8c09-f5dfde9e5699": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T22:02:52.448Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T22:02:52.456Z"
+  },
+  "9dd153b8-fe0d-4f93-8273-706360422de0": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T22:03:02.631Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Lenovo ThinkPad",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T22:03:02.641Z"
+  },
+  "71c57693-741f-4b5d-a720-f43686925006": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T22:04:46.310Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T22:04:46.316Z"
+  },
+  "1754dbc2-4a80-4d4d-adff-20abfe6e8c21": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T22:04:49.520Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Lenovo ThinkPad",
+      "IKEA Markus"
+    ],
+    "completedAt": "2025-08-01T22:04:49.526Z"
+  },
+  "175b4ad8-f9f9-46ec-9d32-bf801afa19d6": {
+    "status": "completed",
+    "progress": 100,
+    "title": "playing with Grandpa",
+    "createdAt": "2025-08-01T22:11:53.829Z",
+    "detectedObjects": [
+      "cup"
+    ],
+    "matchedProducts": [
+      {
+        "id": "yeti-rambler",
+        "title": "Yeti Rambler 20oz Tumbler",
+        "description": "Vacuum insulated tumbler keeps drinks cold for hours",
+        "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Yeti+Rambler",
+        "price": 34.99,
+        "currency": "USD",
+        "buyUrl": "https://www.yeti.com/en_US/rambler-20-oz-tumbler/YRAM20.html",
+        "category": "kitchen",
+        "brand": "Yeti",
+        "rating": 4.8,
+        "reviewCount": 3456,
+        "keywords": [
+          "tumbler",
+          "cup",
+          "mug",
+          "yeti",
+          "kitchen",
+          "insulated",
+          "vacuum"
+        ]
+      },
+      {
+        "id": "starbucks-mug",
+        "title": "Starbucks Ceramic Coffee Mug",
+        "description": "Classic ceramic coffee mug with Starbucks branding",
+        "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Starbucks+Mug",
+        "price": 12.99,
+        "currency": "USD",
+        "buyUrl": "https://www.starbucks.com/store/product/coffee-mug",
+        "category": "kitchen",
+        "brand": "Starbucks",
+        "rating": 4.2,
+        "reviewCount": 156,
+        "keywords": [
+          "mug",
+          "cup",
+          "coffee",
+          "starbucks",
+          "kitchen",
+          "ceramic"
+        ]
+      },
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Contigo Autoseal",
+      "Stanley Quencher"
+    ],
+    "completedAt": "2025-08-01T22:12:00.427Z"
+  },
+  "a3d5d821-1339-43e8-9da0-4a8ca127fb2c": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Simple Test Video",
+    "description": "Testing simple upload",
+    "createdAt": "2025-08-01T22:14:32.585Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Lenovo ThinkPad",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T22:14:32.591Z"
+  },
+  "1112f03e-a626-4f27-9e02-4f6865386a03": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T22:14:37.641Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "HP Spectre",
+      "IKEA Markus"
+    ],
+    "completedAt": "2025-08-01T22:14:37.649Z"
+  },
+  "65747cea-7fa7-42a7-908e-ded2608b028d": {
+    "status": "completed",
+    "progress": 100,
+    "title": "playing volleyball ",
+    "createdAt": "2025-08-01T22:20:41.314Z",
+    "detectedObjects": [],
+    "matchedProducts": [],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-01T22:20:52.928Z"
+  },
+  "8864ae6c-0a86-4dc5-b0c8-b68c5f436709": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Cars",
+    "manualProductName": "Bmw",
+    "createdAt": "2025-08-01T22:22:40.734Z",
+    "detectedObjects": [
+      "car",
+      "chair",
+      "truck"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      }
+    ],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-01T22:22:49.158Z"
+  },
+  "0d7ccddf-adbb-4cb8-80dc-72cd122e74ab": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T22:25:03.951Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T22:25:03.963Z"
+  },
+  "3eb2aaeb-0f1a-40df-94e4-31cfa04fa623": {
+    "status": "completed",
+    "progress": 100,
+    "title": "car",
+    "manualProductName": "BMW",
+    "createdAt": "2025-08-01T22:31:05.020Z",
+    "detectedObjects": [
+      "car",
+      "chair",
+      "truck"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      }
+    ],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-01T22:31:13.260Z"
+  },
+  "87eab90c-df4f-41d4-ba1c-6c517684817d": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T22:32:04.112Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "honda-civic",
+        "title": "Honda Civic",
+        "description": "Reliable compact car with excellent fuel efficiency",
+        "imageUrl": "https://via.placeholder.com/300x200/10b981/ffffff?text=Honda+Civic",
+        "price": 22950,
+        "currency": "USD",
+        "buyUrl": "https://automobiles.honda.com/civic",
+        "category": "automotive",
+        "brand": "Honda",
+        "rating": 4.6,
+        "reviewCount": 1892,
+        "keywords": [
+          "car",
+          "honda",
+          "automotive",
+          "civic",
+          "compact",
+          "fuel efficient"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro",
+      "IKEA Markus"
+    ],
+    "completedAt": "2025-08-01T22:32:04.123Z"
+  },
+  "71b6901b-9c64-4f52-8b2f-089b0c393757": {
+    "status": "completed",
+    "progress": 100,
+    "title": "man walking on stair",
+    "createdAt": "2025-08-01T22:49:40.240Z",
+    "detectedObjects": [
+      "suitcase"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      }
+    ],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-01T22:49:45.779Z"
+  },
+  "6ce99104-999d-49b8-ade7-f956c8745d1f": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Man Walking ",
+    "createdAt": "2025-08-01T22:51:33.721Z",
+    "detectedObjects": [],
+    "matchedProducts": [],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-01T22:51:38.614Z"
+  },
+  "6937cc4a-a96c-492f-8a5d-d7db07539478": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T23:00:27.034Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Dell XPS",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T23:00:27.044Z"
+  },
+  "2dc4a513-68cb-452b-99b7-0e4f3f81c9b9": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T23:00:51.028Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Lenovo ThinkPad",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T23:00:51.038Z"
+  },
+  "78f13348-bd1a-4417-9d61-05aa7673fc1d": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T23:02:02.573Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Dell XPS",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T23:02:02.583Z"
+  },
+  "de092190-4705-4620-a011-0ba2ef74ae5c": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T23:02:36.122Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Dell XPS",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T23:02:36.132Z"
+  },
+  "93ad629b-b159-44a5-98e8-eb2fa9b96bd5": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T23:03:08.304Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "HP Spectre",
+      "Lenovo ThinkPad",
+      "Herman Miller Aeron"
+    ],
+    "completedAt": "2025-08-01T23:03:08.313Z"
+  },
+  "d3a00080-720c-4651-aeb1-d4735d2a24fb": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Database Test Video",
+    "description": "Testing if videos are saved to database",
+    "createdAt": "2025-08-01T23:04:14.874Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-01T23:04:14.888Z"
+  },
+  "30663205-f0f3-4985-af1b-837547f45e76": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Playing with grandpa",
+    "createdAt": "2025-08-02T02:24:23.440Z",
+    "detectedObjects": [
+      "cup",
+      "table",
+      "spoon"
+    ],
+    "matchedProducts": [
+      {
+        "id": "west-elm-parsons",
+        "title": "West Elm Parsons Dining Table",
+        "description": "Modern dining table with clean lines",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=West+Elm+Parsons",
+        "price": 899,
+        "currency": "USD",
+        "buyUrl": "https://www.westelm.com/products/parsons-dining-table/",
+        "category": "furniture",
+        "brand": "West Elm",
+        "rating": 4.5,
+        "reviewCount": 567,
+        "keywords": [
+          "table",
+          "dining table",
+          "furniture",
+          "west elm",
+          "parsons",
+          "modern"
+        ]
+      },
+      {
+        "id": "ikea-linnmon",
+        "title": "IKEA Linnmon Table Top",
+        "description": "Versatile table top for desks and dining",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=IKEA+Linnmon",
+        "price": 29.99,
+        "currency": "USD",
+        "buyUrl": "https://www.ikea.com/us/en/p/linnmon-table-top-white-00463850/",
+        "category": "furniture",
+        "brand": "IKEA",
+        "rating": 4.1,
+        "reviewCount": 2341,
+        "keywords": [
+          "table",
+          "desk",
+          "furniture",
+          "ikea",
+          "linnmon",
+          "table top"
+        ]
+      },
+      {
+        "id": "yeti-rambler",
+        "title": "Yeti Rambler 20oz Tumbler",
+        "description": "Vacuum insulated tumbler keeps drinks cold for hours",
+        "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Yeti+Rambler",
+        "price": 34.99,
+        "currency": "USD",
+        "buyUrl": "https://www.yeti.com/en_US/rambler-20-oz-tumbler/YRAM20.html",
+        "category": "kitchen",
+        "brand": "Yeti",
+        "rating": 4.8,
+        "reviewCount": 3456,
+        "keywords": [
+          "tumbler",
+          "cup",
+          "mug",
+          "yeti",
+          "kitchen",
+          "insulated",
+          "vacuum"
+        ]
+      },
+      {
+        "id": "starbucks-mug",
+        "title": "Starbucks Ceramic Coffee Mug",
+        "description": "Classic ceramic coffee mug with Starbucks branding",
+        "imageUrl": "https://via.placeholder.com/300x200/f59e0b/ffffff?text=Starbucks+Mug",
+        "price": 12.99,
+        "currency": "USD",
+        "buyUrl": "https://www.starbucks.com/store/product/coffee-mug",
+        "category": "kitchen",
+        "brand": "Starbucks",
+        "rating": 4.2,
+        "reviewCount": 156,
+        "keywords": [
+          "mug",
+          "cup",
+          "coffee",
+          "starbucks",
+          "kitchen",
+          "ceramic"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Contigo Autoseal",
+      "Yeti Rambler",
+      "Crate & Barrel Dining Table"
+    ],
+    "completedAt": "2025-08-02T02:24:31.150Z"
+  },
+  "e272d1ab-637e-4ce6-ab43-47d25fdb2ad6": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Test Video",
+    "description": "Test upload",
+    "createdAt": "2025-08-02T02:25:26.269Z",
+    "detectedObjects": [
+      "laptop",
+      "chair",
+      "car"
+    ],
+    "matchedProducts": [
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      },
+      {
+        "id": "steelcase-leap",
+        "title": "Steelcase Leap Chair",
+        "description": "Adaptive office chair with LiveBack technology",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Steelcase+Leap",
+        "price": 1299,
+        "currency": "USD",
+        "buyUrl": "https://www.steelcase.com/products/office-chairs/leap/",
+        "category": "furniture",
+        "brand": "Steelcase",
+        "rating": 4.8,
+        "reviewCount": 1567,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "steelcase",
+          "furniture",
+          "leap"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "away-luggage",
+        "title": "Away The Carry-On",
+        "description": "Premium polycarbonate carry-on with built-in battery",
+        "imageUrl": "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Away+Luggage",
+        "price": 275,
+        "currency": "USD",
+        "buyUrl": "https://www.awaytravel.com/luggage/carry-on",
+        "category": "travel",
+        "brand": "Away",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "luggage",
+          "suitcase",
+          "travel",
+          "away",
+          "carry-on",
+          "polycarbonate",
+          "battery"
+        ]
+      },
+      {
+        "id": "tesla-model-3",
+        "title": "Tesla Model 3",
+        "description": "Electric sedan with autopilot and 358-mile range",
+        "imageUrl": "https://via.placeholder.com/300x200/6366f1/ffffff?text=Tesla+Model+3",
+        "price": 38990,
+        "currency": "USD",
+        "buyUrl": "https://www.tesla.com/model3",
+        "category": "automotive",
+        "brand": "Tesla",
+        "rating": 4.8,
+        "reviewCount": 2156,
+        "keywords": [
+          "car",
+          "electric",
+          "tesla",
+          "automotive",
+          "model 3",
+          "autopilot",
+          "sedan"
+        ]
+      },
+      {
+        "id": "ipad-pro",
+        "title": "iPad Pro 12.9\"",
+        "description": "Most powerful iPad with M2 chip and Liquid Retina XDR display",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=iPad+Pro",
+        "price": 1099,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/ipad-pro/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 1234,
+        "keywords": [
+          "tablet",
+          "ipad",
+          "apple",
+          "electronics",
+          "pro",
+          "m2",
+          "liquid retina"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "HP Spectre",
+      "Secretlab Titan"
+    ],
+    "completedAt": "2025-08-02T02:25:26.286Z"
+  },
+  "86dcc0bf-a9fa-412d-b71f-1c059d12e846": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Laptop",
+    "createdAt": "2025-08-03T18:22:10.073Z",
+    "detectedObjects": [
+      "laptop"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "MacBook Pro",
+      "Lenovo ThinkPad"
+    ],
+    "completedAt": "2025-08-03T18:22:20.145Z"
+  },
+  "15a5fc4c-e498-4789-8c57-f28240d3b0ca": {
+    "status": "completed",
+    "progress": 100,
+    "title": "My brush",
+    "createdAt": "2025-08-03T18:28:35.321Z",
+    "detectedObjects": [],
+    "matchedProducts": [],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-03T18:28:43.491Z"
+  },
+  "f2deba3b-9cbf-4ee2-b46e-c66a1b568474": {
+    "status": "completed",
+    "progress": 100,
+    "title": "The best one ",
+    "createdAt": "2025-08-03T18:33:05.555Z",
+    "detectedObjects": [
+      "laptop"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "Lenovo ThinkPad",
+      "MacBook Pro"
+    ],
+    "completedAt": "2025-08-03T18:33:14.304Z"
+  },
+  "f781758f-6f9e-4454-ae4c-44ddd68462a0": {
+    "status": "completed",
+    "progress": 100,
+    "title": "The best ",
+    "createdAt": "2025-08-03T18:35:20.596Z",
+    "detectedObjects": [
+      "book"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "kindle-paperwhite",
+        "title": "Kindle Paperwhite",
+        "description": "Waterproof e-reader with weeks of battery life",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Kindle+Paperwhite",
+        "price": 139.99,
+        "currency": "USD",
+        "buyUrl": "https://www.amazon.com/kindle-paperwhite",
+        "category": "electronics",
+        "brand": "Amazon",
+        "rating": 4.7,
+        "reviewCount": 4567,
+        "keywords": [
+          "kindle",
+          "e-reader",
+          "amazon",
+          "electronics",
+          "paperwhite",
+          "books"
+        ]
+      }
+    ],
+    "aiSuggestions": [
+      "iPad Air",
+      "Kindle Paperwhite"
+    ],
+    "completedAt": "2025-08-03T18:35:31.569Z"
+  },
+  "411d22a9-e28c-4fb5-bf81-a6680e392c0f": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Best thing ever ",
+    "createdAt": "2025-08-03T18:36:48.817Z",
+    "detectedObjects": [
+      "microwave"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      }
+    ],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-03T18:36:56.456Z"
+  },
+  "343b28db-ad13-4a94-a6cc-345e0f283548": {
+    "status": "completed",
+    "progress": 100,
+    "title": "Rystg",
+    "manualProductName": "Tool is Titans ",
+    "createdAt": "2025-08-03T18:47:55.331Z",
+    "detectedObjects": [
+      "book"
+    ],
+    "matchedProducts": [
+      {
+        "id": "macbook-pro-14",
+        "title": "MacBook Pro 14\"",
+        "description": "Powerful laptop with M3 Pro chip for professionals",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=MacBook+Pro+14",
+        "price": 1999,
+        "currency": "USD",
+        "buyUrl": "https://www.apple.com/macbook-pro-14/",
+        "category": "electronics",
+        "brand": "Apple",
+        "rating": 4.9,
+        "reviewCount": 892,
+        "keywords": [
+          "laptop",
+          "macbook",
+          "computer",
+          "apple",
+          "electronics",
+          "pro",
+          "m3"
+        ]
+      },
+      {
+        "id": "secretlab-titan",
+        "title": "Secretlab Titan Gaming Chair",
+        "description": "Premium gaming chair with memory foam and lumbar support",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Secretlab+Titan",
+        "price": 429,
+        "currency": "USD",
+        "buyUrl": "https://secretlab.co/collections/titan-series",
+        "category": "furniture",
+        "brand": "Secretlab",
+        "rating": 4.7,
+        "reviewCount": 892,
+        "keywords": [
+          "chair",
+          "gaming chair",
+          "secretlab",
+          "furniture",
+          "titan",
+          "gaming"
+        ]
+      },
+      {
+        "id": "kindle-paperwhite",
+        "title": "Kindle Paperwhite",
+        "description": "Waterproof e-reader with weeks of battery life",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Kindle+Paperwhite",
+        "price": 139.99,
+        "currency": "USD",
+        "buyUrl": "https://www.amazon.com/kindle-paperwhite",
+        "category": "electronics",
+        "brand": "Amazon",
+        "rating": 4.7,
+        "reviewCount": 4567,
+        "keywords": [
+          "kindle",
+          "e-reader",
+          "amazon",
+          "electronics",
+          "paperwhite",
+          "books"
+        ]
+      },
+      {
+        "id": "herman-miller-aeron",
+        "title": "Herman Miller Aeron Chair",
+        "description": "Ergonomic office chair for ultimate comfort",
+        "imageUrl": "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Aeron+Chair",
+        "price": 1495,
+        "currency": "USD",
+        "buyUrl": "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
+        "category": "furniture",
+        "brand": "Herman Miller",
+        "rating": 4.9,
+        "reviewCount": 2341,
+        "keywords": [
+          "chair",
+          "office chair",
+          "ergonomic",
+          "herman miller",
+          "furniture",
+          "aeron"
+        ]
+      }
+    ],
+    "aiSuggestions": [],
+    "completedAt": "2025-08-03T18:48:07.131Z"
+  },
+  "db9c318b-3f9a-472d-aa5a-3f6b2beb108e": {
+    "status": "error",
+    "progress": 25,
+    "videoUrl": "https://example.com/test-video.mp4",
+    "title": "Test Video Upload",
+    "description": "Testing video upload functionality",
+    "manualProductName": "Test Product",
+    "affiliateLink": "https://example.com/product",
+    "createdAt": "2025-08-04T20:16:37.152Z",
+    "error": "Request failed with status code 404"
+  },
+  "ac11b1c7-60ab-4b68-a6a6-3063ebe56949": {
+    "status": "error",
+    "progress": 25,
+    "videoUrl": "https://example.com/test-video.mp4",
+    "title": "Test Video Upload",
+    "description": "Testing video upload functionality",
+    "manualProductName": "Test Product",
+    "affiliateLink": "https://example.com/product",
+    "createdAt": "2025-08-04T20:17:00.815Z",
+    "error": "Request failed with status code 404"
+  },
+  "cfadb3f8-3cb5-4825-af7c-496ff075a5c2": {
+    "status": "error",
+    "progress": 25,
+    "videoUrl": "https://example.com/test-video.mp4",
+    "title": "Complete Pipeline Test Video",
+    "description": "Testing the complete video processing pipeline with error handling",
+    "manualProductName": "Test Product",
+    "affiliateLink": "https://example.com/product",
+    "createdAt": "2025-08-04T20:20:40.726Z",
+    "message": "Video file not found",
+    "error": "Request failed with status code 404"
+  },
+  "18a62966-5bec-491c-aef8-2e96622e3717": {
+    "status": "error",
+    "progress": 25,
+    "videoUrl": "https://example.com/test-video.mp4",
+    "title": "Complete Pipeline Test Video",
+    "description": "Testing the complete video processing pipeline with error handling",
+    "manualProductName": "Test Product",
+    "affiliateLink": "https://example.com/product",
+    "createdAt": "2025-08-04T20:30:39.529Z",
+    "message": "Video file not found",
+    "error": "Request failed with status code 404"
+  },
+  "98253f6d-dde6-4698-9dee-84d48b7b8845": {
+    "status": "error",
+    "progress": 25,
+    "videoUrl": "https://example.com/test-video.mp4",
+    "title": "End-to-End Test Video",
+    "description": "Testing complete video processing pipeline",
+    "manualProductName": "Test Product",
+    "affiliateLink": "https://example.com/product",
+    "createdAt": "2025-08-04T20:31:38.402Z",
+    "error": "Request failed with status code 404"
+  }
+}

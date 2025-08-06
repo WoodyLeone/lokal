@@ -1,0 +1,29 @@
+# Video Processing Pipeline Dependencies
+# Optimized for cost savings and performance
+
+# Core ML and Computer Vision
+ultralytics>=8.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# ByteTrack and Object Tracking
+onemetric>=0.1.0
+filterpy>=1.4.5
+scikit-image>=0.21.0
+
+# OpenAI Integration
+openai>=1.0.0
+
+# Image Processing and Optimization
+imageio>=2.31.0
+imageio-ffmpeg>=0.4.8
+
+# Utilities
+tqdm>=4.65.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Optional: GPU acceleration (uncomment if CUDA is available)
+# torch>=2.0.0+cu118
+# torchvision>=0.15.0+cu118 

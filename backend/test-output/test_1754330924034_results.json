@@ -1,0 +1,61 @@
+{
+  "videoId": "test_1754330924034",
+  "timestamp": "2025-08-04T18:08:46.850Z",
+  "processingTime": 1754330926850,
+  "summary": {
+    "totalFrames": 10,
+    "totalTracks": 0,
+    "totalObjects": 0,
+    "totalAnalyses": 0,
+    "totalMatches": 0
+  },
+  "frameExtraction": {
+    "metadata": {
+      "totalFrames": 300,
+      "fps": 30,
+      "duration": 5,
+      "extractedFrames": 10,
+      "frameInterval": 30,
+      "originalSize": {
+        "width": 1920,
+        "height": 1080
+      },
+      "processedSize": {
+        "width": 640,
+        "height": 480
+      }
+    }
+  },
+  "tracking": {
+    "stats": {
+      "unique_tracks": 0,
+      "total_detections": 0,
+      "class_distribution": {},
+      "average_tracks_per_frame": 0
+    }
+  },
+  "cropping": {
+    "stats": {
+      "totalCrops": 0,
+      "totalSize": 0,
+      "averageSize": 0,
+      "classDistribution": {},
+      "sizeDistribution": {}
+    }
+  },
+  "analysis": {
+    "results": [],
+    "costStats": {
+      "totalCalls": 0,
+      "totalTokens": 0,
+      "totalCost": 0,
+      "callsThisHour": 0,
+      "lastResetTime": 1754330924026,
+      "averageCostPerCall": 0
+    }
+  },
+  "matching": {
+    "results": []
+  },
+  "recommendations": []
+}

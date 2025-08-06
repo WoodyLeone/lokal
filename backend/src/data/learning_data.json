@@ -1,0 +1,26 @@
+{
+  "videoPatterns": {
+    "test-video-001": {
+      "id": "test-video-001",
+      "path": "/Users/rawhive/Downloads/new videos for LOKAL/Close-up_Of_Man_Feet_Walking_In_A_Park_fhd_1246653.mp4",
+      "filename": "Close-up_Of_Man_Feet_Walking_In_A_Park_fhd_1246653.mp4",
+      "detectedObjects": [
+        "person"
+      ],
+      "contextItems": [
+        "sneakers",
+        "athletic shoes",
+        "running shoes"
+      ],
+      "finalSelection": "sneakers",
+      "userFeedback": null,
+      "timestamp": "2025-07-30T02:26:50.001Z",
+      "category": "footwear"
+    }
+  },
+  "contextPatterns": {},
+  "userPreferences": {},
+  "accuracyMetrics": {},
+  "totalVideos": 1,
+  "lastUpdated": "2025-07-30T02:26:50.001Z"
+}

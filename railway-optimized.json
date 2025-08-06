@@ -1,0 +1,90 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "cd backend && npm ci --only=production"
+  },
+  "deploy": {
+    "startCommand": "cd backend && npm start",
+    "healthcheckPath": "/api/health",
+    "healthcheckTimeout": 300,
+    "healthcheckInterval": 30,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5,
+    "numReplicas": 1,
+    "maxReplicas": 3
+  },
+  "environments": {
+    "production": {
+      "variables": {
+        "NODE_ENV": "production",
+        "PORT": "3001",
+        "LOG_LEVEL": "info",
+        "CACHE_TTL": "1800",
+        "RATE_LIMIT_MAX_REQUESTS": "1000",
+        "RATE_LIMIT_WINDOW_MS": "900000",
+        "KEEP_ALIVE_TIMEOUT": "65000",
+        "HEADERS_TIMEOUT": "66000",
+        "MAX_CONNECTIONS": "1000",
+        "COMPRESSION_LEVEL": "6",
+        "ENABLE_CORS": "true",
+        "ENABLE_COMPRESSION": "true",
+        "ENABLE_RATE_LIMITING": "true",
+        "ENABLE_HELMET": "true",
+        "ENABLE_MORGAN": "false"
+      }
+    },
+    "development": {
+      "variables": {
+        "NODE_ENV": "development",
+        "PORT": "3001",
+        "LOG_LEVEL": "debug",
+        "CACHE_TTL": "300",
+        "RATE_LIMIT_MAX_REQUESTS": "200",
+        "RATE_LIMIT_WINDOW_MS": "900000",
+        "KEEP_ALIVE_TIMEOUT": "65000",
+        "HEADERS_TIMEOUT": "66000",
+        "MAX_CONNECTIONS": "100",
+        "COMPRESSION_LEVEL": "1",
+        "ENABLE_CORS": "true",
+        "ENABLE_COMPRESSION": "true",
+        "ENABLE_RATE_LIMITING": "true",
+        "ENABLE_HELMET": "true",
+        "ENABLE_MORGAN": "true"
+      }
+    }
+  },
+  "monitoring": {
+    "metrics": {
+      "enabled": true,
+      "interval": 60
+    },
+    "logs": {
+      "retention": "7d",
+      "level": "info"
+    },
+    "alerts": {
+      "cpu": {
+        "threshold": 80,
+        "duration": "5m"
+      },
+      "memory": {
+        "threshold": 85,
+        "duration": "5m"
+      },
+      "response_time": {
+        "threshold": 2000,
+        "duration": "5m"
+      }
+    }
+  },
+  "scaling": {
+    "auto": {
+      "enabled": true,
+      "min": 1,
+      "max": 3,
+      "cpu_threshold": 70,
+      "memory_threshold": 80
+    }
+  }
+} 

@@ -1,0 +1,254 @@
+import * as FileSystem from 'expo-file-system';
+import { Video } from 'expo-av';
+import { ENV } from '../config/env';
+
+// Generate thumbnail from video URI
+export const generateThumbnail = async (videoUri: string): Promise<string | null> => {
+  try {
+    // For now, we'll return null and handle thumbnail generation on the backend
+    // In a production app, you might use a native module or backend service
+    console.log('Thumbnail generation would happen here for:', videoUri);
+    return null;
+  } catch (error) {
+    console.error('Error generating thumbnail:', error);
+    return null;
+  }
+};
+
+// Validate video file
+export const validateVideo = (uri: string, size?: number, duration?: number): { isValid: boolean; error?: string } => {
+  // Check file extension
+  const supportedFormats = ['mp4', 'mov', 'avi', 'mkv'];
+  const fileExtension = uri.split('.').pop()?.toLowerCase();
+  
+  if (!fileExtension || !supportedFormats.includes(fileExtension)) {
+    return { 
+      isValid: false, 
+      error: `Unsupported video format. Supported formats: ${supportedFormats.join(', ')}` 
+    };
+  }
+
+  // Check file size (if provided)
+  if (size && size > ENV.MAX_VIDEO_SIZE) {
+    return { 
+      isValid: false, 
+      error: `Video file is too large. Maximum size is ${formatFileSize(ENV.MAX_VIDEO_SIZE)}. Your file: ${formatFileSize(size)}` 
+    };
+  }
+
+  // Check duration (if provided)
+  if (duration !== undefined && duration !== null) {
+    // Handle potential millisecond values
+    let durationInSeconds = duration;
+    if (duration > 1000) {
+      durationInSeconds = duration / 1000;
+      console.log(`Duration validation: converted ${duration} to ${durationInSeconds} seconds`);
+    } else if (duration < 1) {
+      // If duration is less than 1, it might be in minutes, convert to seconds
+      durationInSeconds = duration * 60;
+      console.log(`Duration validation: converted ${duration} minutes to ${durationInSeconds} seconds`);
+    }
+    
+    if (durationInSeconds > ENV.MAX_VIDEO_DURATION) {
+      const maxMinutes = Math.floor(ENV.MAX_VIDEO_DURATION / 60);
+      const maxSeconds = ENV.MAX_VIDEO_DURATION % 60;
+      const videoMinutes = Math.floor(durationInSeconds / 60);
+      const videoSeconds = Math.floor(durationInSeconds % 60);
+      return { 
+        isValid: false, 
+        error: `Video is too long. Maximum duration is ${maxMinutes}:${maxSeconds.toString().padStart(2, '0')}. Your video: ${videoMinutes}:${videoSeconds.toString().padStart(2, '0')}` 
+      };
+    }
+
+    // Check minimum duration
+    if (durationInSeconds < 15) {
+      return { 
+        isValid: false, 
+        error: `Video is too short. Minimum duration is 15 seconds. Your video: ${durationInSeconds.toFixed(1)} seconds` 
+      };
+    }
+  }
+
+  return { isValid: true };
+};
+
+// Format file size
+export const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes';
+  
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+// Format duration
+export const formatDuration = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+};
+
+// Generate unique filename
+export const generateUniqueFilename = (prefix: string = 'video', extension: string = 'mp4'): string => {
+  const timestamp = Date.now();
+  const random = Math.random().toString(36).substring(2, 15);
+  return `${prefix}_${timestamp}_${random}.${extension}`;
+};
+
+// Check if running in demo mode
+export const isDemoMode = (): boolean => {
+  const databaseUrl = process.env.EXPO_PUBLIC_DATABASE_URL;
+  const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
+  
+  return databaseUrl === 'YOUR_DATABASE_URL' || 
+         !databaseUrl ||
+         !apiBaseUrl;
+};
+
+// Debounce function
+export const debounce = <T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): ((...args: Parameters<T>) => void) => {
+  let timeout: NodeJS.Timeout;
+  
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
+
+// Retry function with exponential backoff
+export const retry = async <T>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  delay: number = 1000
+): Promise<T> => {
+  try {
+    return await fn();
+  } catch (error) {
+    if (maxRetries <= 0) throw error;
+    
+    await new Promise(resolve => setTimeout(resolve, delay));
+    return retry(fn, maxRetries - 1, delay * 2);
+  }
+};
+
+// Format date
+export const formatDate = (date: string | Date): string => {
+  const d = new Date(date);
+  return d.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
+// Truncate text to specified length
+export const truncateText = (text: string, maxLength: number): string => {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  return text.substring(0, maxLength) + '...';
+};
+
+// Format price with currency
+export const formatPrice = (price: number, currency: string = 'USD'): string => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+  }).format(price);
+}; 
+
+/**
+ * Validates if a video URL is accessible and properly formatted
+ * @param url The video URL to validate
+ * @returns true if the URL is valid and accessible, false otherwise
+ */
+export const isValidVideoUrl = (url: string): boolean => {
+  if (!url || typeof url !== 'string') {
+    return false;
+  }
+  
+  // Allow local file URLs for mobile video uploads
+  if (url.startsWith('file://')) {
+    return true; // Local files are valid for upload processing
+  }
+  
+  // Check for invalid URL patterns (blacklist)
+  const invalidPatterns = [
+    /^demo:\/\//, // demo:// protocol
+    /^example\.com/, // example.com domain
+    /^sample-videos\.com/, // sample-videos.com domain (not accessible)
+    /^https?:\/\/localhost/, // localhost URLs
+    /^https?:\/\/127\.0\.0\.1/, // localhost IP
+    /^https?:\/\/example\.com/, // example.com with protocol
+    /^https?:\/\/.*\.example\.com/, // any example.com subdomain
+    /^https?:\/\/.*sample-videos\.com/, // any sample-videos.com subdomain
+  ];
+  
+  for (const pattern of invalidPatterns) {
+    if (pattern.test(url)) {
+      return false;
+    }
+  }
+  
+  // Check if it's a valid HTTP/HTTPS URL
+  try {
+    const urlObj = new URL(url);
+    if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:') {
+      return false;
+    }
+    
+    // Only allow known good video hosting domains (whitelist approach)
+    const allowedDomains = [
+      'commondatastorage.googleapis.com', // Google Cloud Storage
+      'storage.googleapis.com', // Google Cloud Storage
+      'cdn.jsdelivr.net', // CDN
+      'github.com', // GitHub raw files
+      'raw.githubusercontent.com', // GitHub raw files
+      'vimeo.com', // Vimeo
+      'player.vimeo.com', // Vimeo player
+      'youtube.com', // YouTube
+      'youtu.be', // YouTube short links
+      'dropbox.com', // Dropbox
+      'dl.dropboxusercontent.com', // Dropbox direct links
+      'assets.mixkit.co', // Mixkit free videos
+      'videos.pexels.com', // Pexels videos
+      'pixabay.com', // Pixabay videos
+      'coverr.co', // Coverr videos
+      's3.amazonaws.com', // AWS S3
+      'amazonaws.com', // AWS general
+    ];
+    
+    const hostname = urlObj.hostname.toLowerCase();
+    const isAllowed = allowedDomains.some(domain => 
+      hostname === domain || hostname.endsWith('.' + domain)
+    );
+    
+    return isAllowed;
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * Check if a URL is a local file URL
+ * @param url - The URL to check
+ * @returns boolean indicating if it's a local file
+ */
+export const isLocalFileUrl = (url: string): boolean => {
+  return url && typeof url === 'string' && url.startsWith('file://');
+};
+
+/**
+ * Gets a fallback video URL for testing purposes
+ * @returns A valid test video URL
+ */
+export const getFallbackVideoUrl = (): string => {
+  return 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
+}; 

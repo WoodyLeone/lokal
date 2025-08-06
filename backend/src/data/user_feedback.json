@@ -1,0 +1,15 @@
+{
+  "feedback": [
+    {
+      "videoId": "test-video-001",
+      "feedback": {
+        "accuracy": "good",
+        "comments": "Great detection for footwear!"
+      },
+      "timestamp": "2025-07-30T02:26:50.005Z"
+    }
+  ],
+  "corrections": [],
+  "preferences": {},
+  "totalFeedback": 1
+}

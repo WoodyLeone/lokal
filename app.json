@@ -1,0 +1,49 @@
+{
+  "expo": {
+    "name": "Lokal - Interactive Shoppable Videos",
+    "slug": "LokalRN",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6366f1"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Lokal needs access to your camera to record videos for creating interactive shoppable content.",
+        "NSPhotoLibraryUsageDescription": "Lokal needs access to your photo library to select videos for creating interactive shoppable content.",
+        "NSMicrophoneUsageDescription": "Lokal needs access to your microphone to record audio for videos."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#6366f1"
+      },
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Lokal needs access to your photo library to select videos for creating interactive shoppable content.",
+          "cameraPermission": "Lokal needs access to your camera to record videos for creating interactive shoppable content."
+        }
+      ]
+    ]
+  }
+}
